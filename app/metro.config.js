@@ -1,0 +1,14 @@
+// The app imports shared code from ../core and generated content from ./src/generated.
+// Metro only watches the app folder by default, so add the repo root.
+const { getDefaultConfig } = require('expo/metro-config');
+const path = require('path');
+
+const projectRoot = __dirname;
+const repoRoot = path.resolve(projectRoot, '..');
+
+const config = getDefaultConfig(projectRoot);
+config.watchFolders = [path.resolve(repoRoot, 'core'), path.resolve(repoRoot, 'content')];
+// core/ has no dependencies of its own; resolve everything from the app's node_modules.
+config.resolver.nodeModulesPaths = [path.resolve(projectRoot, 'node_modules')];
+
+module.exports = config;

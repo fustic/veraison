@@ -1,0 +1,100 @@
+// Wine profiles for the "what is this?" scorer: wines you could be poured in the exam.
+// Ranges are indices on the SAT scales (see core/src/sat.ts). Aroma weights: 3 = signature,
+// 2 = typical, 1 = sometimes. Drafts — tune them with your own tasting notes.
+
+import type { WineProfile } from '../core/src/content.ts';
+
+const p = (x: Omit<WineProfile, 'verified'>): WineProfile => ({ ...x, verified: false });
+
+export const profiles: WineProfile[] = [
+  p({
+    id: 'profile:chablis',
+    name: 'Chablis (village or Premier cru)',
+    wineType: 'white',
+    grapeIds: ['grape:chardonnay'],
+    regionId: 'region:fr-burgundy-chablis',
+    structure: { appearanceIntensity: [0, 0], noseIntensity: [1, 2], sweetness: [0, 0], acidity: [4, 4], body: [1, 2], alcohol: [1, 1], finish: [2, 3] },
+    aromas: { 'aroma:apple': 3, 'aroma:lemon': 3, 'aroma:wet-stones': 2, 'aroma:pear': 1 },
+  }),
+  p({
+    id: 'profile:meursault',
+    name: 'Meursault (village or Premier cru)',
+    wineType: 'white',
+    grapeIds: ['grape:chardonnay'],
+    regionId: 'region:fr-burgundy-meursault',
+    structure: { appearanceIntensity: [1, 1], noseIntensity: [2, 3], sweetness: [0, 0], acidity: [3, 3], body: [3, 4], alcohol: [1, 2], finish: [3, 4] },
+    aromas: { 'aroma:butter': 3, 'aroma:peach': 2, 'aroma:toast-oak': 2, 'aroma:hazelnut': 2, 'aroma:vanilla': 2, 'aroma:lemon': 1 },
+  }),
+  p({
+    id: 'profile:sancerre',
+    name: 'Sancerre',
+    wineType: 'white',
+    grapeIds: ['grape:sauvignon-blanc'],
+    regionId: 'region:fr-loire-sancerre',
+    structure: { appearanceIntensity: [0, 0], noseIntensity: [3, 4], sweetness: [0, 0], acidity: [4, 4], body: [0, 1], alcohol: [1, 1], finish: [2, 3] },
+    aromas: { 'aroma:gooseberry': 3, 'aroma:grass': 3, 'aroma:grapefruit': 2, 'aroma:flint': 1, 'aroma:elderflower': 1 },
+  }),
+  p({
+    id: 'profile:pessac-leognan-blanc',
+    name: 'Pessac-Léognan blanc',
+    wineType: 'white',
+    grapeIds: ['grape:sauvignon-blanc', 'grape:semillon'],
+    regionId: 'region:fr-bordeaux-pessac-leognan',
+    structure: { appearanceIntensity: [0, 1], noseIntensity: [2, 3], sweetness: [0, 0], acidity: [3, 4], body: [2, 3], alcohol: [1, 1], finish: [3, 4] },
+    aromas: { 'aroma:grapefruit': 2, 'aroma:lemon': 2, 'aroma:toast-oak': 2, 'aroma:vanilla': 2, 'aroma:grass': 1 },
+  }),
+  p({
+    id: 'profile:sauternes',
+    name: 'Sauternes or Barsac',
+    wineType: 'white',
+    grapeIds: ['grape:semillon', 'grape:sauvignon-blanc'],
+    regionId: 'region:fr-bordeaux-sauternes',
+    structure: { appearanceIntensity: [1, 2], noseIntensity: [3, 4], sweetness: [4, 5], acidity: [3, 4], body: [3, 4], alcohol: [1, 2], finish: [3, 4] },
+    aromas: { 'aroma:honey': 3, 'aroma:apricot': 2, 'aroma:dried-apricot': 2, 'aroma:marmalade': 2, 'aroma:peach': 1, 'aroma:vanilla': 1 },
+  }),
+  p({
+    id: 'profile:cote-de-nuits-village',
+    name: 'Côte de Nuits village Pinot Noir',
+    wineType: 'red',
+    grapeIds: ['grape:pinot-noir'],
+    regionId: 'region:fr-burgundy-cote-de-nuits',
+    structure: { appearanceIntensity: [0, 0], noseIntensity: [2, 3], sweetness: [0, 0], acidity: [4, 4], tannin: [1, 2], body: [1, 2], alcohol: [1, 1], finish: [2, 3] },
+    aromas: { 'aroma:red-cherry': 3, 'aroma:raspberry': 2, 'aroma:forest-floor': 2, 'aroma:earth': 1, 'aroma:vanilla': 1, 'aroma:cloves': 1 },
+  }),
+  p({
+    id: 'profile:beaujolais-cru',
+    name: 'Beaujolais cru (e.g. Morgon)',
+    wineType: 'red',
+    grapeIds: ['grape:gamay'],
+    regionId: 'region:fr-beaujolais-morgon',
+    structure: { appearanceIntensity: [0, 1], noseIntensity: [2, 3], sweetness: [0, 0], acidity: [3, 4], tannin: [1, 2], body: [1, 2], alcohol: [1, 1], finish: [1, 2] },
+    aromas: { 'aroma:raspberry': 3, 'aroma:red-cherry': 2, 'aroma:banana': 2, 'aroma:violet': 1, 'aroma:kirsch': 1 },
+  }),
+  p({
+    id: 'profile:pauillac',
+    name: 'Pauillac cru classé',
+    wineType: 'red',
+    grapeIds: ['grape:cabernet-sauvignon', 'grape:merlot'],
+    regionId: 'region:fr-bordeaux-pauillac',
+    structure: { appearanceIntensity: [2, 2], noseIntensity: [3, 3], sweetness: [0, 0], acidity: [3, 4], tannin: [3, 4], body: [3, 4], alcohol: [1, 2], finish: [3, 4] },
+    aromas: { 'aroma:blackcurrant': 3, 'aroma:cedar': 2, 'aroma:vanilla': 2, 'aroma:black-cherry': 1, 'aroma:green-bell-pepper': 1, 'aroma:tobacco': 1 },
+  }),
+  p({
+    id: 'profile:saint-emilion-grand-cru',
+    name: 'Saint-Émilion Grand Cru',
+    wineType: 'red',
+    grapeIds: ['grape:merlot', 'grape:cabernet-franc'],
+    regionId: 'region:fr-bordeaux-saint-emilion',
+    structure: { appearanceIntensity: [2, 2], noseIntensity: [3, 3], sweetness: [0, 0], acidity: [3, 3], tannin: [2, 3], body: [3, 4], alcohol: [1, 2], finish: [3, 3] },
+    aromas: { 'aroma:red-plum': 3, 'aroma:black-cherry': 2, 'aroma:vanilla': 2, 'aroma:cloves': 1, 'aroma:forest-floor': 1, 'aroma:tobacco': 1 },
+  }),
+  p({
+    id: 'profile:bordeaux-rouge',
+    name: 'Generic Bordeaux rouge',
+    wineType: 'red',
+    grapeIds: ['grape:merlot', 'grape:cabernet-sauvignon'],
+    regionId: 'region:fr-bordeaux',
+    structure: { appearanceIntensity: [1, 2], noseIntensity: [1, 2], sweetness: [0, 0], acidity: [2, 3], tannin: [2, 2], body: [2, 2], alcohol: [1, 1], finish: [1, 2] },
+    aromas: { 'aroma:red-plum': 2, 'aroma:blackcurrant': 2, 'aroma:red-cherry': 1, 'aroma:green-bell-pepper': 1 },
+  }),
+];

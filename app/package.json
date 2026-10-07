@@ -1,0 +1,19 @@
+{
+  "name": "veraison-app",
+  "version": "0.1.0",
+  "private": true,
+  "main": "expo-router/entry",
+  "scripts": {
+    "setup": "sh ./scripts/install-deps.sh",
+    "start": "expo start --dev-client",
+    "ios": "expo run:ios",
+    "android": "expo run:android",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "expo": "latest"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.0"
+  }
+}

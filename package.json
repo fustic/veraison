@@ -1,0 +1,19 @@
+{
+  "name": "veraison",
+  "private": true,
+  "type": "module",
+  "description": "Offline-first study companion for the WSET Level 3 Award in Wines: grape profiles, a study map and SAT tasting notes.",
+  "engines": {
+    "node": ">=22.18"
+  },
+  "scripts": {
+    "test": "node --test --disable-warning=ExperimentalWarning \"core/test/**/*.test.ts\"",
+    "content:check": "node --disable-warning=ExperimentalWarning tools/build-content.ts --check",
+    "content:build": "node --disable-warning=ExperimentalWarning tools/build-content.ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.0",
+    "@types/node": "^22.0.0"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "expo": {
+    "name": "Veraison",
+    "slug": "veraison",
+    "scheme": "veraison",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "bundleIdentifier": "com.fustic.veraison",
+      "supportsTablet": false
+    },
+    "android": {
+      "package": "com.fustic.veraison"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-sqlite",
+      "@maplibre/maplibre-react-native"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}
