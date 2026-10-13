@@ -53,6 +53,14 @@ npm run setup            # installs SDK-matched versions via `npx expo install`
 npx expo run:ios         # or: npx expo run:android  (Xcode / Android Studio required)
 ```
 
+After changing `app.json` or native dependencies, regenerate the native project:
+`npx expo prebuild --clean --platform ios`, then `npx expo run:ios`.
+
+Xcode 27 requires the UIKit scene lifecycle; without it the app crashes at launch in
+`_UIApplicationEvaluateRuntimeIssueForNoSceneLifecycleAdoption`. On Expo SDK 57 this is
+switched on by `ios.enableSceneSupport` in the `expo-build-properties` plugin (needs
+expo ≥ 57.0.23). Remove that option when moving to SDK 58, which has it built in.
+
 ### First-run checklist (milestone 1: the map test)
 
 1. The app opens on **Today** without the "Could not open your notes database" screen.

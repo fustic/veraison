@@ -16,6 +16,7 @@
     "plugins": [
       "expo-router",
       "expo-sqlite",
+      ["expo-build-properties", { "ios": { "enableSceneSupport": true } }],
       "@maplibre/maplibre-react-native"
     ],
     "experiments": {

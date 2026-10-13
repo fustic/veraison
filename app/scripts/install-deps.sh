@@ -9,7 +9,7 @@ npx expo install \
   react react-native react-dom \
   expo-router expo-linking expo-constants expo-status-bar expo-dev-client \
   react-native-safe-area-context react-native-screens react-native-gesture-handler \
-  expo-sqlite expo-crypto \
+  expo-sqlite expo-crypto expo-build-properties \
   react-native-svg \
   @maplibre/maplibre-react-native
 npx expo install --dev @types/react
