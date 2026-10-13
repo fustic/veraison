@@ -19,7 +19,7 @@ export default function RootLayout() {
         >
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="grape/[id]" options={{ title: '' }} />
-          <Stack.Screen name="note/new" options={{ title: 'Tasting note', presentation: 'modal' }} />
+          <Stack.Screen name="note/new" options={{ headerShown: false, presentation: 'fullScreenModal', gestureEnabled: false }} />
           <Stack.Screen name="note/[id]" options={{ title: 'Note' }} />
         </Stack>
       </DataProvider>
