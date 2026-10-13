@@ -14,3 +14,8 @@
   start with `verified: false`.
 - IDs are stable strings: `grape:`, `region:<iso2>-...`, `aroma:`, `profile:`. Renaming one
   orphans user data that references it.
+- In `app/`, import `Text` and `TextInput` from `app/src/Text.tsx`, not from `react-native`:
+  it maps `fontWeight` to the bundled IBM Plex files. Headings use `fonts.display`, small caps
+  labels `fonts.mono` (see `app/src/theme.ts`).
+- Route files in `app/src/app` export only their default component; shared helpers go in
+  `app/src/names.ts`, `app/src/components.tsx` or `core/`.

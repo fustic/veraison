@@ -40,6 +40,7 @@ npm test                 # core + content tests (node:test)
 npm run content:check    # validate /content
 npm run content:build    # validate and regenerate app/src/generated
 npm run typecheck        # needs `npm install` at the repo root once
+npm run map:countries -- ne_50m_admin_0_countries.geojson   # rebuild the bundled country outlines
 ```
 
 ## Running the app
@@ -64,11 +65,12 @@ expo ≥ 57.0.23). Remove that option when moving to SDK 58, which has it built 
 ### First-run checklist (milestone 1: the map test)
 
 1. The app opens on **Today** without the "Could not open your notes database" screen.
-2. **Map** tab: Bordeaux and Burgundy appear as circles on a plain background with
-   **airplane mode on**. That is the offline test. The circles are placeholders.
-3. Tap Pauillac: the sheet opens, and Pauillac turns pink (seen). Go back to Today: the
-   regions count went up.
-4. Toggle **Online basemap**: streets appear under the circles.
+2. **Map** tab, with **airplane mode on**: the world map shows country outlines on blue sea
+   (the offline test). Tap Europe › France › Bordeaux: the camera flies in and the sheet
+   changes at each level. Region circles are placeholders.
+3. Tap Pauillac: the sheet shows it and it turns pink (seen). Go back to Today: the regions
+   count went up.
+4. Tap the layers button (third on the right): streets appear under the circles.
 5. **Taste** → New tasting note → save → the suggestion screen shows a top 3. Reveal the
    wine and check the comparison.
 6. Kill and reopen the app: the note and the seen regions are still there.
@@ -84,6 +86,16 @@ If step 2 fails on a real device, try Flutter for the map before building anythi
 
 Content is written in our own words. Never paste text, tables or images from the WSET
 study materials into this repo.
+
+## Assets and data sources
+
+- **Fonts** (`app/assets/fonts`): IBM Plex Sans and IBM Plex Mono (SIL Open Font License),
+  Bricolage Grotesque (SIL Open Font License). Licences sit next to the files. Plex Sans and
+  Bricolage are static instances cut from the variable fonts so each weight is its own file.
+  `app/src/Text.tsx` maps `fontWeight` to the right file, so use it instead of React Native's `Text`.
+- **Country outlines** (`app/src/generated/countries.geojson.json`): Natural Earth 1:50m
+  admin-0 countries (public domain), simplified to about 4 km by `tools/build-countries.ts`.
+  They make the world and Europe map levels work offline.
 
 ## Distribution
 

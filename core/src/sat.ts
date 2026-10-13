@@ -62,6 +62,32 @@ export const STRUCTURE_FIELDS = [
 ] as const;
 export type StructureField = (typeof STRUCTURE_FIELDS)[number];
 
+/** How each structural field reads in sentences ("you rate tannin one step low"). */
+export const FIELD_LABELS: Record<StructureField, string> = {
+  appearanceIntensity: 'colour intensity',
+  noseIntensity: 'nose intensity',
+  sweetness: 'sweetness',
+  acidity: 'acidity',
+  tannin: 'tannin',
+  alcohol: 'alcohol',
+  body: 'body',
+  flavourIntensity: 'flavour intensity',
+  finish: 'finish',
+};
+
+/** The SAT scale each structural field is measured on. */
+export const FIELD_SCALE: Record<StructureField, ScaleName> = {
+  appearanceIntensity: 'appearanceIntensity',
+  noseIntensity: 'noseIntensity',
+  sweetness: 'sweetness',
+  acidity: 'acidity',
+  tannin: 'tannin',
+  alcohol: 'alcohol',
+  body: 'body',
+  flavourIntensity: 'flavourIntensity',
+  finish: 'finish',
+};
+
 /** Number of steps on a scale minus one, used to normalise distances. */
 export function scaleSpan(field: ScaleName): number {
   return SCALES[field].length - 1;
@@ -118,10 +144,12 @@ export interface WineReveal {
   region: string | null;
   price: number | null;
   currency: string | null;
+  /** % abv from the label, to check the alcohol call. */
+  abv: number | null;
 }
 
 export function emptyReveal(): WineReveal {
-  return { grapes: [], producer: null, vintage: null, nonVintage: false, country: null, region: null, price: null, currency: null };
+  return { grapes: [], producer: null, vintage: null, nonVintage: false, country: null, region: null, price: null, currency: null, abv: null };
 }
 
 export interface TastingNote {

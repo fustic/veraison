@@ -2,7 +2,8 @@
 // and small helpers to every screen.
 import { randomUUID } from 'expo-crypto';
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
-import { ActivityIndicator, Text, View } from 'react-native';
+import { ActivityIndicator, View } from 'react-native';
+import { Text } from '../Text';
 import type { Aroma, ContentBundle, Grape, Region, WineProfile } from '../../../core/src/content.ts';
 import type { Db, Deps } from '../../../core/src/userdb/db.ts';
 import { systemClock } from '../../../core/src/userdb/db.ts';

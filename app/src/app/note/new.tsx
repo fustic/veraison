@@ -2,7 +2,8 @@
 // screen draft. A sticky bar jumps between sections; aromas are picture tiles.
 import { router } from 'expo-router';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Alert, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { Text, TextInput } from '../../Text';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { checkConclusions, complexityFromAromas, suggestQuality } from '../../../../core/src/coach.ts';
 import { ALCOHOL_BANDS_SHORT, COLOURS, emptyNote, SCALES, type Observation, type TastingNoteInput, type WineType } from '../../../../core/src/sat.ts';

@@ -30,9 +30,9 @@ export function countryName(country: string | null): string | null {
   return COUNTRY_NAME.get(country) ?? country;
 }
 
-/** The country code a region id belongs to: region:fr-bordeaux → fr. */
+/** The country code a region id belongs to: region:fr-bordeaux → fr, region:fr → fr. */
 export function regionCountry(regionId: string): string | null {
-  const m = /^region:([a-z]{2})-/.exec(regionId);
+  const m = /^region:([a-z]{2})(?:-|$)/.exec(regionId);
   return m ? m[1]! : null;
 }
 
@@ -112,6 +112,7 @@ export function describeReveal(reveal: WineReveal, names: RevealNames, fallback?
     head === reveal.producer ? null : reveal.producer,
     head === grapes.join(', ') ? null : grapes.join(', ') || null,
     countryName(reveal.country ?? (reveal.region ? regionCountry(reveal.region) : null)),
+    reveal.abv !== null ? `${reveal.abv}%` : null,
     formatPrice(reveal.price, reveal.currency),
   ].filter((x): x is string => !!x);
   return { title, subtitle: parts.join(' · ') };

@@ -1,118 +1,380 @@
-// Milestone 1 map test. Renders the region polygons from the bundled GeoJSON on a
-// style with no network sources, so it must work in airplane mode. The "Online"
-// switch swaps in the OpenFreeMap street basemap to compare.
-//
-// Uses the @maplibre/maplibre-react-native v11 API (Map, Camera, GeoJSONSource, Layer).
-import { Camera, GeoJSONSource, Layer, Map, type StyleSpecification } from '@maplibre/maplibre-react-native';
-import { router } from 'expo-router';
-import { useMemo, useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import regionsGeoJson from '../../generated/regions.geojson.json';
+// Study map: world → Europe → country → region → appellation, following the map drafts.
+// Works offline: countries come from bundled Natural Earth outlines and regions from the
+// study content (placeholder circles until real boundaries are imported). The street
+// basemap from OpenFreeMap can be switched on when online.
+import { Camera, GeoJSONSource, Layer, Map, Marker, type CameraRef, type StyleSpecification } from '@maplibre/maplibre-react-native';
+import { router, useLocalSearchParams } from 'expo-router';
+import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import type { Region } from '../../../../core/src/content.ts';
+import { ancestry, mainlandBounds, regionBounds, type Bounds } from '../../../../core/src/mapnav.ts';
+import { COUNTRIES, countryName, regionCountry } from '../../../../core/src/reveal.ts';
+import { setStudyStatus } from '../../../../core/src/userdb/progress.ts';
+import { GrapeLine, H1, Kicker, LayersLine, PrimaryButton, ThermoLine } from '../../components';
 import { useData } from '../../data/DataProvider';
-import { colors, statusColors } from '../../theme';
-import { Button, Chip } from '../../ui';
+import countriesGeoJson from '../../generated/countries.geojson.json';
+import regionsGeoJson from '../../generated/regions.geojson.json';
+import { prettyId } from '../../names';
+import { Pill } from '../../tasting/parts';
+import { Text } from '../../Text';
+import { colors, fonts, statusColors } from '../../theme';
 
+const WATER = '#B9CCD8';
 const OFFLINE_STYLE: StyleSpecification = {
   version: 8,
   name: 'veraison-offline',
   sources: {},
-  layers: [{ id: 'background', type: 'background', paint: { 'background-color': colors.land } }],
+  layers: [{ id: 'background', type: 'background', paint: { 'background-color': WATER } }],
 };
 const ONLINE_STYLE = 'https://tiles.openfreemap.org/styles/liberty';
 
-const BORDEAUX: [number, number] = [-0.45, 44.95];
+const CLIMATE_COLOURS = { cool: '#7FA7C9', moderate: '#8DBE8A', warm: '#E3A857', hot: '#D0623E' } as const;
+const WORLD = { center: [12, 28] as [number, number], zoom: 0.6 };
 
-type Feature = { properties: { id: string; name: string; level: string } };
+type ZoneId = 'europe' | 'na' | 'sa' | 'za' | 'oc';
+const ZONES: { id: ZoneId; label: string; bounds: Bounds }[] = [
+  { id: 'europe', label: 'Europe', bounds: [-11, 35, 30, 60] },
+  { id: 'na', label: 'USA · Canada', bounds: [-128, 25, -65, 52] },
+  { id: 'sa', label: 'Chile · Argentina', bounds: [-78, -46, -56, -22] },
+  { id: 'za', label: 'South Africa', bounds: [16.5, -35, 22, -31.5] },
+  { id: 'oc', label: 'Australia · NZ', bounds: [112, -47, 179, -12] },
+];
+const ZONE_OF: Record<string, ZoneId> = {
+  fr: 'europe', it: 'europe', es: 'europe', pt: 'europe', de: 'europe', at: 'europe', ch: 'europe', hu: 'europe', gr: 'europe',
+  us: 'na', ca: 'na', ar: 'sa', cl: 'sa', za: 'za', au: 'oc', nz: 'oc',
+};
+const OLD_WORLD = COUNTRIES.filter(([c]) => ZONE_OF[c] === 'europe');
+const NEW_WORLD = COUNTRIES.filter(([c]) => ZONE_OF[c] !== 'europe');
+
+/** What each syllabus country covers, for the zone lists. */
+const COUNTRY_AREAS: Record<string, string> = {
+  fr: 'Bordeaux, Burgundy, Rhône, Loire, Alsace…',
+  it: 'Piemonte, Veneto, Tuscany, Campania, Sicily…',
+  es: 'Rioja, Ribera del Duero, Priorat, Rías Baixas…',
+  de: 'Mosel, Rheingau, Pfalz, Baden…',
+  pt: 'Vinho Verde, Douro, Dão, Alentejo…',
+  at: 'Wachau, Kamptal, Burgenland…',
+  hu: 'Tokaj',
+  gr: 'Naoussa, Nemea, Santorini',
+  ch: 'Valais, Vaud',
+  us: 'Napa, Sonoma, Willamette Valley, Washington…',
+  ca: 'Niagara Peninsula, Okanagan Valley',
+  ar: 'Mendoza, Salta',
+  cl: 'Casablanca, Maipo, Colchagua…',
+  za: 'Stellenbosch, Swartland, Walker Bay…',
+  au: 'Barossa, Hunter, Yarra, Coonawarra, Margaret River…',
+  nz: 'Marlborough, Central Otago, Hawke’s Bay…',
+};
+
+/** Frames for countries whose wine regions are not all on the largest landmass. */
+const COUNTRY_BOUNDS: Record<string, Bounds> = {
+  nz: [166, -47.5, 179, -34],
+  it: [6.5, 36.5, 18.6, 47.1],
+  gr: [19.5, 34.8, 28.3, 41.8],
+  au: [112, -44, 154, -10],
+};
+
+type Focus = { kind: 'world' } | { kind: 'zone'; id: ZoneId } | { kind: 'country'; iso: string } | { kind: 'region'; id: string };
+type Colouring = 'status' | 'climate' | 'grape';
+
+type CountryFeature = { properties: { iso: string; name: string; syllabus: boolean }; geometry: { type: string; coordinates: unknown } };
+type RegionFeature = { properties: { id: string; name: string; level: string } };
 
 export default function MapScreen() {
-  const { content, statuses, seen } = useData();
+  const { content, statuses, seen, db, deps, refreshStatuses } = useData();
+  const insets = useSafeAreaInsets();
+  const params = useLocalSearchParams<{ focus?: string }>();
+  const camera = useRef<CameraRef>(null);
+  const [focus, setFocus] = useState<Focus>({ kind: 'world' });
   const [online, setOnline] = useState(false);
-  const [selected, setSelected] = useState<string | null>(null);
+  const [colouring, setColouring] = useState<Colouring>('status');
+  const [grapeId, setGrapeId] = useState<string | null>(null);
+  // Sheet height lives in a ref: changing it must not re-render the map.
+  const sheetH = useRef(320);
+  const fitPending = useRef(false);
+  const lastMarkerTap = useRef(0);
+  const [collapsed, setCollapsed] = useState(false);
 
-  // Attach each region's study status so the layer can colour it.
-  const shape = useMemo(() => {
-    const fc = regionsGeoJson as unknown as { type: 'FeatureCollection'; features: (Feature & Record<string, unknown>)[] };
+  const countries = countriesGeoJson as unknown as { type: 'FeatureCollection'; features: CountryFeature[] };
+  const countryByIso = useMemo(() => {
+    // Some codes cover several features (Australia's islands); keep the largest one.
+    const m = new globalThis.Map<string, CountryFeature>();
+    for (const f of countries.features) {
+      const prev = m.get(f.properties.iso);
+      if (!prev || JSON.stringify(f.geometry).length > JSON.stringify(prev.geometry).length) m.set(f.properties.iso, f);
+    }
+    return m;
+  }, [countries]);
+
+  const hasContent = (iso: string) => content.regionById.has(`region:${iso}`);
+  const openRegion = (id: string) => {
+    setFocus({ kind: 'region', id });
+    setCollapsed(false);
+    void seen(id);
+  };
+  // Map press handlers read the latest values through a ref, so the sources can be memoised.
+  const live = useRef({ openRegion, openCountry: (_iso: string) => {}, focus, regionLevel: undefined as string | undefined });
+  const openCountry = (iso: string) => (hasContent(iso) ? openRegion(`region:${iso}`) : setFocus({ kind: 'country', iso }));
+
+  // Deep link from other screens: /map?focus=region:fr-bordeaux. The param is cleared
+  // once used, so opening the same region again from elsewhere still moves the map.
+  useEffect(() => {
+    if (params.focus && content.regionById.has(params.focus)) {
+      openRegion(params.focus);
+      router.setParams({ focus: undefined });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [params.focus]);
+
+  const region = focus.kind === 'region' ? content.regionById.get(focus.id) : undefined;
+  const chain = region ? ancestry(region.id, content.regionById) : [];
+  const iso = focus.kind === 'country' ? focus.iso : region ? regionCountry(region.id) : null;
+  live.current = { openRegion, openCountry, focus, regionLevel: region?.level };
+  const zone: ZoneId | null = focus.kind === 'zone' ? focus.id : iso ? (ZONE_OF[iso] ?? null) : null;
+
+  // Move the camera when the focus changes, leaving room for the sheet. The new sheet
+  // may lay out a moment later with a different height; that triggers one more fit.
+  const fit = () => {
+    const padding = { top: insets.top + 76, bottom: (collapsed ? 64 : sheetH.current) + 16, left: 24, right: 72 };
+    let bounds: Bounds | null = null;
+    if (focus.kind === 'zone') bounds = ZONES.find((z) => z.id === focus.id)!.bounds;
+    const country = iso ? countryByIso.get(iso) : undefined;
+    const countryBounds = iso ? (COUNTRY_BOUNDS[iso] ?? (country ? mainlandBounds(country.geometry) : null)) : null;
+    if (focus.kind === 'country') bounds = countryBounds;
+    if (focus.kind === 'region' && region) bounds = region.level === 'country' && countryBounds ? countryBounds : regionBounds(region, content.childrenOf);
+    if (bounds) camera.current?.fitBounds(bounds, { padding, duration: 900 });
+    else camera.current?.flyTo({ ...WORLD, duration: 900 });
+  };
+  const fitRef = useRef(fit);
+  fitRef.current = fit;
+  useEffect(() => {
+    fit();
+    fitPending.current = true;
+    const t = setTimeout(() => (fitPending.current = false), 800);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [focus, collapsed]);
+
+  // Regions in the focused area get name labels on the map.
+  const labelled: Region[] = useMemo(() => {
+    if (!region) return [];
+    const kids = content.childrenOf.get(region.id) ?? [];
+    if (kids.length) return kids;
+    return region.parentId ? (content.childrenOf.get(region.parentId) ?? []) : [];
+  }, [region, content.childrenOf]);
+
+  // Attach status, climate and grape match to each region circle.
+  const regionShape = useMemo(() => {
+    const fc = regionsGeoJson as unknown as { type: 'FeatureCollection'; features: (RegionFeature & Record<string, unknown>)[] };
+    const grape = grapeId ? content.grapeById.get(grapeId) : undefined;
+    const grapeRegions = new Set(grape?.regions.map((r) => r.regionId) ?? []);
     return {
       ...fc,
-      features: fc.features.map((f) => ({
-        ...f,
-        properties: { ...f.properties, status: statuses.get(f.properties.id)?.status ?? 'unseen' },
-      })),
+      features: fc.features.map((f) => {
+        const r = content.regionById.get(f.properties.id);
+        const climate = r ? [...ancestry(r.id, content.regionById)].reverse().find((x) => x.climate)?.climate?.type : undefined;
+        const match = !grapeId || !r ? 0 : r.principalGrapes.includes(grapeId) || grapeRegions.has(r.id) ? 2 : r.otherGrapes.includes(grapeId) ? 1 : 0;
+        return {
+          ...f,
+          properties: {
+            ...f.properties,
+            status: statuses.get(f.properties.id)?.status ?? 'unseen',
+            climate: climate ?? 'none',
+            match,
+            selected: region?.id === f.properties.id ? 1 : 0,
+          },
+        };
+      }),
     };
-  }, [statuses]);
+  }, [statuses, grapeId, region?.id, content]);
 
-  const region = selected ? content.regionById.get(selected) : undefined;
+  const countryShape = useMemo(
+    () => ({
+      ...countries,
+      features: countries.features.map((f) => ({ ...f, properties: { ...f.properties, focused: f.properties.iso === iso ? 1 : 0 } })),
+    }),
+    [countries, iso],
+  );
+
+  const fillColor =
+    colouring === 'climate'
+      ? ['match', ['get', 'climate'], 'cool', CLIMATE_COLOURS.cool, 'moderate', CLIMATE_COLOURS.moderate, 'warm', CLIMATE_COLOURS.warm, 'hot', CLIMATE_COLOURS.hot, '#C8C6BE']
+      : colouring === 'grape'
+        ? ['match', ['get', 'match'], 2, colors.wine, 1, colors.rose, '#C8C6BE']
+        : ['match', ['get', 'status'], 'mastered', statusColors.mastered, 'studied', statusColors.studied, 'seen', statusColors.seen, statusColors.unseen];
+
+  const crumbs: { label: string; onPress?: () => void }[] = [{ label: 'World', onPress: () => setFocus({ kind: 'world' }) }];
+  if (zone) crumbs.push({ label: ZONES.find((z) => z.id === zone)!.label, onPress: () => setFocus({ kind: 'zone', id: zone }) });
+  if (focus.kind === 'country') crumbs.push({ label: countryName(focus.iso) ?? focus.iso });
+  for (const r of chain) crumbs.push({ label: r.name, onPress: () => openRegion(r.id) });
+  crumbs[crumbs.length - 1]!.onPress = undefined;
+
+  const toggleStudied = async (id: string) => {
+    const st = statuses.get(id)?.status;
+    await setStudyStatus(db, id, st === 'studied' || st === 'mastered' ? 'seen' : 'studied', deps);
+    await refreshStatuses();
+  };
+
+  // Sources are memoised: the countries file is large, and re-rendering a source
+  // re-sends its whole GeoJSON to the native map.
+  const countrySource = useMemo(
+    () => (
+      <GeoJSONSource
+        id="countries"
+        data={countryShape as never}
+        onPress={(e) => {
+          const { focus: f, regionLevel, openCountry: open } = live.current;
+          // Countries only respond above region level, so a near-miss on a region does not jump away.
+          if (f.kind === 'region' && regionLevel !== 'country') return;
+          const hit = (e.nativeEvent.features as unknown as CountryFeature[])[0];
+          if (hit?.properties.syllabus) open(hit.properties.iso);
+        }}
+      >
+        <Layer
+          id="country-fill"
+          type="fill"
+          paint={{
+            'fill-color': ['case', ['==', ['get', 'focused'], 1], '#EFE4E7', ['get', 'syllabus'], '#E6EADF', '#EEF0EA'] as never,
+            'fill-opacity': online ? 0 : 1,
+          }}
+        />
+        <Layer
+          id="country-line"
+          type="line"
+          paint={{ 'line-color': online ? colors.wine : '#FFFFFF', 'line-width': online ? 0.6 : 0.9, 'line-opacity': online ? 0.4 : 1 }}
+        />
+      </GeoJSONSource>
+    ),
+    [countryShape, online],
+  );
+
+  const regionSource = useMemo(
+    () => (
+      <GeoJSONSource
+        id="regions"
+        data={regionShape as never}
+        onPress={(e) => {
+          // A tap on a name label can also reach the map underneath; the label wins.
+          if (Date.now() - lastMarkerTap.current < 400) return;
+          // Smallest polygon first: an appellation sits on top of its district.
+          const hits = [...(e.nativeEvent.features as unknown as RegionFeature[])];
+          const hit = hits.sort((a, b) => rank(b.properties.level) - rank(a.properties.level))[0];
+          if (hit) live.current.openRegion(hit.properties.id);
+        }}
+      >
+        <Layer
+          id="region-fill"
+          type="fill"
+          minzoom={3.5}
+          paint={{
+            'fill-color': fillColor as never,
+            'fill-opacity': ['match', ['get', 'level'], 'region', 0.18, 'district', 0.38, 0.7] as never,
+          }}
+        />
+        <Layer
+          id="region-line"
+          type="line"
+          minzoom={3.5}
+          paint={{ 'line-color': colors.wine, 'line-width': ['case', ['==', ['get', 'selected'], 1], 2.5, 1] as never, 'line-opacity': 0.7 }}
+        />
+      </GeoJSONSource>
+    ),
+    // fillColor is rebuilt every render; its content only changes with the colouring mode.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [regionShape, colouring],
+  );
 
   return (
-    <View style={{ flex: 1, backgroundColor: colors.land }}>
-      <Map style={{ flex: 1 }} mapStyle={online ? ONLINE_STYLE : OFFLINE_STYLE} logo={false} attribution>
-        <Camera initialViewState={{ center: BORDEAUX, zoom: 7.6 }} />
-        <GeoJSONSource
-          id="regions"
-          data={shape as never}
-          onPress={(e) => {
-            // Smallest polygon first: an appellation sits on top of its district.
-            const hits = [...(e.nativeEvent.features as unknown as Feature[])];
-            const hit = hits.sort((a, b) => rank(b.properties.level) - rank(a.properties.level))[0];
-            if (hit) {
-              setSelected(hit.properties.id);
-              void seen(hit.properties.id);
-            }
-          }}
-        >
-          <Layer
-            id="region-fill"
-            type="fill"
-            paint={{
-              'fill-color': ['match', ['get', 'status'], 'mastered', statusColors.mastered, 'studied', statusColors.studied, 'seen', statusColors.seen, statusColors.unseen],
-              'fill-opacity': ['match', ['get', 'level'], 'region', 0.15, 'district', 0.35, 0.75],
-            }}
-          />
-          <Layer id="region-line" type="line" paint={{ 'line-color': colors.wine, 'line-width': 1, 'line-opacity': 0.6 }} />
-        </GeoJSONSource>
+    <View style={styles.screen}>
+      <Map style={StyleSheet.absoluteFill} mapStyle={online ? ONLINE_STYLE : OFFLINE_STYLE} logo={false} attribution compass={false}>
+        <Camera ref={camera} initialViewState={WORLD} />
+
+        {countrySource}
+        {regionSource}
+
+        {labelled.map((r) => (
+          <Marker key={r.id} lngLat={[r.centroid[0], r.centroid[1]]} anchor="center">
+            <Pressable
+              accessibilityRole="button"
+              onPress={() => {
+                lastMarkerTap.current = Date.now();
+                openRegion(r.id);
+              }}
+              style={[styles.label, region?.id === r.id && styles.labelOn]}>
+              <Text style={[styles.labelText, region?.id === r.id && { color: '#FFFFFF' }]}>{r.name}</Text>
+            </Pressable>
+          </Marker>
+        ))}
       </Map>
 
-      <SafeAreaView edges={['top']} style={StyleSheet.absoluteFill} pointerEvents="box-none">
-        <View style={styles.toolbar} pointerEvents="box-none">
-          <Text style={styles.toolbarTitle}>Map test · placeholder shapes</Text>
-          <Chip label={online ? 'Online basemap' : 'Offline'} on={online} onPress={() => setOnline((v) => !v)} />
-        </View>
-      </SafeAreaView>
-
-      {region ? (
-        <View style={styles.sheet}>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'baseline' }}>
-            <Text style={styles.sheetTitle}>{region.name}</Text>
-            <Pressable accessibilityRole="button" onPress={() => setSelected(null)}>
-              <Text style={{ color: colors.wine, fontWeight: '600' }}>Close</Text>
-            </Pressable>
-          </View>
-          {region.climate ? (
-            <Text style={styles.sheetMeta}>
-              {region.climate.type} {region.climate.influence}
-            </Text>
-          ) : null}
-          {region.why.slice(0, 2).map((w) => (
-            <Text key={w.factor} style={styles.why}>
-              <Text style={{ fontWeight: '700' }}>{w.factor}</Text> → {w.effect}
-              {w.result ? ` → ${w.result}` : ''}
-            </Text>
-          ))}
-          {region.principalGrapes.length ? (
-            <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6 }}>
-              {region.principalGrapes.map((g) => {
-                const grape = content.grapeById.get(g);
-                return grape ? (
-                  <Chip key={g} label={grape.name} onPress={() => router.push({ pathname: '/grape/[id]', params: { id: g } })} />
-                ) : null;
-              })}
+      <View style={[styles.crumbs, { top: insets.top + 12 }]}>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ alignItems: 'center', gap: 6, paddingHorizontal: 14 }}>
+          {crumbs.map((c, i) => (
+            <View key={`${c.label}-${i}`} style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+              {i > 0 ? <Text style={styles.crumbSep}>›</Text> : null}
+              <Text onPress={c.onPress} style={[styles.crumb, !c.onPress && styles.crumbOn]}>
+                {c.label}
+              </Text>
             </View>
-          ) : null}
-          {region.producers.length ? <Text style={styles.sheetMeta}>Iconic: {region.producers.join(', ')}</Text> : null}
-          <Button title="Done" kind="secondary" onPress={() => setSelected(null)} />
+          ))}
+        </ScrollView>
+      </View>
+
+      <View style={[styles.tools, { top: insets.top + 68 }]}>
+        <Tool label="Climate layer" on={colouring === 'climate'} onPress={() => setColouring(colouring === 'climate' ? 'status' : 'climate')}>
+          <ThermoLine color={colouring === 'climate' ? '#FFFFFF' : colors.ink} />
+        </Tool>
+        <Tool label="Where does a grape grow" on={colouring === 'grape'} onPress={() => setColouring(colouring === 'grape' ? 'status' : 'grape')}>
+          <GrapeLine color={colouring === 'grape' ? '#FFFFFF' : colors.ink} />
+        </Tool>
+        <Tool label="Street map (online)" on={online} onPress={() => setOnline((v) => !v)}>
+          <LayersLine color={online ? '#FFFFFF' : colors.ink} />
+        </Tool>
+      </View>
+
+      {colouring === 'grape' ? (
+        <View style={[styles.grapeBar, { top: insets.top + 68 }]}>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 6, alignItems: 'center' }}>
+            {content.grapes.map((g) => (
+              <Pill key={g.id} small label={g.name} on={grapeId === g.id} onPress={() => setGrapeId(grapeId === g.id ? null : g.id)} />
+            ))}
+          </ScrollView>
         </View>
       ) : null}
+
+      <View
+        style={[styles.sheet, collapsed && { maxHeight: 64 }]}
+        onLayout={(e) => {
+          if (collapsed) return;
+          const h = Math.round(e.nativeEvent.layout.height);
+          const changed = Math.abs(h - sheetH.current) > 24;
+          sheetH.current = h;
+          // Re-fit only right after a focus change, never while the user is exploring.
+          if (changed && fitPending.current) {
+            fitPending.current = false;
+            fitRef.current();
+          }
+        }}
+      >
+        <Pressable accessibilityRole="button" accessibilityLabel={collapsed ? 'Show details' : 'Hide details'} onPress={() => setCollapsed((v) => !v)} style={styles.handleHit}>
+          <View style={styles.handle} />
+        </Pressable>
+        <ScrollView contentContainerStyle={{ gap: 12, paddingBottom: 16 }} scrollEnabled={!collapsed}>
+          {colouring === 'climate' ? <ClimateLegend /> : null}
+          {colouring === 'grape' && !grapeId ? <Text style={styles.muted}>Pick a grape above to see where it grows.</Text> : null}
+          {focus.kind === 'world' ? (
+            <WorldSheet onZone={(id) => setFocus({ kind: 'zone', id })} />
+          ) : focus.kind === 'zone' ? (
+            <ZoneSheet zone={focus.id} hasContent={hasContent} onCountry={openCountry} />
+          ) : focus.kind === 'country' ? (
+            <ComingSheet iso={focus.iso} />
+          ) : region ? (
+            <RegionSheet region={region} onRegion={openRegion} onStudied={() => toggleStudied(region.id)} />
+          ) : null}
+          {online ? <Text style={styles.credit}>© OpenFreeMap © OpenStreetMap contributors</Text> : null}
+        </ScrollView>
+      </View>
     </View>
   );
 }
@@ -121,34 +383,247 @@ function rank(level: string): number {
   return { country: 0, region: 1, district: 2, appellation: 3 }[level] ?? 0;
 }
 
+function Tool({ label, on, onPress, children }: { label: string; on: boolean; onPress: () => void; children: ReactNode }) {
+  return (
+    <Pressable accessibilityRole="button" accessibilityLabel={label} accessibilityState={{ selected: on }} onPress={onPress} style={[styles.tool, on && styles.toolOn]}>
+      {children}
+    </Pressable>
+  );
+}
+
+function ClimateLegend() {
+  return (
+    <View style={styles.legend}>
+      <Text style={styles.legendTitle}>Climate</Text>
+      {(Object.keys(CLIMATE_COLOURS) as (keyof typeof CLIMATE_COLOURS)[]).map((k) => (
+        <View key={k} style={styles.legendItem}>
+          <View style={[styles.swatch, { backgroundColor: CLIMATE_COLOURS[k] }]} />
+          <Text style={styles.legendText}>{k.charAt(0).toUpperCase() + k.slice(1)}</Text>
+        </View>
+      ))}
+    </View>
+  );
+}
+
+function WorldSheet({ onZone }: { onZone: (z: ZoneId) => void }) {
+  return (
+    <>
+      <H1 size={24}>Where wine grows</H1>
+      <Text style={styles.body}>
+        Most of the syllabus sits between 30° and 50° latitude. Nearer the poles grapes struggle to ripen; nearer the equator vines get no winter rest.
+      </Text>
+      <View style={{ flexDirection: 'row', gap: 8 }}>
+        <View style={styles.stat}>
+          <Text style={styles.statNum}>{OLD_WORLD.length}</Text>
+          <Text style={styles.statLabel}>Old World countries</Text>
+        </View>
+        <View style={styles.stat}>
+          <Text style={styles.statNum}>{NEW_WORLD.length}</Text>
+          <Text style={styles.statLabel}>New World countries</Text>
+        </View>
+      </View>
+      <View style={styles.wrap}>
+        {ZONES.map((z) => (
+          <Pill key={z.id} label={z.label} on={false} onPress={() => onZone(z.id)} />
+        ))}
+      </View>
+    </>
+  );
+}
+
+function ZoneSheet({ zone, hasContent, onCountry }: { zone: ZoneId; hasContent: (iso: string) => boolean; onCountry: (iso: string) => void }) {
+  const list = COUNTRIES.filter(([c]) => ZONE_OF[c] === zone);
+  return (
+    <>
+      <View style={styles.titleRow}>
+        <H1 size={24}>{ZONES.find((z) => z.id === zone)!.label}</H1>
+        <Text style={styles.muted}>
+          {list.length} {list.length === 1 ? 'country' : 'countries'}
+        </Text>
+      </View>
+      {list.map(([code, name]) => {
+        const ready = hasContent(code);
+        return (
+          <Pressable key={code} accessibilityRole="button" onPress={() => onCountry(code)} style={[styles.countryRow, !ready && { opacity: 0.6 }]}>
+            <View style={{ flex: 1, gap: 2 }}>
+              <Text style={styles.countryName}>{name}</Text>
+              <Text style={styles.muted}>{COUNTRY_AREAS[code] ?? ''}</Text>
+            </View>
+            <Text style={ready ? styles.chev : styles.soon}>{ready ? '›' : 'SOON'}</Text>
+          </Pressable>
+        );
+      })}
+    </>
+  );
+}
+
+function ComingSheet({ iso }: { iso: string }) {
+  return (
+    <>
+      <H1 size={24}>{countryName(iso) ?? iso}</H1>
+      <Text style={styles.muted}>{COUNTRY_AREAS[iso] ?? ''}</Text>
+      <Text style={styles.body}>Not in the study content yet. Its regions arrive with the chapter that covers them.</Text>
+    </>
+  );
+}
+
+function RegionSheet({ region, onRegion, onStudied }: { region: Region; onRegion: (id: string) => void; onStudied: () => void }) {
+  const { content, statuses } = useData();
+  const chain = ancestry(region.id, content.regionById);
+  const parent = chain.length > 1 ? chain[chain.length - 2] : undefined;
+  const climate = [...chain].reverse().find((r) => r.climate)?.climate;
+  const kids = content.childrenOf.get(region.id) ?? [];
+  const grapes = [...region.principalGrapes, ...region.otherGrapes];
+  const reds = grapes.filter((g) => content.grapeById.get(g)?.colour === 'red');
+  const whites = grapes.filter((g) => content.grapeById.get(g)?.colour === 'white');
+  const unknown = grapes.filter((g) => !content.grapeById.has(g));
+  const st = statuses.get(region.id)?.status;
+  const studied = st === 'studied' || st === 'mastered';
+  const subtitle = [
+    region.level === 'country' ? null : (parent?.name ?? null),
+    climate ? `${climate.type} ${climate.influence}` : null,
+    region.labelTerms.length && region.level !== 'country' ? region.labelTerms.slice(0, 3).join(', ') : null,
+  ]
+    .filter(Boolean)
+    .join(' · ');
+
+  const grapeLinks = (ids: string[]) => (
+    <Text style={styles.body}>
+      {ids.map((g, i) => {
+        const grape = content.grapeById.get(g);
+        return (
+          <Text key={g}>
+            {i > 0 ? ', ' : ''}
+            {grape ? (
+              <Text style={{ color: colors.wine, fontWeight: '600' }} onPress={() => router.push({ pathname: '/grape/[id]', params: { id: g } })}>
+                {grape.name}
+              </Text>
+            ) : (
+              prettyId(g)
+            )}
+          </Text>
+        );
+      })}
+    </Text>
+  );
+
+  return (
+    <>
+      <View style={{ gap: 2 }}>
+        <H1 size={24}>{region.name}</H1>
+        {subtitle ? <Text style={styles.muted}>{subtitle}</Text> : null}
+      </View>
+
+      {region.level === 'country' ? (
+        kids.map((k) => (
+          <Pressable key={k.id} accessibilityRole="button" onPress={() => onRegion(k.id)} style={styles.countryRow}>
+            <View style={{ flex: 1, gap: 2 }}>
+              <Text style={styles.countryName}>{k.name}</Text>
+              <Text style={styles.muted}>
+                {[k.climate ? `${k.climate.type} ${k.climate.influence}` : null, k.principalGrapes.slice(0, 3).map((g) => content.grapeById.get(g)?.name ?? prettyId(g)).join(', ')]
+                  .filter(Boolean)
+                  .join(' · ')}
+              </Text>
+            </View>
+            <Text style={styles.chev}>›</Text>
+          </Pressable>
+        ))
+      ) : (
+        <>
+          {region.why.length ? (
+            <View style={styles.why}>
+              <Kicker color={colors.wine}>WHY IT WORKS</Kicker>
+              {region.why.map((w) => (
+                <Text key={w.factor} style={styles.body}>
+                  <Text style={{ fontWeight: '600' }}>{w.factor}</Text> → {w.effect}
+                  {w.result ? ` → ${w.result}` : ''}
+                </Text>
+              ))}
+            </View>
+          ) : null}
+          <View style={{ gap: 6 }}>
+            {reds.length ? <Row label="Reds">{grapeLinks(reds)}</Row> : null}
+            {whites.length ? <Row label="Whites">{grapeLinks(whites)}</Row> : null}
+            {unknown.length ? <Row label="Also">{grapeLinks(unknown)}</Row> : null}
+            {region.soils ? <Row label="Soils">{<Text style={styles.body}>{region.soils}</Text>}</Row> : null}
+            {region.labelTerms.length ? <Row label="Labels">{<Text style={styles.body}>{region.labelTerms.join(', ')}</Text>}</Row> : null}
+            {region.producers.length ? <Row label="Iconic">{<Text style={styles.body}>{region.producers.join(', ')}</Text>}</Row> : null}
+          </View>
+          {kids.length ? (
+            <View style={{ gap: 6 }}>
+              <Text style={styles.muted}>Inside {region.name}</Text>
+              <View style={styles.wrap}>
+                {kids.map((k) => (
+                  <Pill key={k.id} small label={k.name} on={false} onPress={() => onRegion(k.id)} />
+                ))}
+              </View>
+            </View>
+          ) : null}
+        </>
+      )}
+
+      <View style={{ flexDirection: 'row', gap: 8, paddingTop: 4 }}>
+        <PrimaryButton secondary title={studied ? '✓ Studied' : 'Mark studied'} onPress={onStudied} />
+        <PrimaryButton title="Full page" onPress={() => router.push({ pathname: '/region/[id]', params: { id: region.id } })} />
+      </View>
+    </>
+  );
+}
+
+function Row({ label, children }: { label: string; children: ReactNode }) {
+  return (
+    <View style={{ flexDirection: 'row', gap: 10 }}>
+      <Text style={[styles.muted, { width: 60 }]}>{label}</Text>
+      <View style={{ flex: 1 }}>{children}</View>
+    </View>
+  );
+}
+
 const styles = StyleSheet.create({
-  toolbar: {
-    margin: 16,
-    padding: 10,
-    paddingLeft: 14,
-    borderRadius: 12,
-    backgroundColor: colors.surface,
-    borderWidth: 1,
-    borderColor: colors.line,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  toolbarTitle: { fontSize: 14, fontWeight: '600', color: colors.ink },
+  screen: { flex: 1, backgroundColor: WATER },
+  crumbs: { position: 'absolute', left: 16, right: 16, height: 44, borderRadius: 12, backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.line, justifyContent: 'center' },
+  crumb: { fontSize: 14, color: colors.muted },
+  crumbOn: { color: colors.ink, fontWeight: '600' },
+  crumbSep: { fontSize: 14, color: colors.muted },
+  tools: { position: 'absolute', right: 16, gap: 8 },
+  tool: { width: 44, height: 44, borderRadius: 12, borderWidth: 1, borderColor: colors.line, backgroundColor: colors.surface, alignItems: 'center', justifyContent: 'center' },
+  toolOn: { backgroundColor: colors.wine, borderColor: colors.wine },
+  grapeBar: { position: 'absolute', left: 16, right: 68, height: 44, justifyContent: 'center' },
+  credit: { fontSize: 10, color: colors.muted },
+  label: { paddingHorizontal: 7, paddingVertical: 3, borderRadius: 999, backgroundColor: 'rgba(255,255,255,0.92)', borderWidth: 1, borderColor: colors.line },
+  labelOn: { backgroundColor: colors.wine, borderColor: colors.wine },
+  labelText: { fontSize: 11, fontWeight: '600', color: colors.ink },
   sheet: {
     position: 'absolute',
     left: 0,
     right: 0,
     bottom: 0,
+    maxHeight: '48%',
     backgroundColor: colors.surface,
     borderTopLeftRadius: 22,
     borderTopRightRadius: 22,
     borderTopWidth: 1,
     borderColor: colors.line,
-    padding: 16,
-    gap: 10,
+    paddingHorizontal: 16,
+    overflow: 'hidden',
   },
-  sheetTitle: { fontSize: 24, fontWeight: '700', color: colors.ink },
-  sheetMeta: { fontSize: 14, color: colors.muted },
-  why: { fontSize: 14, lineHeight: 20, color: colors.ink, backgroundColor: colors.wineTint, padding: 10, borderRadius: 12, overflow: 'hidden' },
+  handleHit: { alignSelf: 'stretch', alignItems: 'center', paddingVertical: 10 },
+  handle: { width: 40, height: 5, borderRadius: 3, backgroundColor: colors.line },
+  wrap: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
+  titleRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'baseline' },
+  body: { fontSize: 14, lineHeight: 20, color: colors.ink },
+  muted: { fontSize: 13, lineHeight: 18, color: colors.muted },
+  stat: { flex: 1, borderRadius: 14, backgroundColor: colors.paper, padding: 12, gap: 2 },
+  statNum: { fontFamily: fonts.display, fontSize: 26, color: colors.ink },
+  statLabel: { fontSize: 13, color: colors.muted },
+  countryRow: { flexDirection: 'row', alignItems: 'center', gap: 10, padding: 12, borderRadius: 12, backgroundColor: colors.paper },
+  countryName: { fontSize: 15, fontWeight: '600', color: colors.ink },
+  chev: { fontSize: 22, color: colors.wine },
+  soon: { fontFamily: fonts.mono, fontSize: 10, color: colors.muted },
+  why: { borderRadius: 14, backgroundColor: colors.wineTint, paddingVertical: 12, paddingHorizontal: 14, gap: 6 },
+  legend: { flexDirection: 'row', alignItems: 'center', gap: 12, flexWrap: 'wrap' },
+  legendTitle: { fontSize: 13, fontWeight: '600', color: colors.ink },
+  legendItem: { flexDirection: 'row', alignItems: 'center', gap: 5 },
+  swatch: { width: 12, height: 12, borderRadius: 3 },
+  legendText: { fontSize: 13, color: colors.muted },
 });

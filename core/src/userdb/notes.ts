@@ -41,6 +41,7 @@ interface NoteRow {
   reveal_region: string | null;
   reveal_price: number | null;
   reveal_currency: string | null;
+  reveal_abv: number | null;
 }
 
 const COLUMNS = [
@@ -51,15 +52,15 @@ const COLUMNS = [
   'palate_same_as_nose', 'quality', 'readiness',
   'revealed_profile_id', 'label_text', 'photo_path', 'free_notes',
   'revealed_at', 'reveal_grapes', 'reveal_producer', 'reveal_vintage', 'reveal_nv',
-  'reveal_country', 'reveal_region', 'reveal_price', 'reveal_currency',
+  'reveal_country', 'reveal_region', 'reveal_price', 'reveal_currency', 'reveal_abv',
 ] as const;
 
 const REVEAL_COLUMNS = COLUMNS.slice(COLUMNS.indexOf('reveal_grapes'));
 
 function revealValues(r: WineReveal | null): SqlValue[] {
   return r
-    ? [JSON.stringify(r.grapes), r.producer, r.vintage, r.nonVintage ? 1 : 0, r.country, r.region, r.price, r.currency]
-    : ['[]', null, null, 0, null, null, null, null];
+    ? [JSON.stringify(r.grapes), r.producer, r.vintage, r.nonVintage ? 1 : 0, r.country, r.region, r.price, r.currency, r.abv]
+    : ['[]', null, null, 0, null, null, null, null, null];
 }
 
 function revealOf(row: NoteRow): WineReveal | null {
@@ -73,6 +74,7 @@ function revealOf(row: NoteRow): WineReveal | null {
     region: row.reveal_region,
     price: row.reveal_price,
     currency: row.reveal_currency,
+    abv: row.reveal_abv ?? null,
   };
 }
 
@@ -88,6 +90,7 @@ export function cleanReveal(r: WineReveal): WineReveal {
     region: text(r.region),
     price: r.price !== null && Number.isFinite(r.price) && r.price >= 0 ? r.price : null,
     currency: r.price !== null ? text(r.currency) : null,
+    abv: r.abv !== null && Number.isFinite(r.abv) && r.abv > 0 && r.abv < 25 ? r.abv : null,
   };
 }
 
@@ -245,10 +248,10 @@ export async function listTastingNotes(db: Db, opts: { limit?: number; offset?: 
     quality: number | null;
     revealed_profile_id: string | null;
     aroma_count: number;
-  } & Pick<NoteRow, 'revealed_at' | 'reveal_grapes' | 'reveal_producer' | 'reveal_vintage' | 'reveal_nv' | 'reveal_country' | 'reveal_region' | 'reveal_price' | 'reveal_currency'>>(
+  } & Pick<NoteRow, 'revealed_at' | 'reveal_grapes' | 'reveal_producer' | 'reveal_vintage' | 'reveal_nv' | 'reveal_country' | 'reveal_region' | 'reveal_price' | 'reveal_currency' | 'reveal_abv'>>(
     `SELECT n.id, n.created_at, n.wine_type, n.colour, n.label_text, n.quality, n.revealed_profile_id,
             n.revealed_at, n.reveal_grapes, n.reveal_producer, n.reveal_vintage, n.reveal_nv,
-            n.reveal_country, n.reveal_region, n.reveal_price, n.reveal_currency,
+            n.reveal_country, n.reveal_region, n.reveal_price, n.reveal_currency, n.reveal_abv,
             (SELECT COUNT(*) FROM tasting_note_aroma a WHERE a.note_id = n.id AND a.stage = 'nose') AS aroma_count
      FROM tasting_note n
      WHERE n.deleted_at IS NULL

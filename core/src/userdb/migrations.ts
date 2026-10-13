@@ -91,6 +91,9 @@ export const MIGRATIONS: readonly string[] = [
   -- Notes revealed before this migration only had a profile; keep them revealed.
   UPDATE tasting_note SET revealed_at = updated_at WHERE revealed_profile_id IS NOT NULL;
   `,
+  /* 3: alcohol from the label */ `
+  ALTER TABLE tasting_note ADD COLUMN reveal_abv REAL;
+  `,
 ];
 
 export async function migrate(db: Db): Promise<{ from: number; to: number }> {

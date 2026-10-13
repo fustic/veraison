@@ -10,7 +10,8 @@
     "test": "node --test --disable-warning=ExperimentalWarning \"core/test/**/*.test.ts\"",
     "content:check": "node --disable-warning=ExperimentalWarning tools/build-content.ts --check",
     "content:build": "node --disable-warning=ExperimentalWarning tools/build-content.ts",
-    "typecheck": "tsc -p tsconfig.json --noEmit"
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "map:countries": "node --disable-warning=ExperimentalWarning tools/build-countries.ts"
   },
   "devDependencies": {
     "typescript": "^5.8.0",

@@ -3,9 +3,11 @@
 // are suggested as you type; anything else is kept as free text.
 import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useMemo, useState } from 'react';
-import { Alert, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { Text, TextInput } from '../../../Text';
 import { COUNTRIES, matchRevealToProfile, regionCountry } from '../../../../../core/src/reveal.ts';
-import { emptyReveal, type TastingNote, type WineReveal } from '../../../../../core/src/sat.ts';
+import { checkAlcohol } from '../../../../../core/src/explain.ts';
+import { ALCOHOL_BANDS, emptyReveal, type TastingNote, type WineReveal } from '../../../../../core/src/sat.ts';
 import { getTastingNote, saveReveal } from '../../../../../core/src/userdb/notes.ts';
 import { getSetting, setSetting } from '../../../../../core/src/userdb/settings.ts';
 import { useData } from '../../../data/DataProvider';
@@ -31,6 +33,7 @@ export default function RevealScreen() {
   const [otherCountry, setOtherCountry] = useState(false);
   const [vintageText, setVintageText] = useState('');
   const [priceText, setPriceText] = useState('');
+  const [abvText, setAbvText] = useState('');
   /** undefined = pick automatically from the reveal; null = compare with nothing. */
   const [profileChoice, setProfileChoice] = useState<string | null | undefined>(undefined);
 
@@ -45,6 +48,7 @@ export default function RevealScreen() {
       setRegionText(start.region ? (content.regionById.get(start.region)?.name ?? start.region) : '');
       setVintageText(start.vintage !== null ? String(start.vintage) : '');
       setPriceText(start.price !== null ? String(start.price) : '');
+      setAbvText(start.abv !== null && start.abv !== undefined ? String(start.abv) : '');
       setOtherCountry(!!start.country && !COUNTRIES.some(([c]) => c === start.country));
       // Keep automatic matching unless the stored profile was picked by hand.
       if (n?.reveal && n.revealedProfileId !== matchRevealToProfile(n.reveal, n.wineType, content.profiles, content.regionById)) {
@@ -100,13 +104,28 @@ export default function RevealScreen() {
   const autoProfile = note ? matchRevealToProfile(resolved, note.wineType, content.profiles, content.regionById) : null;
   const profileId = profileChoice === undefined ? autoProfile : profileChoice;
   const candidates = content.profiles.filter((p) => p.wineType === note?.wineType);
+  const abvNumber = abvText.trim() ? Number(abvText.replace(',', '.')) : NaN;
+  const abvCheck = note && Number.isFinite(abvNumber) && abvNumber > 0 && abvNumber < 25 ? checkAlcohol(note.palate.alcohol, abvNumber) : null;
 
   const save = async () => {
     if (!note) return;
     const vintage = /^\d{4}$/.test(vintageText) ? Number(vintageText) : null;
     const price = priceText.trim() ? Number(priceText.replace(',', '.')) : null;
+    const abv = abvText.trim() ? Number(abvText.replace(',', '.')) : null;
     const pending = grapeQuery.trim() ? [...r.grapes, grapeIdFor(grapeQuery)] : r.grapes;
-    await saveReveal(db, note.id, { ...resolved, grapes: pending, vintage, price: price !== null && Number.isFinite(price) ? price : null }, profileId, deps);
+    await saveReveal(
+      db,
+      note.id,
+      {
+        ...resolved,
+        grapes: pending,
+        vintage,
+        price: price !== null && Number.isFinite(price) ? price : null,
+        abv: abv !== null && Number.isFinite(abv) ? abv : null,
+      },
+      profileId,
+      deps,
+    );
     if (r.currency) await setSetting(db, 'currency', r.currency);
     router.back();
   };
@@ -195,6 +214,24 @@ export default function RevealScreen() {
           />
           <Pill label="NV" on={r.nonVintage} onPress={() => update({ nonVintage: !r.nonVintage })} />
         </View>
+        <Text style={styles.label}>Alcohol on the label</Text>
+        <View style={styles.row}>
+          <TextInput
+            placeholder="e.g. 13.5"
+            placeholderTextColor={colors.muted}
+            value={abvText}
+            onChangeText={(t) => setAbvText(t.replace(/[^\d.,]/g, '').slice(0, 5))}
+            keyboardType="decimal-pad"
+            style={[styles.input, { flex: 1 }]}
+          />
+          <Text style={styles.label}>% abv</Text>
+        </View>
+        {abvCheck ? (
+          <Text style={[styles.hint, abvCheck.match === false && { color: colors.wine, fontWeight: '600' }]}>
+            That is {abvCheck.labelWord} alcohol ({ALCOHOL_BANDS[abvCheck.labelStep]}).
+            {abvCheck.saidWord ? (abvCheck.match ? ` You said ${abvCheck.saidWord}: right.` : ` You said ${abvCheck.saidWord}.`) : ''}
+          </Text>
+        ) : null}
       </Panel>
 
       {/* Country and region */}

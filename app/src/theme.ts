@@ -22,5 +22,15 @@ export const statusColors = {
   mastered: '#7A1F3D',
 } as const;
 
+/** Font files bundled in assets/fonts and loaded in app/_layout.tsx. */
+export const fonts = {
+  regular: 'IBMPlexSans-Regular',
+  medium: 'IBMPlexSans-Medium',
+  semibold: 'IBMPlexSans-SemiBold',
+  bold: 'IBMPlexSans-Bold',
+  display: 'BricolageGrotesque-Bold',
+  mono: 'IBMPlexMono-Medium',
+} as const;
+
 export const space = (n: number) => n * 4;
 export const radius = { sm: 10, md: 14, lg: 18 } as const;

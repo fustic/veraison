@@ -1,14 +1,15 @@
 // Building blocks for the one-screen tasting note, following the Tasting screen draft:
 // segmented wine type, SAT scale grids, colour glasses, toggle pills and picture aroma tiles.
 import type { ReactNode } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
+import { Text } from '../Text';
 import Svg, { Path } from 'react-native-svg';
 import type { Aroma, AromaLevel } from '../../../core/src/content.ts';
 import type { WineType } from '../../../core/src/sat.ts';
 import { AromaIcon } from '../AromaIcon';
-import { colors } from '../theme';
+import { colors, fonts } from '../theme';
 
-export const mono = 'Menlo';
+export const mono = fonts.mono;
 
 export function SectionTitle({ children }: { children: ReactNode }) {
   return <Text style={s.sectionTitle}>{children}</Text>;
@@ -322,7 +323,7 @@ function capitalise(t: string): string {
 }
 
 const s = StyleSheet.create({
-  sectionTitle: { marginHorizontal: 4, fontSize: 24, fontWeight: '700', color: colors.ink, letterSpacing: -0.3 },
+  sectionTitle: { marginHorizontal: 4, fontFamily: fonts.display, fontSize: 24, color: colors.ink, letterSpacing: -0.2 },
   panel: { backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.line, borderRadius: 18, padding: 16 },
   fieldLabel: { fontSize: 14, fontWeight: '600', color: colors.ink },
 

@@ -1,6 +1,6 @@
 import { Tabs } from 'expo-router';
 import { GrapesIcon, MapIcon, TasteIcon, TodayIcon } from '../../TabIcons';
-import { colors } from '../../theme';
+import { colors, fonts } from '../../theme';
 
 export default function TabsLayout() {
   return (
@@ -10,6 +10,7 @@ export default function TabsLayout() {
         tabBarActiveTintColor: colors.wine,
         tabBarInactiveTintColor: colors.muted,
         tabBarStyle: { backgroundColor: colors.surface, borderTopColor: colors.line },
+        tabBarLabelStyle: { fontFamily: fonts.medium, fontSize: 11 },
       }}
     >
       <Tabs.Screen name="index" options={{ title: 'Today', tabBarIcon: TodayIcon }} />

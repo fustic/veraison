@@ -9,3 +9,6 @@ export * from './userdb/progress.ts';
 export * from './userdb/backup.ts';
 export * from './reveal.ts';
 export * from './userdb/settings.ts';
+export * from './compare.ts';
+export * from './mapnav.ts';
+export * from './explain.ts';

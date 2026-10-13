@@ -1,8 +1,9 @@
 // Small building blocks shared by the screens. Styling follows the screen drafts.
 import type { ReactNode } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, View, type ViewStyle } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, View, type ViewStyle } from 'react-native';
+import { Text } from './Text';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { colors, radius, space } from './theme';
+import { colors, fonts, radius, space } from './theme';
 
 export function Screen({ children, scroll = true }: { children: ReactNode; scroll?: boolean }) {
   return (
@@ -98,10 +99,10 @@ export function Chip({ label, on, onPress }: { label: string; on?: boolean; onPr
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: colors.paper },
   content: { padding: space(4), gap: space(3.5), paddingBottom: space(10) },
-  title: { fontSize: 30, fontWeight: '700', color: colors.ink, letterSpacing: -0.3 },
+  title: { fontFamily: fonts.display, fontSize: 32, lineHeight: 36, color: colors.ink, letterSpacing: -0.3 },
   heading: { fontSize: 17, fontWeight: '600', color: colors.ink },
   muted: { fontSize: 14, color: colors.muted, lineHeight: 20 },
-  label: { fontSize: 11, letterSpacing: 0.8, color: colors.muted, fontWeight: '600', textTransform: 'uppercase' },
+  label: { fontFamily: fonts.mono, fontSize: 11, letterSpacing: 0.9, color: colors.muted, textTransform: 'uppercase' },
   card: { backgroundColor: colors.surface, borderColor: colors.line, borderWidth: 1, borderRadius: radius.lg, padding: space(4), gap: space(2.5) },
   cardTint: { backgroundColor: colors.wineTint, borderColor: colors.wineTint },
   button: { minHeight: 48, borderRadius: 12, alignItems: 'center', justifyContent: 'center', paddingHorizontal: space(4) },

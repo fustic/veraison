@@ -63,7 +63,7 @@ test('saves, reads, lists and clears a reveal', async () => {
   await saveReveal(
     db,
     id,
-    reveal({ grapes: [' grape:merlot ', 'grape:merlot', ''], producer: '  ', vintage: 2019, region: 'region:fr-bordeaux', price: 24, currency: 'EUR' }),
+    reveal({ grapes: [' grape:merlot ', 'grape:merlot', ''], producer: '  ', vintage: 2019, region: 'region:fr-bordeaux', price: 24, currency: 'EUR', abv: 13.5 }),
     'profile:bordeaux-rouge',
     deps,
   );
@@ -77,6 +77,7 @@ test('saves, reads, lists and clears a reveal', async () => {
     region: 'region:fr-bordeaux',
     price: 24,
     currency: 'EUR',
+    abv: 13.5,
   });
   assert.equal(note.revealedProfileId, 'profile:bordeaux-rouge');
   assert.equal((await listTastingNotes(db))[0]!.reveal?.vintage, 2019);
@@ -100,4 +101,11 @@ test('the older profile-only reveal still marks the note as revealed', async () 
   const note = (await getTastingNote(db, id))!;
   assert.equal(note.revealedProfileId, 'profile:chablis');
   assert.deepEqual(note.reveal?.grapes, []);
+});
+
+test('regionCountry reads country ids and sub-region ids', async () => {
+  const { regionCountry } = await import('../src/reveal.ts');
+  assert.equal(regionCountry('region:fr'), 'fr');
+  assert.equal(regionCountry('region:fr-bordeaux-pauillac'), 'fr');
+  assert.equal(regionCountry('Valpolicella'), null);
 });
