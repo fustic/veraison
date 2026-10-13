@@ -3,19 +3,19 @@
 import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { Alert, Text, View } from 'react-native';
+import { describeReveal } from '../../../../core/src/reveal.ts';
 import { SCALES, type TastingNote } from '../../../../core/src/sat.ts';
 import { scoreProfile } from '../../../../core/src/scorer.ts';
-import { deleteTastingNote, getGuesses, getTastingNote, revealWine } from '../../../../core/src/userdb/notes.ts';
+import { deleteTastingNote, getGuesses, getTastingNote } from '../../../../core/src/userdb/notes.ts';
 import { useData } from '../../data/DataProvider';
 import { colors } from '../../theme';
-import { Button, Card, Chip, Heading, Label, Muted, Screen, Title } from '../../ui';
+import { Button, Card, Heading, Muted, Screen, Title } from '../../ui';
 
 export default function NoteScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { db, deps, content } = useData();
   const [note, setNote] = useState<TastingNote | null>(null);
   const [guesses, setGuesses] = useState<{ rank: number; profileId: string; score: number }[]>([]);
-  const [revealing, setRevealing] = useState(false);
 
   const load = useCallback(async () => {
     if (!id) return;
@@ -38,13 +38,8 @@ export default function NoteScreen() {
 
   const revealed = note.revealedProfileId ? content.profileById.get(note.revealedProfileId) : undefined;
   const comparison = revealed ? scoreProfile(note, revealed) : null;
-  const candidates = content.profiles.filter((p) => p.wineType === note.wineType);
-
-  const reveal = async (profileId: string) => {
-    await revealWine(db, note.id, profileId, deps);
-    setRevealing(false);
-    await load();
-  };
+  const described = note.reveal ? describeReveal(note.reveal, content, revealed?.name) : null;
+  const openReveal = () => router.push({ pathname: '/note/reveal/[id]', params: { id: note.id } });
 
   const remove = () =>
     Alert.alert('Delete this note?', undefined, [
@@ -61,8 +56,10 @@ export default function NoteScreen() {
 
   return (
     <Screen>
-      <Title>{note.labelText || revealed?.name || 'Blind wine'}</Title>
+      <Title>{described?.title || note.labelText || 'Blind wine'}</Title>
+      {described?.subtitle ? <Text style={{ fontSize: 15, color: colors.ink }}>{described.subtitle}</Text> : null}
       <Muted>
+        {described && note.labelText ? `${note.labelText} · ` : ''}
         {new Date(note.createdAt).toLocaleString()} · {note.appearance.colour ?? note.wineType}
         {note.conclusions.quality !== null ? ` · ${SCALES.quality[note.conclusions.quality]}` : ''}
       </Muted>
@@ -109,18 +106,7 @@ export default function NoteScreen() {
         </Card>
       ) : null}
 
-      {revealing ? (
-        <Card>
-          <Label>What was it?</Label>
-          <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6 }}>
-            {candidates.map((p) => (
-              <Chip key={p.id} label={p.name} on={note.revealedProfileId === p.id} onPress={() => reveal(p.id)} />
-            ))}
-          </View>
-        </Card>
-      ) : (
-        <Button title={revealed ? 'Change revealed wine' : 'Reveal the wine'} onPress={() => setRevealing(true)} />
-      )}
+      <Button title={note.reveal ? 'Edit reveal' : 'Reveal the wine'} onPress={openReveal} />
       <Button title="Delete note" kind="secondary" onPress={remove} />
     </Screen>
   );

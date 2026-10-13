@@ -113,3 +113,12 @@ test('export and import round-trip, newest row wins', async () => {
   // Importing the same file again changes nothing.
   assert.deepEqual(await importUserData(target, dump), { notes: 0, statuses: 0 });
 });
+
+test('settings round-trip and overwrite', async () => {
+  const { getSetting, setSetting } = await import('../src/userdb/settings.ts');
+  const db = await freshDb();
+  assert.equal(await getSetting(db, 'currency'), null);
+  await setSetting(db, 'currency', 'CHF');
+  await setSetting(db, 'currency', 'EUR');
+  assert.equal(await getSetting(db, 'currency'), 'EUR');
+});

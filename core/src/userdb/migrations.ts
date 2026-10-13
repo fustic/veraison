@@ -78,6 +78,19 @@ export const MIGRATIONS: readonly string[] = [
     value TEXT NOT NULL
   );
   `,
+  /* 2: what the wine was, typed in at the reveal */ `
+  ALTER TABLE tasting_note ADD COLUMN revealed_at TEXT;
+  ALTER TABLE tasting_note ADD COLUMN reveal_grapes TEXT NOT NULL DEFAULT '[]';
+  ALTER TABLE tasting_note ADD COLUMN reveal_producer TEXT;
+  ALTER TABLE tasting_note ADD COLUMN reveal_vintage INTEGER;
+  ALTER TABLE tasting_note ADD COLUMN reveal_nv INTEGER NOT NULL DEFAULT 0;
+  ALTER TABLE tasting_note ADD COLUMN reveal_country TEXT;
+  ALTER TABLE tasting_note ADD COLUMN reveal_region TEXT;
+  ALTER TABLE tasting_note ADD COLUMN reveal_price REAL;
+  ALTER TABLE tasting_note ADD COLUMN reveal_currency TEXT;
+  -- Notes revealed before this migration only had a profile; keep them revealed.
+  UPDATE tasting_note SET revealed_at = updated_at WHERE revealed_profile_id IS NOT NULL;
+  `,
 ];
 
 export async function migrate(db: Db): Promise<{ from: number; to: number }> {

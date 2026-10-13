@@ -7,3 +7,5 @@ export * from './userdb/migrations.ts';
 export * from './userdb/notes.ts';
 export * from './userdb/progress.ts';
 export * from './userdb/backup.ts';
+export * from './reveal.ts';
+export * from './userdb/settings.ts';

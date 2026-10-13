@@ -51,7 +51,7 @@ export default function NewNote() {
   const scroll = useRef<ScrollView>(null);
   const offsets = useRef<Partial<Record<Section, number>>>({});
   const mainY = useRef(0);
-  const navH = useRef(56);
+  const [active, setActive] = useState<Section>('Appearance');
 
   const set = (fn: (n: TastingNoteInput) => void) => {
     setDirty(true);
@@ -94,9 +94,23 @@ export default function NewNote() {
     router.replace({ pathname: '/note/[id]', params: { id } });
   };
 
+  const top = (section: Section) => mainY.current + (offsets.current[section] ?? 0);
   const jump = (section: Section) => {
-    const y = offsets.current[section];
-    if (y !== undefined) scroll.current?.scrollTo({ y: Math.max(0, mainY.current + y - navH.current - 8), animated: true });
+    if (offsets.current[section] === undefined) return;
+    setActive(section);
+    scroll.current?.scrollTo({ y: Math.max(0, top(section) - 8), animated: true });
+  };
+  // Underline the section whose heading has scrolled past the top of the view.
+  const onScroll = (e: {
+    nativeEvent: { contentOffset: { y: number }; contentSize: { height: number }; layoutMeasurement: { height: number } };
+  }) => {
+    const { contentOffset, contentSize, layoutMeasurement } = e.nativeEvent;
+    const y = contentOffset.y + 24;
+    let current: Section = 'Appearance';
+    for (const sec of SECTIONS) if (offsets.current[sec] !== undefined && y >= top(sec)) current = sec;
+    // The last section is short; at the very bottom it is the one being read.
+    if (contentOffset.y + layoutMeasurement.height >= contentSize.height - 4) current = 'Conclusions';
+    if (current !== active) setActive(current);
   };
   const mark = (section: Section) => (e: { nativeEvent: { layout: { y: number } } }) => {
     offsets.current[section] = e.nativeEvent.layout.y;
@@ -104,26 +118,36 @@ export default function NewNote() {
 
   return (
     <View style={[styles.screen, { paddingTop: insets.top }]}>
-      <ScrollView ref={scroll} stickyHeaderIndices={[1]} contentContainerStyle={{ paddingBottom: insets.bottom + 24 }} keyboardShouldPersistTaps="handled">
-        {/* 0: top bar */}
-        <View style={styles.topBar}>
-          <Pressable accessibilityRole="button" onPress={exit} hitSlop={8} style={styles.exit}>
-            <Text style={styles.exitText}>Exit</Text>
-          </Pressable>
-          <Text style={styles.timer} accessibilityLabel={`Time spent ${elapsed}`}>
-            Tasting · {elapsed}
-          </Text>
+      {/* One compact bar: Exit, section tabs, timer */}
+      <View style={styles.bar}>
+        <Pressable accessibilityRole="button" onPress={exit} hitSlop={8} style={styles.exit}>
+          <Text style={styles.exitText}>Exit</Text>
+        </Pressable>
+        <View style={styles.tabs} accessibilityRole="tablist">
+          {SECTIONS.map((sec) => {
+            const on = sec === active;
+            return (
+              <Pressable key={sec} accessibilityRole="tab" accessibilityState={{ selected: on }} onPress={() => jump(sec)} hitSlop={{ top: 8, bottom: 8 }} style={styles.tab}>
+                <Text numberOfLines={1} style={[styles.tabText, on && styles.tabTextOn]}>
+                  {sec}
+                </Text>
+                <View style={[styles.tabLine, on && styles.tabLineOn]} />
+              </Pressable>
+            );
+          })}
         </View>
+        <Text style={styles.timer} accessibilityLabel={`Time spent ${elapsed}`}>
+          {elapsed}
+        </Text>
+      </View>
 
-        {/* 1: sticky section bar */}
-        <View style={styles.nav} onLayout={(e) => (navH.current = e.nativeEvent.layout.height)}>
-          {SECTIONS.map((sec) => (
-            <Pressable key={sec} accessibilityRole="button" onPress={() => jump(sec)} style={styles.navItem}>
-              <Text style={styles.navText}>{sec}</Text>
-            </Pressable>
-          ))}
-        </View>
-
+      <ScrollView
+        ref={scroll}
+        onScroll={onScroll}
+        scrollEventThrottle={32}
+        contentContainerStyle={{ paddingBottom: insets.bottom + 24 }}
+        keyboardShouldPersistTaps="handled"
+      >
         <View style={styles.main} onLayout={(e) => (mainY.current = e.nativeEvent.layout.y)}>
           <TextInput
             placeholder="Label or sample number (optional)"
@@ -315,22 +339,25 @@ function useElapsed(): string {
 
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: colors.paper },
-  topBar: { paddingTop: 8, paddingHorizontal: 16, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  exit: { minHeight: 44, justifyContent: 'center' },
-  exitText: { fontSize: 15, fontWeight: '600', color: colors.wine },
-  timer: { fontFamily: mono, fontSize: 13, paddingVertical: 6, paddingHorizontal: 10, borderRadius: 8, overflow: 'hidden', backgroundColor: colors.ink, color: '#FFFFFF' },
-  nav: {
+  bar: {
+    height: 44,
     flexDirection: 'row',
-    gap: 4,
-    paddingTop: 8,
-    paddingBottom: 10,
+    alignItems: 'center',
+    gap: 10,
     paddingHorizontal: 16,
-    backgroundColor: colors.paper,
     borderBottomWidth: 1,
     borderBottomColor: colors.line,
+    backgroundColor: colors.paper,
   },
-  navItem: { flex: 1, minHeight: 36, alignItems: 'center', justifyContent: 'center', borderRadius: 10, backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.line },
-  navText: { fontSize: 12, fontWeight: '600', color: colors.ink },
+  exit: { height: 44, justifyContent: 'center' },
+  exitText: { fontSize: 15, fontWeight: '600', color: colors.wine },
+  tabs: { flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignSelf: 'stretch' },
+  tab: { justifyContent: 'center', alignItems: 'center' },
+  tabText: { fontSize: 13, fontWeight: '500', color: colors.muted },
+  tabTextOn: { color: colors.ink, fontWeight: '600' },
+  tabLine: { position: 'absolute', bottom: -1, left: 0, right: 0, height: 2, borderRadius: 1, backgroundColor: 'transparent' },
+  tabLineOn: { backgroundColor: colors.wine },
+  timer: { fontFamily: mono, fontSize: 12, paddingVertical: 4, paddingHorizontal: 7, borderRadius: 6, overflow: 'hidden', backgroundColor: colors.ink, color: '#FFFFFF' },
   main: { paddingTop: 16, paddingHorizontal: 16, gap: 22 },
   input: { backgroundColor: colors.surface, borderColor: colors.line, borderWidth: 1, borderRadius: 12, paddingHorizontal: 12, height: 44, fontSize: 15, color: colors.ink },
   section: { gap: 12 },

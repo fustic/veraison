@@ -2,7 +2,7 @@
 // sync can propagate deletions.
 
 import type { ProfileMatch } from '../scorer.ts';
-import type { Observation, TastingNote, TastingNoteInput, WineType } from '../sat.ts';
+import type { Observation, TastingNote, TastingNoteInput, WineReveal, WineType } from '../sat.ts';
 import type { Db, Deps, SqlValue } from './db.ts';
 
 interface NoteRow {
@@ -32,6 +32,15 @@ interface NoteRow {
   label_text: string | null;
   photo_path: string | null;
   free_notes: string | null;
+  revealed_at: string | null;
+  reveal_grapes: string;
+  reveal_producer: string | null;
+  reveal_vintage: number | null;
+  reveal_nv: number;
+  reveal_country: string | null;
+  reveal_region: string | null;
+  reveal_price: number | null;
+  reveal_currency: string | null;
 }
 
 const COLUMNS = [
@@ -41,7 +50,46 @@ const COLUMNS = [
   'sweetness', 'acidity', 'tannin', 'alcohol', 'body', 'flavour_intensity', 'finish',
   'palate_same_as_nose', 'quality', 'readiness',
   'revealed_profile_id', 'label_text', 'photo_path', 'free_notes',
+  'revealed_at', 'reveal_grapes', 'reveal_producer', 'reveal_vintage', 'reveal_nv',
+  'reveal_country', 'reveal_region', 'reveal_price', 'reveal_currency',
 ] as const;
+
+const REVEAL_COLUMNS = COLUMNS.slice(COLUMNS.indexOf('reveal_grapes'));
+
+function revealValues(r: WineReveal | null): SqlValue[] {
+  return r
+    ? [JSON.stringify(r.grapes), r.producer, r.vintage, r.nonVintage ? 1 : 0, r.country, r.region, r.price, r.currency]
+    : ['[]', null, null, 0, null, null, null, null];
+}
+
+function revealOf(row: NoteRow): WineReveal | null {
+  if (!row.revealed_at) return null;
+  return {
+    grapes: JSON.parse(row.reveal_grapes) as string[],
+    producer: row.reveal_producer,
+    vintage: row.reveal_vintage,
+    nonVintage: row.reveal_nv === 1,
+    country: row.reveal_country,
+    region: row.reveal_region,
+    price: row.reveal_price,
+    currency: row.reveal_currency,
+  };
+}
+
+/** Trims text fields and drops empty grapes so blank inputs are stored as null. */
+export function cleanReveal(r: WineReveal): WineReveal {
+  const text = (v: string | null) => (v && v.trim() ? v.trim() : null);
+  return {
+    grapes: [...new Set(r.grapes.map((g) => g.trim()).filter(Boolean))],
+    producer: text(r.producer),
+    vintage: r.nonVintage ? null : r.vintage,
+    nonVintage: r.nonVintage,
+    country: text(r.country),
+    region: text(r.region),
+    price: r.price !== null && Number.isFinite(r.price) && r.price >= 0 ? r.price : null,
+    currency: r.price !== null ? text(r.currency) : null,
+  };
+}
 
 function toRow(id: string, createdAt: string, updatedAt: string, n: TastingNoteInput): SqlValue[] {
   return [
@@ -52,6 +100,7 @@ function toRow(id: string, createdAt: string, updatedAt: string, n: TastingNoteI
     n.palate.flavourIntensity, n.palate.finish,
     n.palate.aromaIds === null ? 1 : 0, n.conclusions.quality, n.conclusions.readiness,
     n.revealedProfileId, n.labelText, n.photoPath, n.freeNotes,
+    n.reveal ? updatedAt : null, ...revealValues(n.reveal),
   ];
 }
 
@@ -108,7 +157,29 @@ export async function getGuesses(db: Db, noteId: string): Promise<{ rank: number
 }
 
 export async function revealWine(db: Db, noteId: string, profileId: string | null, deps: Deps): Promise<void> {
-  await db.run('UPDATE tasting_note SET revealed_profile_id = ?, updated_at = ? WHERE id = ?', [profileId, deps.clock.now(), noteId]);
+  const now = deps.clock.now();
+  await db.run(
+    `UPDATE tasting_note SET revealed_profile_id = ?, revealed_at = CASE WHEN ? IS NULL THEN revealed_at ELSE COALESCE(revealed_at, ?) END,
+     updated_at = ? WHERE id = ?`,
+    [profileId, profileId, now, now, noteId],
+  );
+}
+
+/**
+ * Stores what the wine was and which study profile to compare the note with.
+ * Pass reveal = null to undo a reveal.
+ */
+export async function saveReveal(db: Db, noteId: string, reveal: WineReveal | null, profileId: string | null, deps: Deps): Promise<void> {
+  const now = deps.clock.now();
+  const r = reveal ? cleanReveal(reveal) : null;
+  const sets = REVEAL_COLUMNS.map((c) => `${c} = ?`).join(', ');
+  await db.run(`UPDATE tasting_note SET revealed_at = ?, revealed_profile_id = ?, ${sets}, updated_at = ? WHERE id = ?`, [
+    r ? now : null,
+    r ? profileId : null,
+    ...revealValues(r),
+    now,
+    noteId,
+  ]);
 }
 
 export async function getTastingNote(db: Db, id: string): Promise<TastingNote | null> {
@@ -145,6 +216,7 @@ export async function getTastingNote(db: Db, id: string): Promise<TastingNote | 
     },
     conclusions: { quality: row.quality, readiness: row.readiness },
     revealedProfileId: row.revealed_profile_id,
+    reveal: revealOf(row),
     labelText: row.label_text,
     photoPath: row.photo_path,
     freeNotes: row.free_notes,
@@ -159,6 +231,7 @@ export interface NoteSummary {
   labelText: string | null;
   quality: number | null;
   revealedProfileId: string | null;
+  reveal: WineReveal | null;
   aromaCount: number;
 }
 
@@ -172,8 +245,10 @@ export async function listTastingNotes(db: Db, opts: { limit?: number; offset?: 
     quality: number | null;
     revealed_profile_id: string | null;
     aroma_count: number;
-  }>(
+  } & Pick<NoteRow, 'revealed_at' | 'reveal_grapes' | 'reveal_producer' | 'reveal_vintage' | 'reveal_nv' | 'reveal_country' | 'reveal_region' | 'reveal_price' | 'reveal_currency'>>(
     `SELECT n.id, n.created_at, n.wine_type, n.colour, n.label_text, n.quality, n.revealed_profile_id,
+            n.revealed_at, n.reveal_grapes, n.reveal_producer, n.reveal_vintage, n.reveal_nv,
+            n.reveal_country, n.reveal_region, n.reveal_price, n.reveal_currency,
             (SELECT COUNT(*) FROM tasting_note_aroma a WHERE a.note_id = n.id AND a.stage = 'nose') AS aroma_count
      FROM tasting_note n
      WHERE n.deleted_at IS NULL
@@ -189,6 +264,7 @@ export async function listTastingNotes(db: Db, opts: { limit?: number; offset?: 
     labelText: r.label_text,
     quality: r.quality,
     revealedProfileId: r.revealed_profile_id,
+    reveal: revealOf(r as unknown as NoteRow),
     aromaCount: r.aroma_count,
   }));
 }

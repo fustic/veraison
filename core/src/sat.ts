@@ -94,6 +94,27 @@ export interface Conclusions {
   readiness: number | null;
 }
 
+/**
+ * What the wine turned out to be, typed in after tasting. Grapes are in blend order;
+ * each is a content id (grape:merlot) or free text for grapes not in the study content.
+ * Region is a region id (region:fr-bordeaux-pauillac) or free text. Country is an
+ * ISO 3166 alpha-2 code in lower case (fr), or free text.
+ */
+export interface WineReveal {
+  grapes: string[];
+  producer: string | null;
+  vintage: number | null;
+  nonVintage: boolean;
+  country: string | null;
+  region: string | null;
+  price: number | null;
+  currency: string | null;
+}
+
+export function emptyReveal(): WineReveal {
+  return { grapes: [], producer: null, vintage: null, nonVintage: false, country: null, region: null, price: null, currency: null };
+}
+
 export interface TastingNote {
   id: string;
   createdAt: string;
@@ -104,7 +125,10 @@ export interface TastingNote {
   nose: Nose;
   palate: Palate;
   conclusions: Conclusions;
+  /** The study profile the note is compared with; set from the reveal. */
   revealedProfileId: string | null;
+  /** null until the wine is revealed. */
+  reveal: WineReveal | null;
   labelText: string | null;
   photoPath: string | null;
   freeNotes: string | null;
@@ -145,6 +169,7 @@ export function emptyNote(wineType: WineType = 'red'): TastingNoteInput {
     },
     conclusions: { quality: null, readiness: null },
     revealedProfileId: null,
+    reveal: null,
     labelText: null,
     photoPath: null,
     freeNotes: null,
