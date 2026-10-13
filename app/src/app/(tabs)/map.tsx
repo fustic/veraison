@@ -2,9 +2,8 @@
 // style with no network sources, so it must work in airplane mode. The "Online"
 // switch swaps in the OpenFreeMap street basemap to compare.
 //
-// Written against the @maplibre/maplibre-react-native v10 API. If `npx expo install`
-// brings a newer major version, check its migration guide for renamed components.
-import MapLibreGL from '@maplibre/maplibre-react-native';
+// Uses the @maplibre/maplibre-react-native v11 API (Map, Camera, GeoJSONSource, Layer).
+import { Camera, GeoJSONSource, Layer, Map, type StyleSpecification } from '@maplibre/maplibre-react-native';
 import { router } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
@@ -14,7 +13,7 @@ import { useData } from '../../data/DataProvider';
 import { colors, statusColors } from '../../theme';
 import { Button, Chip } from '../../ui';
 
-const OFFLINE_STYLE = {
+const OFFLINE_STYLE: StyleSpecification = {
   version: 8,
   name: 'veraison-offline',
   sources: {},
@@ -47,30 +46,32 @@ export default function MapScreen() {
 
   return (
     <View style={{ flex: 1, backgroundColor: colors.land }}>
-      <MapLibreGL.MapView style={{ flex: 1 }} mapStyle={online ? ONLINE_STYLE : JSON.stringify(OFFLINE_STYLE)} logoEnabled={false} attributionEnabled>
-        <MapLibreGL.Camera defaultSettings={{ centerCoordinate: BORDEAUX, zoomLevel: 7.6 }} />
-        <MapLibreGL.ShapeSource
+      <Map style={{ flex: 1 }} mapStyle={online ? ONLINE_STYLE : OFFLINE_STYLE} logo={false} attribution>
+        <Camera initialViewState={{ center: BORDEAUX, zoom: 7.6 }} />
+        <GeoJSONSource
           id="regions"
-          shape={shape as never}
+          data={shape as never}
           onPress={(e) => {
             // Smallest polygon first: an appellation sits on top of its district.
-            const hit = (e.features as unknown as Feature[]).sort((a, b) => rank(b.properties.level) - rank(a.properties.level))[0];
+            const hits = [...(e.nativeEvent.features as unknown as Feature[])];
+            const hit = hits.sort((a, b) => rank(b.properties.level) - rank(a.properties.level))[0];
             if (hit) {
               setSelected(hit.properties.id);
               void seen(hit.properties.id);
             }
           }}
         >
-          <MapLibreGL.FillLayer
+          <Layer
             id="region-fill"
-            style={{
-              fillColor: ['match', ['get', 'status'], 'mastered', statusColors.mastered, 'studied', statusColors.studied, 'seen', statusColors.seen, statusColors.unseen],
-              fillOpacity: ['match', ['get', 'level'], 'region', 0.15, 'district', 0.35, 0.75],
+            type="fill"
+            paint={{
+              'fill-color': ['match', ['get', 'status'], 'mastered', statusColors.mastered, 'studied', statusColors.studied, 'seen', statusColors.seen, statusColors.unseen],
+              'fill-opacity': ['match', ['get', 'level'], 'region', 0.15, 'district', 0.35, 0.75],
             }}
           />
-          <MapLibreGL.LineLayer id="region-line" style={{ lineColor: colors.wine, lineWidth: 1, lineOpacity: 0.6 }} />
-        </MapLibreGL.ShapeSource>
-      </MapLibreGL.MapView>
+          <Layer id="region-line" type="line" paint={{ 'line-color': colors.wine, 'line-width': 1, 'line-opacity': 0.6 }} />
+        </GeoJSONSource>
+      </Map>
 
       <SafeAreaView edges={['top']} style={StyleSheet.absoluteFill} pointerEvents="box-none">
         <View style={styles.toolbar} pointerEvents="box-none">

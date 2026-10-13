@@ -26,5 +26,5 @@ pmtiles convert build/regions.mbtiles app/assets/map/regions.pmtiles
 ```
 
 Then map each INAO appellation name to a `region:` id in `/content` (a small lookup
-table), and switch the map's ShapeSource to a VectorSource reading the bundled
+table), and switch the map's GeoJSONSource to a VectorSource reading the bundled
 PMTiles file. Keep the GeoJSON circles as the fallback for regions without outlines.
