@@ -5,7 +5,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { Alert, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { checkConclusions, complexityFromAromas, suggestQuality } from '../../../../core/src/coach.ts';
-import { COLOURS, emptyNote, SCALES, type Observation, type TastingNoteInput, type WineType } from '../../../../core/src/sat.ts';
+import { ALCOHOL_BANDS_SHORT, COLOURS, emptyNote, SCALES, type Observation, type TastingNoteInput, type WineType } from '../../../../core/src/sat.ts';
 import { rankProfiles } from '../../../../core/src/scorer.ts';
 import { saveGuesses, saveTastingNote } from '../../../../core/src/userdb/notes.ts';
 import { useData } from '../../data/DataProvider';
@@ -248,7 +248,7 @@ export default function NewNote() {
               {note.wineType === 'red' ? (
                 <ScaleGrid label="Tannin" options={FIVE} value={note.palate.tannin} onChange={(v) => set((n) => void (n.palate.tannin = v))} />
               ) : null}
-              <ScaleGrid label="Alcohol" options={['Low', 'Medium', 'High']} value={note.palate.alcohol} onChange={(v) => set((n) => void (n.palate.alcohol = v))} />
+              <ScaleGrid label="Alcohol" options={['Low', 'Medium', 'High']} hints={ALCOHOL_BANDS_SHORT} value={note.palate.alcohol} onChange={(v) => set((n) => void (n.palate.alcohol = v))} />
               <ScaleGrid label="Body" options={['Light', 'Med−', 'Med', 'Med+', 'Full']} value={note.palate.body} onChange={(v) => set((n) => void (n.palate.body = v))} />
               <ScaleGrid
                 label="Flavour intensity"

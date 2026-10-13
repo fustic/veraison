@@ -89,3 +89,8 @@ test('tasting bias finds a field rated consistently low', () => {
   assert.deepEqual(tannin, { field: 'tannin', meanSteps: -1, misses: 3, notes: 3 });
   assert.equal(bias[0]?.field, 'tannin', 'the most-missed field comes first');
 });
+
+test('alcohol % maps onto the SAT alcohol steps', async () => {
+  const { alcoholStep } = await import('../src/sat.ts');
+  assert.deepEqual([10.5, 11, 13.9, 14, 15.5].map(alcoholStep), [0, 1, 1, 2, 2]);
+});

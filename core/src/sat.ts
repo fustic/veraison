@@ -30,6 +30,15 @@ export const SCALES = {
 
 export type ScaleName = keyof typeof SCALES;
 
+/** % abv brackets behind low / medium / high alcohol, for still (unfortified) wines. */
+export const ALCOHOL_BANDS = ['below 11%', '11–13.9%', '14% and above'] as const;
+export const ALCOHOL_BANDS_SHORT = ['<11%', '11–13.9%', '≥14%'] as const;
+
+/** Which alcohol scale step an abv falls on (still wines). */
+export function alcoholStep(abv: number): 0 | 1 | 2 {
+  return abv < 11 ? 0 : abv < 14 ? 1 : 2;
+}
+
 export const COLOURS: Record<WineType, readonly string[]> = {
   white: ['lemon-green', 'lemon', 'gold', 'amber', 'brown'],
   rose: ['pink', 'salmon', 'orange'],

@@ -52,7 +52,8 @@ export function Segmented<T extends string>({
 
 /**
  * One SAT scale as a grid of equal buttons. Tapping the selected option clears it.
- * `columns` wraps long scales (quality) onto several rows.
+ * `columns` wraps long scales (quality) onto several rows. `hints` adds a small
+ * second line under each option (alcohol % brackets).
  */
 export function ScaleGrid({
   label,
@@ -61,6 +62,7 @@ export function ScaleGrid({
   onChange,
   columns,
   fontSize = 12,
+  hints,
 }: {
   label: string;
   options: readonly string[];
@@ -68,6 +70,7 @@ export function ScaleGrid({
   onChange: (v: number | null) => void;
   columns?: number;
   fontSize?: number;
+  hints?: readonly string[];
 }) {
   const n = columns ?? options.length;
   return (
@@ -81,13 +84,14 @@ export function ScaleGrid({
               <Pressable
                 accessibilityRole="radio"
                 accessibilityState={{ selected: on }}
-                accessibilityLabel={`${label}: ${o}`}
+                accessibilityLabel={`${label}: ${o}${hints?.[i] ? `, ${hints[i]}` : ''}`}
                 onPress={() => onChange(on ? null : i)}
                 style={[s.scaleBtn, on ? s.on : s.off]}
               >
                 <Text numberOfLines={2} style={[s.scaleText, { fontSize }, on && s.onText]}>
                   {o}
                 </Text>
+                {hints?.[i] ? <Text style={[s.scaleHint, on && s.onHint]}>{hints[i]}</Text> : null}
               </Pressable>
             </View>
           );
@@ -336,6 +340,8 @@ const s = StyleSheet.create({
   on: { backgroundColor: colors.wine, borderColor: colors.wine },
   off: { backgroundColor: colors.surface, borderColor: colors.line },
   onText: { color: '#FFFFFF', fontWeight: '600' },
+  scaleHint: { fontSize: 11, lineHeight: 14, color: colors.muted, textAlign: 'center' },
+  onHint: { color: '#F3E6EA' },
 
   listBtn: { minHeight: 44, borderRadius: 10, borderWidth: 1, justifyContent: 'center', paddingHorizontal: 14, paddingVertical: 8 },
   listText: { fontSize: 13, color: colors.ink },
