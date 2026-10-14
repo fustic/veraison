@@ -1,8 +1,10 @@
 // Tab bar icons drawn with react-native-svg (24×24 outline style), so the app needs no icon font package.
+import type { ColorValue } from 'react-native';
 import Svg, { Circle, Path, Rect } from 'react-native-svg';
 
-type Props = { color: string; size: number };
-const stroke = (color: string) => ({ stroke: color, strokeWidth: 1.8, strokeLinecap: 'round', strokeLinejoin: 'round', fill: 'none' }) as const;
+// The tab bar passes React Native's ColorValue (a string or a platform colour).
+type Props = { color: ColorValue; size: number };
+const stroke = (color: ColorValue) => ({ stroke: color, strokeWidth: 1.8, strokeLinecap: 'round', strokeLinejoin: 'round', fill: 'none' }) as const;
 
 export function TodayIcon({ color, size }: Props) {
   const s = stroke(color);
