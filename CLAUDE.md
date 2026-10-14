@@ -18,4 +18,6 @@
   it maps `fontWeight` to the bundled IBM Plex files. Headings use `fonts.display`, small caps
   labels `fonts.mono` (see `app/src/theme.ts`).
 - Route files in `app/src/app` export only their default component; shared helpers go in
-  `app/src/names.ts`, `app/src/components.tsx` or `core/`.
+  `app/src/names.ts`, `app/src/components.tsx` or `core/`. Exception: expo-router's special
+  `+native-intent.tsx`, which exports `redirectSystemPath`.
+- Never run `npm audit fix` in `app/`; use `npx expo install --fix`. See README "Dependencies".

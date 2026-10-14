@@ -87,6 +87,32 @@ If step 2 fails on a real device, try Flutter for the map before building anythi
 Content is written in our own words. Never paste text, tables or images from the WSET
 study materials into this repo.
 
+## Dependencies and `npm audit`
+
+Upgrade the app's packages with Expo's tools, never with `npm audit fix`:
+
+```sh
+cd app
+npx expo install --fix   # move every package to the version this Expo SDK expects
+npx expo-doctor          # check the project for version mismatches
+```
+
+`npm audit fix` resolves advisories without knowing which versions the Expo SDK needs.
+On SDK 57 it downgrades react-native-reanimated and react-native-worklets and drops
+React Native's Metro packages, and `--force` replaces Expo with SDK 44. Neither fixes
+the advisories below.
+
+Known advisories on SDK 57 (checked October 2026):
+
+| Package | Severity | Where it runs | Status |
+| --- | --- | --- | --- |
+| braces (via Metro, micromatch) | high | build tooling on your Mac | No patched release exists yet |
+| node-forge (via @expo/code-signing-certificates) | high | Expo CLI, signing of EAS updates (not used) | No patched release exists yet |
+| uuid < 11.1.1 (via xcode) | moderate | `expo prebuild` editing the Xcode project | Only affects calls that pass a buffer; not reachable here |
+| decode-uri-component (via query-string in expo-router) | moderate | in the app, when parsing link URLs | Fixed in expo-router 58. Until then `app/src/app/+native-intent.tsx` rejects oversized links |
+
+None of the build-tool advisories reach the phone. Recheck when moving to Expo SDK 58.
+
 ## Assets and data sources
 
 - **Fonts** (`app/assets/fonts`): IBM Plex Sans and IBM Plex Mono (SIL Open Font License),
