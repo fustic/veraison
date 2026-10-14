@@ -4,6 +4,7 @@ export default {
   id: 'grape:merlot',
   name: 'Merlot',
   colour: 'red',
+  berryColour: '#3E2348',
   traits: ['Early ripening', 'Prone to coulure', 'Likes cooler clay'],
   structure: {
     cool: { appearanceIntensity: [1, 2], acidity: [2, 3], tannin: [2, 3], body: [2, 3], alcohol: [1, 1] },

@@ -52,6 +52,7 @@ function checkRanges(from: string, ranges: StructureRanges) {
 }
 
 for (const g of grapes) {
+  if (!/^#[0-9A-Fa-f]{6}$/.test(g.berryColour ?? '')) errors.push(`${g.id}: berryColour must be a #RRGGBB colour`);
   checkRanges(`${g.id} cool`, g.structure.cool);
   checkRanges(`${g.id} warm`, g.structure.warm);
   g.aromas.forEach((a) => ref(g.id, a.aromaId, true));

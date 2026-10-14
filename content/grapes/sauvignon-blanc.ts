@@ -4,6 +4,7 @@ export default {
   id: 'grape:sauvignon-blanc',
   name: 'Sauvignon Blanc',
   colour: 'white',
+  berryColour: '#A9C25A',
   traits: ['Aromatic', 'Vigorous', 'Prone to fungal disease'],
   structure: {
     cool: { appearanceIntensity: [0, 0], acidity: [4, 4], body: [0, 1], alcohol: [1, 1], noseIntensity: [3, 4] },

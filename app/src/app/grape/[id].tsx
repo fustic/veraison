@@ -10,6 +10,7 @@ import { SCALES, type StructureField } from '../../../../core/src/sat.ts';
 import { setCheckedAgainstBook, setStudyStatus, type StudyStatus } from '../../../../core/src/userdb/progress.ts';
 import { AromaTiles, Box, CauseCard, H1, H2, Kicker, LinkText, StepBar, Tag } from '../../components';
 import { useData, useMarkSeen } from '../../data/DataProvider';
+import { GrapeIcon } from '../../GrapeIcon';
 import { prettyId, rangeWord } from '../../names';
 import { Pill, Segmented } from '../../tasting/parts';
 import { Text } from '../../Text';
@@ -93,7 +94,12 @@ export default function GrapeScreen() {
     <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
       <Stack.Screen options={{ title: '' }} />
       <View style={{ gap: 10, paddingHorizontal: 4 }}>
-        <H1 size={36}>{grape.name}</H1>
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
+          <GrapeIcon colour={grape.berryColour} size={52} />
+          <View style={{ flex: 1 }}>
+            <H1 size={36}>{grape.name}</H1>
+          </View>
+        </View>
         {grape.synonyms?.length ? <Text style={styles.muted}>Also called {grape.synonyms.join(', ')}</Text> : null}
         <View style={styles.wrap}>
           <Tag label={red ? 'Red' : 'White'} tint />

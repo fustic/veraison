@@ -4,6 +4,7 @@ export default {
   id: 'grape:cabernet-sauvignon',
   name: 'Cabernet Sauvignon',
   colour: 'red',
+  berryColour: '#2B1B3D',
   traits: ['Thick skins', 'Late budding', 'Late ripening'],
   structure: {
     cool: { appearanceIntensity: [2, 2], acidity: [3, 4], tannin: [3, 4], body: [2, 3], alcohol: [1, 1], noseIntensity: [2, 3] },

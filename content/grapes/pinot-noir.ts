@@ -5,6 +5,7 @@ export default {
   id: 'grape:pinot-noir',
   name: 'Pinot Noir',
   colour: 'red',
+  berryColour: '#5C2547',
   synonyms: ['Spätburgunder', 'Pinot Nero'],
   traits: ['Thin skins', 'Early budding', 'Early ripening'],
   structure: {

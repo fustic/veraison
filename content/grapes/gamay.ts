@@ -4,6 +4,7 @@ export default {
   id: 'grape:gamay',
   name: 'Gamay',
   colour: 'red',
+  berryColour: '#4B2A5E',
   traits: ['Early budding', 'Early ripening', 'Vigorous'],
   structure: {
     cool: { appearanceIntensity: [0, 1], acidity: [3, 4], tannin: [0, 1], body: [0, 1], alcohol: [1, 1], noseIntensity: [2, 3] },

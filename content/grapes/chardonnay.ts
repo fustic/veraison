@@ -4,6 +4,7 @@ export default {
   id: 'grape:chardonnay',
   name: 'Chardonnay',
   colour: 'white',
+  berryColour: '#C9D27A',
   traits: ['Early budding', 'Neutral grape', 'Takes on winemaking'],
   structure: {
     cool: { appearanceIntensity: [0, 0], acidity: [4, 4], body: [1, 2], alcohol: [1, 1], noseIntensity: [1, 2] },

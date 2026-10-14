@@ -4,6 +4,7 @@ export default {
   id: 'grape:cabernet-franc',
   name: 'Cabernet Franc',
   colour: 'red',
+  berryColour: '#4A2A55',
   traits: ['Earlier ripening than Cabernet Sauvignon', 'Thinner skins'],
   structure: {
     cool: { appearanceIntensity: [1, 1], acidity: [3, 4], tannin: [2, 3], body: [1, 2], alcohol: [1, 1] },

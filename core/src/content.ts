@@ -58,6 +58,8 @@ export interface Grape {
   id: string; // grape:pinot-noir
   name: string;
   colour: Exclude<WineType, 'rose'>;
+  /** Skin colour of ripe berries (hex), for the grape picture. */
+  berryColour: string;
   synonyms?: string[];
   traits: string[];
   structure: { cool: StructureRanges; warm: StructureRanges };

@@ -4,6 +4,7 @@ export default {
   id: 'grape:semillon',
   name: 'Sémillon',
   colour: 'white',
+  berryColour: '#D9C46A',
   traits: ['Thin skins', 'Susceptible to noble rot', 'Ages well'],
   structure: {
     cool: { appearanceIntensity: [0, 0], acidity: [3, 4], body: [0, 1], alcohol: [0, 0], noseIntensity: [0, 1] },
