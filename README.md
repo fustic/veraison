@@ -129,6 +129,8 @@ None of the build-tool advisories reach the phone. Recheck when moving to Expo S
 - **Country outlines** (`app/src/generated/countries.geojson.json`): Natural Earth 1:50m
   admin-0 countries (public domain), simplified to about 4 km by `tools/build-countries.ts`.
   They make the world and Europe map levels work offline.
+- **Appellation outlines** (`content/boundaries/regions.json`): Candiago et al. 2022, EU wine
+  PDO inventory, simplified by `tools/build-boundaries.ts`. See `tools/boundaries/README.md`.
 
 ## Distribution
 

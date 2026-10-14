@@ -7,7 +7,7 @@
 // yet (e.g. a look-alike grape outside France) — the app shows those as "coming soon".
 
 import { createHash } from 'node:crypto';
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import type { ContentBundle, Range, StructureRanges } from '../core/src/content.ts';
@@ -95,7 +95,14 @@ console.log(
 );
 if (process.argv.includes('--check')) process.exit(0);
 
-// Placeholder geometry: a circle per region until real boundaries are imported.
+// Real outlines from content/boundaries/regions.json (npm run map:boundaries) where they
+// exist; a placeholder circle for every other region.
+type Outline = { type: 'MultiPolygon'; coordinates: [number, number][][][] };
+const BOUNDARIES = join(ROOT, 'content', 'boundaries', 'regions.json');
+const outlines: Record<string, { geometry: Outline }> = existsSync(BOUNDARIES)
+  ? (JSON.parse(readFileSync(BOUNDARIES, 'utf8')) as { regions: Record<string, { geometry: Outline }> }).regions
+  : {};
+
 function circle([lon, lat]: readonly [number, number], radiusKm: number, steps = 48): [number, number][] {
   const ring: [number, number][] = [];
   const dLat = radiusKm / 110.574;
@@ -107,26 +114,45 @@ function circle([lon, lat]: readonly [number, number], radiusKm: number, steps =
   return ring;
 }
 
+function bbox(geometry: Outline): [number, number, number, number] {
+  let [w, s, e, n] = [Infinity, Infinity, -Infinity, -Infinity];
+  for (const poly of geometry.coordinates)
+    for (const [x, y] of poly[0] ?? []) {
+      w = Math.min(w, x);
+      s = Math.min(s, y);
+      e = Math.max(e, x);
+      n = Math.max(n, y);
+    }
+  return [w, s, e, n];
+}
+
+for (const id of Object.keys(outlines)) if (!regions.some((r) => r.id === id)) console.warn(`warning: content/boundaries/regions.json has an outline for unknown ${id}`);
+
 const geojson = {
   type: 'FeatureCollection',
   features: regions
     .filter((r) => r.level !== 'country')
-    .map((r) => ({
-      type: 'Feature',
-      id: r.id,
-      properties: {
+    .map((r) => {
+      const outline = outlines[r.id]?.geometry;
+      return {
+        type: 'Feature',
         id: r.id,
-        name: r.name,
-        level: r.level,
-        parentId: r.parentId,
-        climate: r.climate?.type ?? null,
-        placeholder: true,
-      },
-      geometry: { type: 'Polygon', coordinates: [circle(r.centroid, r.radiusKm)] },
-    })),
+        properties: {
+          id: r.id,
+          name: r.name,
+          level: r.level,
+          parentId: r.parentId,
+          climate: r.climate?.type ?? null,
+          placeholder: !outline,
+          bbox: outline ? bbox(outline) : null,
+        },
+        geometry: outline ?? { type: 'Polygon', coordinates: [circle(r.centroid, r.radiusKm)] },
+      };
+    }),
 };
+const outlined = geojson.features.filter((f) => !f.properties.placeholder).length;
 
 mkdirSync(OUT_DIR, { recursive: true });
 writeFileSync(join(OUT_DIR, 'content.json'), JSON.stringify(bundle));
 writeFileSync(join(OUT_DIR, 'regions.geojson.json'), JSON.stringify(geojson));
-console.log(`wrote app/src/generated/content.json and regions.geojson.json`);
+console.log(`wrote app/src/generated/content.json and regions.geojson.json (${outlined} real outlines, ${geojson.features.length - outlined} placeholder circles)`);

@@ -11,3 +11,6 @@ app/android/
 
 # build outputs that are regenerated from /content
 build/
+
+# large map source data (download it, then npm run map:boundaries)
+tools/boundaries/source/

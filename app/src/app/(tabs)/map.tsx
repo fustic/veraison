@@ -119,6 +119,20 @@ export default function MapScreen() {
     void getSetting(db, 'map.online').then((v) => v === '0' && setOnlineState(false));
   }, [db]);
 
+  // Bounding boxes of the real outlines (with a margin), for framing the camera.
+  const outlineBounds = useMemo(() => {
+    const m = new globalThis.Map<string, Bounds>();
+    const fc = regionsGeoJson as unknown as { features: { properties: { id: string; bbox: Bounds | null } }[] };
+    for (const f of fc.features) {
+      const b = f.properties.bbox;
+      if (!b) continue;
+      const mx = (b[2] - b[0]) * 0.1;
+      const my = (b[3] - b[1]) * 0.1;
+      m.set(f.properties.id, [b[0] - mx, b[1] - my, b[2] + mx, b[3] + my]);
+    }
+    return m;
+  }, []);
+
   const hasContent = (iso: string) => content.regionById.has(`region:${iso}`);
   const openRegion = (id: string) => {
     setFocus({ kind: 'region', id });
@@ -154,7 +168,10 @@ export default function MapScreen() {
     const country = iso ? countryByIso.get(iso) : undefined;
     const countryBounds = iso ? (COUNTRY_BOUNDS[iso] ?? (country ? mainlandBounds(country.geometry) : null)) : null;
     if (focus.kind === 'country') bounds = countryBounds;
-    if (focus.kind === 'region' && region) bounds = region.level === 'country' && countryBounds ? countryBounds : regionBounds(region, content.childrenOf);
+    if (focus.kind === 'region' && region) {
+      const outline = outlineBounds.get(region.id);
+      bounds = region.level === 'country' && countryBounds ? countryBounds : outline ?? regionBounds(region, content.childrenOf);
+    }
     if (bounds) camera.current?.fitBounds(bounds, { padding, duration: 900 });
     else camera.current?.flyTo({ ...WORLD, duration: 900 });
   };
@@ -394,7 +411,9 @@ export default function MapScreen() {
           ) : region ? (
             <RegionSheet region={region} onRegion={openRegion} onStudied={() => toggleStudied(region.id)} />
           ) : null}
-          {online ? <Text style={styles.credit}>© OpenFreeMap © OpenStreetMap contributors</Text> : null}
+          <Text style={styles.credit}>
+            {online ? '© OpenFreeMap © OpenStreetMap contributors · ' : ''}Appellation outlines: Candiago et al. 2022 · Countries: Natural Earth
+          </Text>
         </ScrollView>
       </View>
     </View>

@@ -1,30 +1,33 @@
-# Real appellation boundaries (next step)
+# Appellation outlines
 
-The map currently draws a circle per region from `centroid` and `radiusKm` in
-`/content`. That is enough to test the map, tapping and "seen" tinting. Real
-outlines replace the circles region by region.
+The map draws real outlines for regions listed in `eu-pdo-regions.ts` and a placeholder
+circle (from `centroid` and `radiusKm` in `/content`) for everything else.
 
-| Area | Source | Notes |
-| --- | --- | --- |
-| France | INAO AOC parcel delimitations, data.gouv.fr dataset `5aaf6b7ec751df67b0d7a87f` | Official shapefiles at parcel level. Dissolve parcels by appellation, then simplify. Coverage is not yet complete. |
-| Rest of the EU | Candiago et al. 2022, "A geospatial inventory of regulatory information for wine PDOs in Europe" (Scientific Data) | Municipality-level outlines for all 1,177 EU wine PDOs. Check the licence before shipping. |
-| USA | UC Davis AVA project (GitHub `UCDavisLibrary/ava`) | GeoJSON per AVA. |
-| Everything else | Hand-traced in QGIS from official descriptions | Around 40 syllabus areas. |
+## Source
 
-Suggested pipeline, on your Mac:
+Candiago, S. et al. (2022). *A geospatial inventory of regulatory information for wine
+protected designations of origin in Europe.* Scientific Data 9, 394.
+Data: https://doi.org/10.6084/m9.figshare.c.5877659.v1 (file `EU_PDO.gpkg`).
 
-```sh
-brew install gdal tippecanoe pmtiles
+One outline per EU wine PDO (1,177 in 21 countries), drawn from the municipalities each PDO
+covers. That is coarser than the parcel-level INAO delimitation, but right for a study map,
+and it covers Italy, Spain, Germany and the rest when those chapters arrive.
 
-# 1. dissolve INAO parcels into one polygon per appellation
-ogr2ogr -f GeoJSON build/fr-aoc.geojson inao.shp -dialect sqlite \
-  -sql "SELECT app AS name, ST_Union(geometry) AS geometry FROM inao GROUP BY app"
+## Updating
 
-# 2. simplify and tile (zoom 4–12 is plenty for study)
-tippecanoe -o build/regions.mbtiles -z12 -Z4 --simplification=4 -l regions build/fr-aoc.geojson
-pmtiles convert build/regions.mbtiles app/assets/map/regions.pmtiles
-```
+1. Download `EU_PDO.gpkg` to `tools/boundaries/source/` (ignored by git).
+2. Map study regions to PDO names in `eu-pdo-regions.ts`. `npm run map:boundaries -- --list fr`
+   prints every French PDO name; use `it`, `es`, `de`… for other countries.
+3. `npm run map:boundaries` writes `content/boundaries/regions.json` (simplified, committed)
+   and lists any names it could not find.
+4. `npm run content:build` puts the outlines into `app/src/generated/regions.geojson.json`.
 
-Then map each INAO appellation name to a `region:` id in `/content` (a small lookup
-table), and switch the map's GeoJSONSource to a VectorSource reading the bundled
-PMTiles file. Keep the GeoJSON circles as the fallback for regions without outlines.
+`build-boundaries.ts` reads the GeoPackage with Node's built-in SQLite and converts the
+European LAEA grid (EPSG:3035) to longitude/latitude itself, so no GDAL is needed.
+
+## Outside the EU
+
+| Area | Source |
+| --- | --- |
+| USA | UC Davis AVA project (GitHub `UCDavisLibrary/ava`), GeoJSON per AVA, CC0 |
+| Others | Hand-traced from official descriptions, about 40 syllabus areas |
