@@ -93,9 +93,15 @@ Upgrade the app's packages with Expo's tools, never with `npm audit fix`:
 
 ```sh
 cd app
-npx expo install --fix   # move every package to the version this Expo SDK expects
+npm run upgrade          # newest stable Expo SDK + matching packages, checks, fresh ios/
+npx expo install --fix   # or: just realign packages to the installed SDK
 npx expo-doctor          # check the project for version mismatches
 ```
+
+`npm run upgrade` (`app/scripts/upgrade.sh`) asks npm for Expo's latest stable release,
+installs it, aligns every Expo-managed package, updates MapLibre within v11, drops the
+SDK 57 scene-lifecycle switch when moving to SDK 58+, runs expo-doctor and the
+typecheck, and regenerates `ios/`. Run it on a clean working tree so it is easy to undo.
 
 `npm audit fix` resolves advisories without knowing which versions the Expo SDK needs.
 On SDK 57 it downgrades react-native-reanimated and react-native-worklets and drops

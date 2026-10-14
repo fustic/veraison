@@ -8,7 +8,8 @@
     "start": "expo start --dev-client",
     "ios": "expo run:ios",
     "android": "expo run:android",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "upgrade": "sh ./scripts/upgrade.sh"
   },
   "dependencies": {
     "@maplibre/maplibre-react-native": "^11.5.0",
