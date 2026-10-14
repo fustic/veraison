@@ -3,7 +3,7 @@
 import { router } from 'expo-router';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { GrapeIcon } from '../../GrapeIcon';
+import { AromaIcon } from '../../AromaIcon';
 import { CompareLine, H1, Kicker } from '../../components';
 import { useData } from '../../data/DataProvider';
 import { Text } from '../../Text';
@@ -44,6 +44,9 @@ export default function Grapes() {
             </View>
             {g.list.map((grape) => {
               const s = statuses.get(grape.id);
+              // The grape's signature fruit at normal ripeness stands for it in the list.
+              const fruit = grape.aromas.find((a) => a.ripeness === 'ripe') ?? grape.aromas[0];
+              const aroma = fruit ? content.aromaById.get(fruit.aromaId) : undefined;
               return (
                 <Pressable
                   key={grape.id}
@@ -52,7 +55,7 @@ export default function Grapes() {
                   style={({ pressed }) => [styles.row, pressed && { opacity: 0.85 }]}
                 >
                   <View style={styles.icon}>
-                    <GrapeIcon colour={grape.berryColour} size={38} />
+                    {aroma ? <AromaIcon shape={aroma.icon.shape} c1={aroma.icon.c1} c2={aroma.icon.c2} size={34} /> : null}
                   </View>
                   <View style={{ flex: 1, gap: 2 }}>
                     <Text style={styles.name}>{grape.name}</Text>

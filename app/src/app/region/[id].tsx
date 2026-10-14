@@ -5,7 +5,7 @@ import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { ancestry } from '../../../../core/src/mapnav.ts';
 import { countryName, regionCountry } from '../../../../core/src/reveal.ts';
 import { setBeenThere, setCheckedAgainstBook, setStudyStatus, type StudyStatus } from '../../../../core/src/userdb/progress.ts';
-import { GrapeIcon } from '../../GrapeIcon';
+import { AromaIcon } from '../../AromaIcon';
 import { Box, CauseCard, H1, H2, Kicker, PrimaryButton, Tag } from '../../components';
 import { useData, useMarkSeen } from '../../data/DataProvider';
 import { prettyId } from '../../names';
@@ -47,6 +47,8 @@ export default function RegionScreen() {
         <Text style={styles.subhead}>{title}</Text>
         {ids.map((g) => {
           const grape = content.grapeById.get(g);
+          const fruit = grape?.aromas.find((a) => a.ripeness === 'ripe') ?? grape?.aromas[0];
+          const aroma = fruit ? content.aromaById.get(fruit.aromaId) : undefined;
           return (
             <Pressable
               key={g}
@@ -55,7 +57,7 @@ export default function RegionScreen() {
               onPress={() => grape && router.push({ pathname: '/grape/[id]', params: { id: g } })}
               style={styles.grapeRow}
             >
-              <View style={styles.icon}>{grape ? <GrapeIcon colour={grape.berryColour} size={32} /> : null}</View>
+              <View style={styles.icon}>{aroma ? <AromaIcon shape={aroma.icon.shape} c1={aroma.icon.c1} c2={aroma.icon.c2} size={28} /> : null}</View>
               <Text style={[styles.grapeName, !grape && { color: colors.muted }]}>{grape?.name ?? prettyId(g)}</Text>
               <Text style={grape ? styles.chev : styles.soon}>{grape ? '›' : 'SOON'}</Text>
             </Pressable>
