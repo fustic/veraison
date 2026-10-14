@@ -20,18 +20,19 @@ export const PDO_FOR_REGION: Record<string, string[]> = {
   'region:fr-bordeaux-saint-emilion': ['Saint-Émilion'],
   'region:fr-bordeaux-pomerol': ['Pomerol'],
 
-  // Burgundy (the regional Bourgogne PDO also spreads into Beaujolais, so use its parts)
+  // Burgundy (the regional Bourgogne PDO also spreads into Beaujolais, so use its parts;
+  // the Hautes-Côtes are named areas inside that regional PDO, with no outline of their own)
   'region:fr-burgundy': [
     'Chablis', 'Petit Chablis', 'Irancy',
-    'Côte de Nuits-villages', 'Bourgogne Hautes Côtes de Nuits', 'Bourgogne Hautes Côtes de Beaune', 'Côte de Beaune',
+    'Côte de Nuits-Villages', 'Côte de Beaune',
     'Marsannay', 'Fixin', 'Gevrey-Chambertin', 'Morey-Saint-Denis', 'Chambolle-Musigny', 'Vougeot', 'Vosne-Romanée', 'Nuits-Saint-Georges',
-    'Ladoix', 'Aloxe-Corton', 'Pernand-Vergelesses', 'Savigny-lès-Beaune', 'Beaune', 'Pommard', 'Volnay', 'Monthélie',
+    'Ladoix', 'Aloxe-Corton', 'Pernand-Vergelesses', 'Savigny-lès-Beaune', 'Chorey-lès-Beaune', 'Beaune', 'Pommard', 'Volnay', 'Monthélie',
     'Auxey-Duresses', 'Saint-Romain', 'Meursault', 'Puligny-Montrachet', 'Chassagne-Montrachet', 'Saint-Aubin', 'Santenay', 'Maranges',
     'Rully', 'Mercurey', 'Givry', 'Montagny', 'Mâcon', 'Pouilly-Fuissé', 'Saint-Véran', 'Viré-Clessé',
   ],
   'region:fr-burgundy-chablis': ['Chablis'],
   'region:fr-burgundy-cote-de-nuits': [
-    'Côte de Nuits-villages', 'Marsannay', 'Fixin', 'Gevrey-Chambertin', 'Morey-Saint-Denis', 'Chambolle-Musigny', 'Vougeot', 'Vosne-Romanée', 'Nuits-Saint-Georges',
+    'Côte de Nuits-Villages', 'Marsannay', 'Fixin', 'Gevrey-Chambertin', 'Morey-Saint-Denis', 'Chambolle-Musigny', 'Vougeot', 'Vosne-Romanée', 'Nuits-Saint-Georges',
   ],
   'region:fr-burgundy-gevrey-chambertin': ['Gevrey-Chambertin'],
   'region:fr-burgundy-vougeot': ['Vougeot'],

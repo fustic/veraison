@@ -118,14 +118,16 @@ if (listCountry !== null) {
 }
 
 const byName = new Map<string, Row[]>();
+// Some PDOs carry several names ("Pouilly-Fumé / Blanc Fumé de Pouilly"): index each one.
 for (const r of rows) {
-  const key = fold(String(r[nameCol]));
-  byName.set(key, [...(byName.get(key) ?? []), r]);
+  const full = String(r[nameCol]);
+  const keys = new Set([full, ...full.split(' / ')].map(fold));
+  for (const key of keys) byName.set(key, [...(byName.get(key) ?? []), r]);
 }
 // Prefer the French PDO when several countries share a name.
 const lookup = (name: string): Row | undefined => {
   const hits = byName.get(fold(name)) ?? [];
-  return hits.find((r) => String(r[idCol ?? ''] ?? '').includes('FR') || String(r[countryCol ?? ''] ?? '').toUpperCase().startsWith('FR')) ?? hits[0];
+  return hits.find((r) => String(r[idCol ?? ''] ?? '').includes('-FR-') || String(r[countryCol ?? ''] ?? '').toUpperCase().startsWith('FR')) ?? hits[0];
 };
 
 const toLonLat = (x: number, y: number): [number, number] => (srs === 3035 ? laeaToLonLat(x, y) : [x, y]);

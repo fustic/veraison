@@ -7,7 +7,7 @@ circle (from `centroid` and `radiusKm` in `/content`) for everything else.
 
 Candiago, S. et al. (2022). *A geospatial inventory of regulatory information for wine
 protected designations of origin in Europe.* Scientific Data 9, 394.
-Data: https://doi.org/10.6084/m9.figshare.c.5877659.v1 (file `EU_PDO.gpkg`).
+Data: https://doi.org/10.6084/m9.figshare.c.5877659.v1 (files `EU_PDO.gpkg` and `PDO_EU_id.csv`).
 
 One outline per EU wine PDO (1,177 in 21 countries), drawn from the municipalities each PDO
 covers. That is coarser than the parcel-level INAO delimitation, but right for a study map,
@@ -15,7 +15,8 @@ and it covers Italy, Spain, Germany and the rest when those chapters arrive.
 
 ## Updating
 
-1. Download `EU_PDO.gpkg` to `tools/boundaries/source/` (ignored by git).
+1. Download `EU_PDO.gpkg` and `PDO_EU_id.csv` to `tools/boundaries/source/` (ignored by git).
+   The GeoPackage only has PDO codes; the CSV supplies the names.
 2. Map study regions to PDO names in `eu-pdo-regions.ts`. `npm run map:boundaries -- --list fr`
    prints every French PDO name; use `it`, `es`, `de`… for other countries.
 3. `npm run map:boundaries` writes `content/boundaries/regions.json` (simplified, committed)
