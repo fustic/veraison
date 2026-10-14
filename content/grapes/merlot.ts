@@ -1,11 +1,12 @@
 import type { Grape } from '../../core/src/content.ts';
 
+// Winemaking and styles updated from the user's red winemaking notes. Check against your book.
 export default {
   id: 'grape:merlot',
   name: 'Merlot',
   colour: 'red',
   berryColour: '#3E2348',
-  traits: ['Early ripening', 'Prone to coulure', 'Likes cooler clay'],
+  traits: ['Early budding', 'Early ripening', 'Prone to coulure', 'Likes cooler clay', 'Softer skins than Cabernet'],
   structure: {
     cool: { appearanceIntensity: [1, 2], acidity: [2, 3], tannin: [2, 3], body: [2, 3], alcohol: [1, 1] },
     warm: { appearanceIntensity: [2, 2], acidity: [1, 2], tannin: [2, 2], body: [3, 4], alcohol: [2, 2] },
@@ -28,9 +29,19 @@ export default {
     { factor: 'Early ripening', effect: 'ripens on cooler clay soils', result: 'leads the blends of the Right Bank' },
     { factor: 'Ripens easily', effect: 'reliable in cool vintages', result: 'adds flesh and softness to Cabernet blends' },
     { factor: 'Too much heat', effect: 'loses acidity, jammy fruit', result: 'flabby wines in hot sites' },
+    { factor: 'Picked as late as possible', effect: 'maximum colour, ripe fruit, velvety tannin', result: '"international" style: deep purple, blackberry and plum, often new oak' },
+    { factor: 'Picked earlier (mostly Bordeaux)', effect: 'more acidity, moderate sugar', result: 'medium body and alcohol, fresh red fruit, leafy notes' },
+    { factor: 'Softer skins than Cabernet', effect: 'colour and tannin come out more easily', result: 'less vigorous extraction needed' },
+    { factor: 'New oak, 12–18 months', effect: 'toast, vanilla and clove', result: 'suits its juicy plum fruit, adds complexity' },
   ],
   lookAlikes: [{ grapeId: 'grape:cabernet-sauvignon', tell: 'Cabernet is firmer and more acidic, with blackcurrant, mint and cedar.' }],
   regions: [
+    {
+      regionId: 'region:fr-bordeaux',
+      styleLevel: 2,
+      style: 'Blended with Cabernet Sauvignon for plum fruit and a smoother texture. The earlier-picked, fresher style is rarely made outside Bordeaux.',
+      producers: [],
+    },
     {
       regionId: 'region:fr-bordeaux-saint-emilion',
       styleLevel: 3,

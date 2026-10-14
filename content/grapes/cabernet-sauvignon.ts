@@ -1,11 +1,12 @@
 import type { Grape } from '../../core/src/content.ts';
 
+// Winemaking and regions updated from the user's red winemaking notes. Check against your book.
 export default {
   id: 'grape:cabernet-sauvignon',
   name: 'Cabernet Sauvignon',
   colour: 'red',
   berryColour: '#2B1B3D',
-  traits: ['Thick skins', 'Late budding', 'Late ripening'],
+  traits: ['Thick skins', 'Late budding', 'Late ripening', 'High tannin', 'Usually blended'],
   structure: {
     cool: { appearanceIntensity: [2, 2], acidity: [3, 4], tannin: [3, 4], body: [2, 3], alcohol: [1, 1], noseIntensity: [2, 3] },
     warm: { appearanceIntensity: [2, 2], acidity: [2, 3], tannin: [3, 4], body: [3, 4], alcohol: [2, 2], noseIntensity: [3, 4] },
@@ -27,8 +28,13 @@ export default {
   why: [
     { factor: 'Late ripening', effect: 'needs a long, warm season', result: 'only planted on the warmest gravel in Bordeaux' },
     { factor: 'Thick skins', effect: 'deep colour and high tannin', result: 'wines that need and reward ageing' },
-    { factor: 'Under-ripe grapes', effect: 'methoxypyrazines remain', result: 'green bell pepper and leafy notes' },
-    { factor: 'New oak maturation', effect: 'softens tannin, adds cedar and vanilla', result: 'classic premium style' },
+    { factor: 'Under-ripe grapes (cool site or poor vintage)', effect: 'methoxypyrazines remain, tannins unripe', result: 'green bell pepper, leafy notes and astringent tannin' },
+    { factor: 'Warm, sunny regions outside Europe', effect: 'full ripeness', result: 'full body, ripe blackcurrant and black cherry, smooth tannins' },
+    { factor: 'Destemmed, stems discarded', effect: 'no green stem tannin', result: 'avoids herbaceous, astringent notes' },
+    { factor: 'Lots of tannin in the skins', effect: 'gentle extraction late in fermentation (26–30 °C overall)', result: 'firm but not harsh tannins' },
+    { factor: 'Post-fermentation maceration', effect: 'slow, gentle extraction', result: 'softer, rounder tannin' },
+    { factor: 'Intense flavour and high tannin', effect: 'can take a lot of new oak', result: 'French barriques, typically 12–18 months; cedar and vanilla' },
+    { factor: 'Can lack flesh on its own', effect: 'blended with Merlot (Shiraz in Australia)', result: 'softer, fruitier, fuller wine' },
   ],
   lookAlikes: [
     { grapeId: 'grape:merlot', tell: 'Merlot is softer and plummier, with less acidity and gentler tannin.' },
@@ -48,12 +54,48 @@ export default {
       producers: ['Château Latour', 'Château Lafite Rothschild', 'Château Mouton Rothschild'],
     },
     {
+      regionId: 'region:fr-bordeaux-haut-medoc',
+      styleLevel: 3,
+      style: 'Its classic home: grippy tannin when young, cedar and blackcurrant leaf; blended with Merlot. Softens and opens with age.',
+      producers: [],
+    },
+    {
+      regionId: 'region:nz-hawkes-bay',
+      styleLevel: 3,
+      style: 'Moderate climate, often blended with Merlot.',
+      producers: [],
+    },
+    {
+      regionId: 'region:au-coonawarra',
+      styleLevel: 4,
+      style: 'Ripe blackcurrant and mint; varietal or blended, sometimes with Shiraz.',
+      producers: [],
+    },
+    {
+      regionId: 'region:au-margaret-river',
+      styleLevel: 4,
+      style: 'Ripe blackcurrant and black cherry, smooth tannins.',
+      producers: [],
+    },
+    {
+      regionId: 'region:za-stellenbosch',
+      styleLevel: 4,
+      style: 'Ripe black fruit, smooth tannins; varietal and blends.',
+      producers: [],
+    },
+    {
+      regionId: 'region:cl-colchagua-valley',
+      styleLevel: 4,
+      style: 'Warm and sunny: ripe blackcurrant and black cherry.',
+      producers: [],
+    },
+    {
       regionId: 'region:us-napa-valley',
       styleLevel: 5,
       style: 'Riper black fruit, fuller body, higher alcohol and plenty of new oak.',
       producers: [],
     },
   ],
-  alsoGrownIn: ['Coonawarra', 'Margaret River', 'Maipo Valley', 'Stellenbosch', "Hawke's Bay", 'Bolgheri'],
+  alsoGrownIn: ['South of France', 'Italy (with Sangiovese)', 'Spain (with Tempranillo)', 'Bolgheri', 'Maipo Valley'],
   verified: false,
 } satisfies Grape;

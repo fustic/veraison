@@ -1,13 +1,13 @@
 import type { Grape } from '../../core/src/content.ts';
 
-// Draft from general wine knowledge. Check against your book, then set verified: true.
+// Draft from general wine knowledge, updated from the user's red winemaking notes. Check against your book, then set verified: true.
 export default {
   id: 'grape:pinot-noir',
   name: 'Pinot Noir',
   colour: 'red',
   berryColour: '#5C2547',
   synonyms: ['Spätburgunder', 'Pinot Nero'],
-  traits: ['Thin skins', 'Early budding', 'Early ripening'],
+  traits: ['Thin skins', 'Early budding', 'Early ripening', 'Many clones', 'Rarely blended'],
   structure: {
     cool: { appearanceIntensity: [0, 0], acidity: [4, 4], tannin: [1, 2], body: [1, 2], alcohol: [1, 1], noseIntensity: [2, 3] },
     warm: { appearanceIntensity: [0, 1], acidity: [3, 3], tannin: [2, 2], body: [2, 3], alcohol: [1, 2], noseIntensity: [3, 3] },
@@ -28,18 +28,29 @@ export default {
     { aromaId: 'aroma:forest-floor' },
     { aromaId: 'aroma:mushroom' },
     { aromaId: 'aroma:game' },
+    { aromaId: 'aroma:wet-leaves' },
   ],
   why: [
     { factor: 'Early budding', effect: 'spring frost risk', result: 'careful site selection' },
-    { factor: 'Thin skins', effect: 'pale colour, low tannin', result: 'and prone to rot in wet vintages' },
+    { factor: 'Thin skins', effect: 'colour and tannin hard to extract', result: 'pale wines; overworking loses the delicate fruit' },
     { factor: 'Too much heat', effect: 'jammy fruit, lost fragrance', result: 'best in cool to moderate climates' },
-    { factor: 'Whole-bunch fermentation (some producers)', effect: 'adds fragrance and structure', result: 'stemmy, spicy notes' },
+    { factor: 'Very cool vintage or lesser site', effect: 'grapes not fully ripe', result: 'vegetal notes: cabbage, wet leaves' },
+    { factor: 'Cold soak, or a share of whole bunches (increasingly popular)', effect: 'more colour; whole bunches add red fruit and floral lift', result: 'fragrant, brighter wine' },
+    { factor: 'Warm fermentation (often above 30 °C)', effect: 'more colour, flavour and tannin', result: 'for longer-lived wines; cooler for lighter styles' },
+    { factor: 'Mostly second- or third-fill barrels, 12–24 months', effect: 'oak without overpowering the fruit', result: 'delicate flavours stay in front' },
+    { factor: 'Bottle age', effect: 'tertiary development', result: 'forest floor and mushroom' },
   ],
   lookAlikes: [
     { grapeId: 'grape:gamay', tell: 'Gamay is juicier, often with banana or bubblegum from carbonic maceration, and rarely earthy.' },
     { grapeId: 'grape:corvina', tell: 'Corvina shows sour cherry and a bitter-almond finish.' },
   ],
   regions: [
+    {
+      regionId: 'region:fr-burgundy',
+      styleLevel: 1,
+      style: 'Entry level (Bourgogne Rouge): very light, marked acidity, a hint of oak for structure.',
+      producers: [],
+    },
     {
       regionId: 'region:fr-burgundy-cote-de-nuits',
       styleLevel: 1,
@@ -77,6 +88,6 @@ export default {
       producers: ['Williams Selyem', 'Littorai'],
     },
   ],
-  alsoGrownIn: ['Martinborough', 'Yarra Valley', 'Tasmania', 'Casablanca Valley', 'Walker Bay', 'Champagne (sparkling)'],
+  alsoGrownIn: ['Los Carneros', 'Martinborough', 'Marlborough', 'Yarra Valley', 'Mornington Peninsula', 'Tasmania', 'Casablanca Valley', 'Walker Bay', 'Champagne (sparkling)'],
   verified: false,
 } satisfies Grape;

@@ -1,0 +1,80 @@
+import type { Grape } from '../../core/src/content.ts';
+
+// Drafted from the user's notes on red winemaking. Check against your book, then set verified: true.
+// Grenache needs warm or hot climates: "cool" stands for the more restrained modern style, "warm" for the ripest.
+export default {
+  id: 'grape:grenache',
+  name: 'Grenache',
+  colour: 'red',
+  berryColour: '#4E1E36',
+  synonyms: ['Garnacha'],
+  traits: ['Late ripening', 'Drought tolerant', 'Thin skins', 'High sugar', 'Usually blended'],
+  structure: {
+    cool: { appearanceIntensity: [0, 1], acidity: [1, 2], tannin: [1, 2], body: [2, 3], alcohol: [2, 2], noseIntensity: [2, 3] },
+    warm: { appearanceIntensity: [1, 1], acidity: [0, 1], tannin: [1, 2], body: [3, 4], alcohol: [2, 2], noseIntensity: [3, 4] },
+  },
+  aromas: [
+    { aromaId: 'aroma:raspberry', ripeness: 'less' },
+    { aromaId: 'aroma:red-cherry', ripeness: 'ripe' },
+    { aromaId: 'aroma:strawberry', ripeness: 'ripe' },
+    { aromaId: 'aroma:red-plum', ripeness: 'very' },
+    { aromaId: 'aroma:jammy', ripeness: 'very' },
+    { aromaId: 'aroma:baked-fruit', ripeness: 'very' },
+    { aromaId: 'aroma:black-pepper' },
+    { aromaId: 'aroma:dried-herbs' },
+    { aromaId: 'aroma:kirsch' },
+    { aromaId: 'aroma:leather' },
+  ],
+  why: [
+    { factor: 'Late ripening and drought tolerant', effect: 'needs and copes with warm, dry sites', result: 'grown in hot, dry regions' },
+    { factor: 'Thin skins, high sugar', effect: 'moderate colour, soft tannin, high alcohol', result: 'full-bodied, low-acid wines with red fruit' },
+    { factor: 'Too much heat', effect: 'jammy fruit, very high alcohol', result: 'blended with Carignan and Mourvèdre for fresher fruit, colour and tannin' },
+    { factor: 'Old bush vines at low yields', effect: 'small crops of concentrated grapes', result: 'intense red berry and peppery spice (Barossa, McLaren Vale)' },
+    { factor: 'Cold soak, gentle punching down, little post-fermentation maceration', effect: 'colour and flavour without harsh tannin', result: 'finesse in premium wines' },
+    { factor: 'Large old oak (foudres)', effect: 'no toasty new-oak flavours', result: 'red fruit stays in front' },
+  ],
+  lookAlikes: [
+    { grapeId: 'grape:syrah', tell: 'Syrah is deeper in colour with black fruit, pepper and firmer tannin; Grenache is paler, redder and more alcoholic.' },
+    { grapeId: 'grape:pinot-noir', tell: 'Both can be pale, but Pinot Noir has much higher acidity and lower alcohol; Grenache is riper, jammier and spicier.' },
+  ],
+  regions: [
+    {
+      regionId: 'region:es-rioja',
+      styleLevel: 2,
+      style: 'Mostly in Rioja Oriental. Adds perfume, body and alcohol to Tempranillo blends.',
+      producers: [],
+    },
+    {
+      regionId: 'region:fr-languedoc',
+      styleLevel: 3,
+      style: 'Blended with Syrah, Mourvèdre, Carignan and Cinsault (also in Roussillon); spicy and perfumed, reminiscent of local herbs.',
+      producers: [],
+    },
+    {
+      regionId: 'region:fr-rhone-chateauneuf-du-pape',
+      styleLevel: 4,
+      style: 'Southern Rhône, its finest home. Blended with Syrah and Mourvèdre: full body, rich texture, concentrated spicy red fruit.',
+      producers: [],
+    },
+    {
+      regionId: 'region:es-priorat',
+      styleLevel: 4,
+      style: 'Blended with Carignan: deep colour, high tannin, fresh black fruit, toasty oak.',
+      producers: [],
+    },
+    {
+      regionId: 'region:au-barossa-valley',
+      styleLevel: 5,
+      style: 'Old bush vines: robust and ripe, intense red berries and peppery spice. Once very heavy, now more restrained.',
+      producers: [],
+    },
+    {
+      regionId: 'region:au-mclaren-vale',
+      styleLevel: 5,
+      style: 'Like Barossa: old vines, concentrated red fruit and spice, full body.',
+      producers: [],
+    },
+  ],
+  alsoGrownIn: ['Navarra', 'Calatayud', 'Cariñena', 'Roussillon', 'Spanish rosado'],
+  verified: false,
+} satisfies Grape;
