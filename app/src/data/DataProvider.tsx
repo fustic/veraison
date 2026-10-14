@@ -4,7 +4,7 @@ import { randomUUID } from 'expo-crypto';
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 import { Text } from '../Text';
-import type { Aroma, ContentBundle, Grape, Region, WineProfile } from '../../../core/src/content.ts';
+import type { Aroma, ContentBundle, Grape, Region, Topic, WineProfile } from '../../../core/src/content.ts';
 import type { Db, Deps } from '../../../core/src/userdb/db.ts';
 import { systemClock } from '../../../core/src/userdb/db.ts';
 import { migrate } from '../../../core/src/userdb/migrations.ts';
@@ -20,6 +20,7 @@ export interface Content extends Bundle {
   grapeById: Map<string, Grape>;
   regionById: Map<string, Region>;
   profileById: Map<string, WineProfile>;
+  topicById: Map<string, Topic>;
   childrenOf: Map<string | null, Region[]>;
 }
 
@@ -36,6 +37,7 @@ function indexContent(b: Bundle): Content {
     grapeById: new Map(b.grapes.map((g) => [g.id, g])),
     regionById: new Map(b.regions.map((r) => [r.id, r])),
     profileById: new Map(b.profiles.map((p) => [p.id, p])),
+    topicById: new Map((b.topics ?? []).map((t) => [t.id, t])),
     childrenOf,
   };
 }

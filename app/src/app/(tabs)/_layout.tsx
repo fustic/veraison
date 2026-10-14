@@ -1,5 +1,5 @@
 import { Tabs } from 'expo-router';
-import { GrapesIcon, MapIcon, TasteIcon, TodayIcon } from '../../TabIcons';
+import { GrapesIcon, MapIcon, StudyIcon, TasteIcon, TodayIcon } from '../../TabIcons';
 import { colors, fonts } from '../../theme';
 
 export default function TabsLayout() {
@@ -17,6 +17,7 @@ export default function TabsLayout() {
       <Tabs.Screen name="grapes" options={{ title: 'Grapes', tabBarIcon: GrapesIcon }} />
       <Tabs.Screen name="map" options={{ title: 'Map', tabBarIcon: MapIcon }} />
       <Tabs.Screen name="notes" options={{ title: 'Taste', tabBarIcon: TasteIcon }} />
+      <Tabs.Screen name="study" options={{ title: 'Study', tabBarIcon: StudyIcon }} />
     </Tabs>
   );
 }

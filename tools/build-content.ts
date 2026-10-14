@@ -12,7 +12,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import type { ContentBundle, Range, StructureRanges } from '../core/src/content.ts';
 import { SCALES, type StructureField } from '../core/src/sat.ts';
-import { aromas, grapes, profiles, regions } from '../content/index.ts';
+import { aromas, grapes, profiles, regions, topics } from '../content/index.ts';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const OUT_DIR = join(ROOT, 'app', 'src', 'generated');
@@ -32,6 +32,7 @@ aromas.forEach((a) => register('aroma', a.id, 'aroma:'));
 grapes.forEach((g) => register('grape', g.id, 'grape:'));
 regions.forEach((r) => register('region', r.id, 'region:'));
 profiles.forEach((p) => register('profile', p.id, 'profile:'));
+topics.forEach((t) => register('topic', t.id, 'topic:'));
 
 const has = (id: string) => ids.has(id);
 const pending = new Set<string>();
@@ -75,8 +76,17 @@ for (const p of profiles) {
   Object.keys(p.aromas).forEach((a) => ref(`${p.id} aroma`, a, true));
 }
 
+for (const t of topics) {
+  if (!t.sections.length) errors.push(`${t.id}: a topic needs at least one section`);
+  for (const sec of t.sections) {
+    if (!sec.points.length && !sec.causes?.length) errors.push(`${t.id} › ${sec.heading}: empty section`);
+    // Links to topics must exist; grapes and regions may be planned ("coming soon").
+    sec.links?.forEach((l) => ref(`${t.id} › ${sec.heading}`, l, l.startsWith('topic:')));
+  }
+}
+
 if (pending.size) warnings.push(`Not written yet (shown as "coming soon"): ${[...pending].sort().join(', ')}`);
-const unverified = [...grapes, ...regions, ...profiles].filter((x) => !x.verified).length;
+const unverified = [...grapes, ...regions, ...profiles, ...topics].filter((x) => !x.verified).length;
 warnings.push(`${unverified} entries still marked verified: false — check them against your book.`);
 
 for (const w of warnings) console.warn(`warning: ${w}`);
@@ -86,12 +96,12 @@ if (errors.length) {
   process.exit(1);
 }
 
-const body = { aromas, grapes, regions, profiles, pending: [...pending].sort() };
+const body = { aromas, grapes, regions, profiles, topics, pending: [...pending].sort() };
 const version = createHash('sha256').update(JSON.stringify(body)).digest('hex').slice(0, 12);
 const bundle: ContentBundle & { pending: string[] } = { version, ...body };
 
 console.log(
-  `ok: ${aromas.length} aromas, ${grapes.length} grapes, ${regions.length} regions, ${profiles.length} profiles (version ${version})`,
+  `ok: ${aromas.length} aromas, ${grapes.length} grapes, ${regions.length} regions, ${profiles.length} profiles, ${topics.length} topics (version ${version})`,
 );
 if (process.argv.includes('--check')) process.exit(0);
 

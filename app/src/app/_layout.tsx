@@ -35,6 +35,7 @@ export default function RootLayout() {
           <Stack.Screen name="grape/[id]" options={{ title: '' }} />
           <Stack.Screen name="region/[id]" options={{ title: '' }} />
           <Stack.Screen name="compare" options={{ title: 'Compare' }} />
+          <Stack.Screen name="topic/[id]" options={{ title: '' }} />
           <Stack.Screen name="note/new" options={{ headerShown: false, presentation: 'fullScreenModal', gestureEnabled: false }} />
           <Stack.Screen name="note/[id]" options={{ title: 'Note' }} />
           <Stack.Screen name="note/reveal/[id]" options={{ title: 'What was it?' }} />

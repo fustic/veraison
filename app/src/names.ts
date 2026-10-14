@@ -1,9 +1,11 @@
 // Display names shared by several screens.
+import { countryName } from '../../core/src/reveal.ts';
 import { SCALES, type StructureField } from '../../core/src/sat.ts';
 
 /** A readable name for a content id that is not written yet: region:de-baden → Baden. */
 export function prettyId(id: string): string {
   const slug = id.split(':')[1] ?? id;
+  if (/^[a-z]{2}$/.test(slug)) return countryName(slug) ?? slug.toUpperCase();
   return slug
     .replace(/^[a-z]{2}-/, '')
     .split('-')

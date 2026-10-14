@@ -32,6 +32,8 @@ export default {
     { factor: 'Neutral variety', effect: 'shows climate and winemaking clearly', result: 'lean and citrusy to rich and toasty' },
     { factor: 'Malolactic conversion and lees stirring', effect: 'buttery notes and creamy texture', result: 'fuller, rounder style' },
     { factor: 'Barrel fermentation and new oak', effect: 'vanilla, toast and integration', result: 'premium styles that can age' },
+    { factor: 'Warm or hot climate', effect: 'acidity drops fast late in ripening', result: 'harvest timing is critical; acidification common in cheap wines' },
+    { factor: 'Climate', effect: 'cool: apple and lemon; moderate: white peach, melon, lemon; warm: peach, banana, pineapple', result: 'the fruit tells you the climate' },
   ],
   lookAlikes: [
     { grapeId: 'grape:sauvignon-blanc', tell: 'Unoaked Chablis is less aromatic than Sancerre and never grassy or herbaceous.' },
@@ -41,13 +43,19 @@ export default {
     {
       regionId: 'region:fr-burgundy-chablis',
       styleLevel: 1,
-      style: 'Lean, high acid, green apple, citrus and a stony note; little or no new oak.',
+      style: 'High acid, green apple and citrus, often wet stones or slate. Steel or old oak, little or no new oak; MLC is still usual, softening the acidity.',
       producers: ['Domaine Raveneau', 'Domaine Vincent Dauvissat'],
+    },
+    {
+      regionId: 'region:fr-burgundy-maconnais',
+      styleLevel: 4,
+      style: 'Riper and rounder than the Côte d’Or, sometimes with toasty oak.',
+      producers: [],
     },
     {
       regionId: 'region:fr-burgundy-puligny-montrachet',
       styleLevel: 3,
-      style: 'Precise and mineral, with citrus, stone fruit and subtle oak.',
+      style: 'Côte d’Or at its most precise: subtle stone fruit and citrus with creamy oak; MLC and long lees ageing; nuts or mushroom with age.',
       producers: ['Domaine Leflaive'],
     },
     {
@@ -57,6 +65,18 @@ export default {
       producers: ['Domaine des Comtes Lafon', 'Domaine Coche-Dury'],
     },
   ],
-  alsoGrownIn: ['Mâconnais', 'Sonoma', 'Santa Barbara', 'Yarra Valley', 'Mornington Peninsula', 'Margaret River', 'Casablanca Valley', 'Champagne (sparkling)'],
+  alsoGrownIn: [
+    'Russian River Valley',
+    'Los Carneros',
+    'Santa Barbara',
+    'Adelaide Hills',
+    'Margaret River',
+    'Mornington Peninsula',
+    'Yarra Valley',
+    'Gisborne',
+    'Marlborough',
+    'Casablanca Valley',
+    'Champagne (sparkling)',
+  ],
   verified: false,
 } satisfies Grape;

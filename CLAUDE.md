@@ -11,8 +11,10 @@
   boundary so tests can run on `node:sqlite` (`core/test/nodeDb.ts`).
 - Before committing: `npm test` and `npm run content:check` must pass.
 - Content must be written in our own words, never copied from WSET materials. New entries
-  start with `verified: false`.
-- IDs are stable strings: `grape:`, `region:<iso2>-...`, `aroma:`, `profile:`. Renaming one
+  start with `verified: false`. Study notes the user shares go into `content/topics/` (theory)
+  and the matching `content/grapes/` / `content/regions/` files (facts), condensed and reworded.
+- IDs are stable strings: `grape:`, `region:<iso2>-...` (a country is `region:<iso2>`), `aroma:`,
+  `profile:`, `topic:`. Renaming one
   orphans user data that references it.
 - In `app/`, import `Text` and `TextInput` from `app/src/Text.tsx`, not from `react-native`:
   it maps `fontWeight` to the bundled IBM Plex files. Headings use `fonts.display`, small caps

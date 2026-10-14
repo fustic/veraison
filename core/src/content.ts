@@ -108,10 +108,32 @@ export interface WineProfile {
   verified: boolean;
 }
 
+/** One part of a study topic: the key points, the cause chains to learn, and links. */
+export interface TopicSection {
+  heading: string;
+  points: string[];
+  /** factor → effect → result chains: the shape short written answers need. */
+  causes?: CauseCard[];
+  /** grape:, region: or topic: ids this section is about (shown as links). */
+  links?: string[];
+}
+
+/** Study notes for one theory topic (e.g. white winemaking), in our own words. */
+export interface Topic {
+  id: string; // topic:white-winemaking
+  title: string;
+  /** Grouping on the Study tab, e.g. "Winemaking", "Viticulture". */
+  chapter: string;
+  summary: string;
+  sections: TopicSection[];
+  verified: boolean;
+}
+
 export interface ContentBundle {
   version: string;
   aromas: Aroma[];
   grapes: Grape[];
   regions: Region[];
   profiles: WineProfile[];
+  topics: Topic[];
 }

@@ -81,6 +81,7 @@ export default function GrapeScreen() {
       : `${warmNames.length ? `Warmer sites such as ${warmNames.join(' or ')}` : 'Warmer sites and sunny vintages'}: ${summarise(grape.structure.warm, red)}.`;
 
   const status = statuses.get(grape.id);
+  const relatedTopics = (content.topics ?? []).filter((t) => t.sections.some((sec) => sec.links?.includes(grape.id)));
   const setStatus = async (s: StudyStatus) => {
     await setStudyStatus(db, grape.id, s, deps);
     await refreshStatuses();
@@ -181,7 +182,9 @@ export default function GrapeScreen() {
         {regions.map((r) => {
           const region = content.regionById.get(r.regionId);
           const parent = region?.parentId ? content.regionById.get(region.parentId) : undefined;
-          const where = [parent && parent.level !== 'country' ? parent.name : null, countryName(regionCountry(r.regionId))].filter(Boolean).join(' · ');
+          const where = [parent && parent.level !== 'country' ? parent.name : null, countryName(regionCountry(r.regionId))]
+            .filter((x) => x && x !== regionName(r.regionId))
+            .join(' · ');
           return (
             <View key={r.regionId} style={styles.regionCard}>
               <View style={[styles.rowBetween, { alignItems: 'baseline', gap: 8 }]}>
@@ -246,6 +249,28 @@ export default function GrapeScreen() {
             );
           })}
         </Box>
+      ) : null}
+
+      {relatedTopics.length ? (
+        <View style={{ gap: 8 }}>
+          <View style={{ paddingHorizontal: 4 }}>
+            <H2>In your study notes</H2>
+          </View>
+          {relatedTopics.map((t) => (
+            <Pressable key={t.id} accessibilityRole="link" onPress={() => router.push({ pathname: '/topic/[id]', params: { id: t.id } })} style={styles.lookAlike}>
+              <View style={styles.rowBetween}>
+                <Text style={{ fontSize: 15, fontWeight: '600', color: colors.ink }}>{t.title}</Text>
+                <Text style={{ fontSize: 14, fontWeight: '600', color: colors.wine }}>Open →</Text>
+              </View>
+              <Text style={[styles.body, { color: colors.muted }]}>
+                {t.sections
+                  .filter((sec) => sec.links?.includes(grape.id))
+                  .map((sec) => sec.heading)
+                  .join(' · ')}
+              </Text>
+            </Pressable>
+          ))}
+        </View>
       ) : null}
 
       <View style={styles.progress}>

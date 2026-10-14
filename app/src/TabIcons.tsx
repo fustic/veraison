@@ -52,3 +52,14 @@ export function TasteIcon({ color, size }: Props) {
     </Svg>
   );
 }
+
+export function StudyIcon({ color, size }: Props) {
+  const s = stroke(color);
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24">
+      <Rect x={3.5} y={7} width={13.5} height={13} rx={2} {...s} />
+      <Path d="M7 4h11.5a2 2 0 0 1 2 2v11" {...s} />
+      <Path d="M7 11.5h6.5M7 15h4.5" {...s} />
+    </Svg>
+  );
+}
