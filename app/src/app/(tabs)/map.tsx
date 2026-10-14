@@ -11,6 +11,7 @@ import type { Region } from '../../../../core/src/content.ts';
 import { ancestry, mainlandBounds, regionBounds, type Bounds } from '../../../../core/src/mapnav.ts';
 import { COUNTRIES, countryName, regionCountry } from '../../../../core/src/reveal.ts';
 import { setStudyStatus } from '../../../../core/src/userdb/progress.ts';
+import { getSetting, setSetting } from '../../../../core/src/userdb/settings.ts';
 import { GrapeLine, H1, Kicker, LayersLine, PrimaryButton, ThermoLine } from '../../components';
 import { useData } from '../../data/DataProvider';
 import countriesGeoJson from '../../generated/countries.geojson.json';
@@ -87,7 +88,14 @@ export default function MapScreen() {
   const params = useLocalSearchParams<{ focus?: string }>();
   const camera = useRef<CameraRef>(null);
   const [focus, setFocus] = useState<Focus>({ kind: 'world' });
-  const [online, setOnline] = useState(false);
+  // Street basemap on by default; falls back to the offline map when it cannot load.
+  const [online, setOnlineState] = useState(true);
+  const [offlineNote, setOfflineNote] = useState(false);
+  const setOnline = (on: boolean) => {
+    setOnlineState(on);
+    setOfflineNote(false);
+    void setSetting(db, 'map.online', on ? '1' : '0');
+  };
   const [colouring, setColouring] = useState<Colouring>('status');
   const [grapeId, setGrapeId] = useState<string | null>(null);
   // Sheet height lives in a ref: changing it must not re-render the map.
@@ -106,6 +114,10 @@ export default function MapScreen() {
     }
     return m;
   }, [countries]);
+
+  useEffect(() => {
+    void getSetting(db, 'map.online').then((v) => v === '0' && setOnlineState(false));
+  }, [db]);
 
   const hasContent = (iso: string) => content.regionById.has(`region:${iso}`);
   const openRegion = (id: string) => {
@@ -287,7 +299,16 @@ export default function MapScreen() {
 
   return (
     <View style={styles.screen}>
-      <Map style={StyleSheet.absoluteFill} mapStyle={online ? ONLINE_STYLE : OFFLINE_STYLE} logo={false} attribution compass={false}>
+      <Map style={StyleSheet.absoluteFill} mapStyle={online ? ONLINE_STYLE : OFFLINE_STYLE}
+        logo={false}
+        attribution
+        compass={false}
+        onDidFailLoadingMap={() => {
+          if (!online) return;
+          setOnlineState(false);
+          setOfflineNote(true);
+        }}
+      >
         <Camera ref={camera} initialViewState={WORLD} />
 
         {countrySource}
@@ -321,14 +342,14 @@ export default function MapScreen() {
         </ScrollView>
       </View>
 
-      <View style={[styles.tools, { top: insets.top + 68 }]}>
+      <View style={[styles.tools, { top: insets.top + 120 }]}>
         <Tool label="Climate layer" on={colouring === 'climate'} onPress={() => setColouring(colouring === 'climate' ? 'status' : 'climate')}>
           <ThermoLine color={colouring === 'climate' ? '#FFFFFF' : colors.ink} />
         </Tool>
         <Tool label="Where does a grape grow" on={colouring === 'grape'} onPress={() => setColouring(colouring === 'grape' ? 'status' : 'grape')}>
           <GrapeLine color={colouring === 'grape' ? '#FFFFFF' : colors.ink} />
         </Tool>
-        <Tool label="Street map (online)" on={online} onPress={() => setOnline((v) => !v)}>
+        <Tool label="Street map (online)" on={online} onPress={() => setOnline(!online)}>
           <LayersLine color={online ? '#FFFFFF' : colors.ink} />
         </Tool>
       </View>
@@ -361,6 +382,7 @@ export default function MapScreen() {
           <View style={styles.handle} />
         </Pressable>
         <ScrollView contentContainerStyle={{ gap: 12, paddingBottom: 16 }} scrollEnabled={!collapsed}>
+          {offlineNote ? <Text style={styles.muted}>No connection: showing the offline map.</Text> : null}
           {colouring === 'climate' ? <ClimateLegend /> : null}
           {colouring === 'grape' && !grapeId ? <Text style={styles.muted}>Pick a grape above to see where it grows.</Text> : null}
           {focus.kind === 'world' ? (

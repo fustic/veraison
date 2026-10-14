@@ -70,7 +70,8 @@ expo ≥ 57.0.23). Remove that option when moving to SDK 58, which has it built 
    changes at each level. Region circles are placeholders.
 3. Tap Pauillac: the sheet shows it and it turns pink (seen). Go back to Today: the regions
    count went up.
-4. Tap the layers button (third on the right): streets appear under the circles.
+4. The street map is on by default; with no connection the map switches to the offline
+   outlines by itself. The layers button (third on the right) turns streets on and off.
 5. **Taste** → New tasting note → save → the suggestion screen shows a top 3. Reveal the
    wine and check the comparison.
 6. Kill and reopen the app: the note and the seen regions are still there.
