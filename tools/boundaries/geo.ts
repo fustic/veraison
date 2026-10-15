@@ -130,3 +130,20 @@ export function simplifyRing(ring: Ring, tolerance: number): Ring | null {
   }
   return out.length >= 4 ? out : null;
 }
+
+const LEVEL_TOLERANCE: Record<string, number> = { country: 0.01, region: 0.004, district: 0.002, appellation: 0.0008 };
+
+/** Simplification tolerance in degrees: set by the region's level, but coarser for very large
+ *  outlines (about 1/400 of their width), which are only ever seen zoomed out. */
+export function toleranceFor(level: string, polygons: readonly (readonly (readonly [number, number])[])[][]): number {
+  let [w, s, e, n] = [Infinity, Infinity, -Infinity, -Infinity];
+  for (const poly of polygons)
+    for (const [x, y] of poly[0] ?? []) {
+      w = Math.min(w, x);
+      e = Math.max(e, x);
+      s = Math.min(s, y);
+      n = Math.max(n, y);
+    }
+  const span = Math.max(e - w, n - s);
+  return Math.max(LEVEL_TOLERANCE[level] ?? 0.001, Number.isFinite(span) ? span / 400 : 0);
+}

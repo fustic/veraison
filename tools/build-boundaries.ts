@@ -15,7 +15,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { regions } from '../content/index.ts';
 import { PDO_FOR_REGION } from './boundaries/eu-pdo-regions.ts';
-import { decodeGpkgGeometry, laeaToLonLat, simplifyRing, type Ring } from './boundaries/geo.ts';
+import { decodeGpkgGeometry, laeaToLonLat, simplifyRing, toleranceFor, type Ring } from './boundaries/geo.ts';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const args = process.argv.slice(2);
@@ -134,7 +134,6 @@ const lookup = (name: string, iso: string, only = false): Row | undefined => {
 };
 
 const toLonLat = (x: number, y: number): [number, number] => (srs === 3035 ? laeaToLonLat(x, y) : [x, y]);
-const levelTolerance: Record<string, number> = { country: 0.01, region: 0.004, district: 0.002, appellation: 0.0008 };
 const isoOf = (id: string) => /^region:([a-z]{2})(?:-|$)/.exec(id)?.[1]?.toUpperCase() ?? '';
 
 // 1. Regions that are PDOs themselves: the explicit list in eu-pdo-regions.ts, else the PDO
@@ -182,7 +181,7 @@ const out: Record<string, { pdo: string[]; geometry: { type: 'MultiPolygon'; coo
 for (const region of regions) {
   const r = raw.get(region.id);
   if (!r) continue;
-  const tol = levelTolerance[region.level] ?? 0.001;
+  const tol = toleranceFor(region.level, r.polygons);
   const polygons = r.polygons
     .map((poly) => poly.map((ring) => simplifyRing(ring, tol)).filter((x): x is Ring => x !== null))
     .filter((rings) => rings.length > 0 && rings[0]);

@@ -16,8 +16,10 @@
 - Regions live in `content/regions/` (`france.ts`, `europe.ts`, `new-world.ts`, built with the `r()`
   helper in `r.ts`); grapes one per file in `content/grapes/`; topics in `content/topics/`. Register new
   files or arrays in `content/index.ts` (topic order there is the Study tab order).
-- Map outlines: `npm run map:boundaries` matches EU regions to PDOs by name; list exceptions and
-  composites in `tools/boundaries/eu-pdo-regions.ts`, then `npm run content:build`.
+- Map outlines: `npm run map:boundaries` (EU PDOs, by name; exceptions in `eu-pdo-regions.ts`),
+  `npm run map:us` (AVAs, `us-ava-regions.ts`), `npm run map:world` (AU, NZ, CL, AR, ZA,
+  `world-regions.ts`), then `npm run content:build`. Source data lives in the gitignored
+  `tools/boundaries/source/`.
 - IDs are stable strings: `grape:`, `region:<iso2>-...` (a country is `region:<iso2>`), `aroma:`,
   `profile:`, `topic:`. Renaming one
   orphans user data that references it.

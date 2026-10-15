@@ -37,8 +37,13 @@ European LAEA grid (EPSG:3035) to longitude/latitude itself, so no GDAL is neede
 | Area | Source |
 | --- | --- |
 | USA | Done: UC Davis AVA project (GitHub `UCDavisLibrary/ava`, CC0). Put `avas_aggregated_files/avas.geojson` in `source/ava/`, run `npm run map:us`; mappings in `us-ava-regions.ts` |
-| Australia | Wine Australia GI feature service (zones, regions, subregions), CC BY 4.0. Not reachable from the cloud shell; download layers as GeoJSON |
-| New Zealand | IPONZ GI register: each registered GI has a downloadable "geographical data file" (ZIP) |
-| Chile | Decree 464 (SAG) defines valleys by provinces and comunas: build from geoBoundaries CHL ADM2/ADM3 (CC BY 4.0) |
-| Argentina | INV IG list: IGs are departments or provinces (Valle de Uco = San Carlos + Tunuyán + Tupungato): build from geoBoundaries ARG ADM1/ADM2 |
-| South Africa | SAWIS publishes Wine of Origin maps as PDFs only; approximate from municipalities or trace by hand |
+| Australia | Done: Wine Australia GI feature service (CC BY 4.0). Save the zones, regions and subregions layers as GeoJSON in `source/au/`, run `npm run map:world` |
+| New Zealand | Done: IPONZ GI register data files. Unzip each GI into `source/nz/` (the builder reads `<GI>.json`) |
+| Chile | Done: Decree 464 (SAG) valleys as provinces, regions or comunas, from geoBoundaries CHL (CC BY 3.0 IGO) in `source/gb/` |
+| Argentina | Done: INV IGs as departments or provinces, from geoBoundaries ARG |
+| South Africa | Approximate: Wine of Origin districts drawn as the nearest local municipality (geoBoundaries ZAF ADM3); Constantia, Durbanville, Franschhoek and Elgin stay circles. SAWIS publishes the real boundaries only as PDF maps |
+
+The mapping for these five countries is in `world-regions.ts`; `npm run map:world` writes
+`content/boundaries/world.json`. geoBoundaries files are the `_simplified.geojson` downloads from
+`media.githubusercontent.com/media/wmgeolab/geoBoundaries/main/releaseData/gbOpen/<ISO>/<ADM>/`,
+saved as `<ISO>-<ADM>.geojson`.

@@ -13,7 +13,8 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "map:countries": "node --disable-warning=ExperimentalWarning tools/build-countries.ts",
     "map:boundaries": "node --disable-warning=ExperimentalWarning tools/build-boundaries.ts",
-    "map:us": "node --disable-warning=ExperimentalWarning tools/build-ava-boundaries.ts"
+    "map:us": "node --disable-warning=ExperimentalWarning tools/build-ava-boundaries.ts",
+    "map:world": "node --disable-warning=ExperimentalWarning tools/build-world-boundaries.ts"
   },
   "devDependencies": {
     "typescript": "^5.8.0",

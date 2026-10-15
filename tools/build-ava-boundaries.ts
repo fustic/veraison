@@ -10,7 +10,7 @@ import { readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { regions } from '../content/index.ts';
-import { simplifyRing, type Ring } from './boundaries/geo.ts';
+import { simplifyRing, toleranceFor, type Ring } from './boundaries/geo.ts';
 import { AVA_FOR_REGION, STATE_EXTRAS, STATE_OF } from './boundaries/us-ava-regions.ts';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -31,7 +31,6 @@ const fold = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCa
 const byName = new Map(all.map((f) => [fold(f.properties.name), f]));
 const polygonsOf = (f: Feature): Ring[][] =>
   f.geometry.type === 'Polygon' ? [f.geometry.coordinates as Ring[]] : (f.geometry.coordinates as Ring[][]);
-const tolerance: Record<string, number> = { region: 0.004, district: 0.002, appellation: 0.0008 };
 
 const out: Record<string, { ava: string[]; geometry: { type: 'MultiPolygon'; coordinates: Ring[][] } }> = {};
 const missing: string[] = [];
@@ -46,9 +45,9 @@ for (const region of regions) {
     missing.push(region.id);
     continue;
   }
-  const tol = tolerance[region.level] ?? 0.002;
-  const coordinates = features
-    .flatMap(polygonsOf)
+  const polygons = features.flatMap(polygonsOf);
+  const tol = toleranceFor(region.level, polygons);
+  const coordinates = polygons
     .map((poly) => poly.map((ring) => simplifyRing(ring.map(([x, y]) => [x, y] as [number, number]), tol)).filter((r): r is Ring => r !== null))
     .filter((rings) => rings.length > 0);
   if (coordinates.length) out[region.id] = { ava: features.map((f) => f.properties.name), geometry: { type: 'MultiPolygon', coordinates } };

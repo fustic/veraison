@@ -133,6 +133,9 @@ None of the build-tool advisories reach the phone. Recheck when moving to Expo S
   PDO inventory, simplified by `tools/build-boundaries.ts`. See `tools/boundaries/README.md`.
 - **US AVA outlines** (`content/boundaries/us.json`): UC Davis Library AVA Digitizing Project (CC0),
   simplified by `tools/build-ava-boundaries.ts` (`npm run map:us`).
+- **Australia, New Zealand, Chile, Argentina, South Africa** (`content/boundaries/world.json`):
+  © Wine Australia GIs (CC BY 4.0), IPONZ GI register, geoBoundaries (CC BY 3.0 IGO); South Africa is
+  approximate. `npm run map:world`; see `tools/boundaries/README.md`.
 
 ## Distribution
 

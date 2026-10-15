@@ -77,6 +77,11 @@ const COUNTRY_BOUNDS: Record<string, Bounds> = {
   au: [112, -44, 154, -10],
 };
 
+/** Regions whose outline only approximates the official boundary (see tools/boundaries/world-regions.ts). */
+const APPROXIMATE = new Set(
+  (regionsGeoJson as unknown as { features: { properties: { id: string; approximate?: boolean } }[] }).features.filter((f) => f.properties.approximate).map((f) => f.properties.id),
+);
+
 type Focus = { kind: 'world' } | { kind: 'zone'; id: ZoneId } | { kind: 'country'; iso: string } | { kind: 'region'; id: string };
 type Colouring = 'status' | 'climate' | 'grape';
 
@@ -416,7 +421,7 @@ export default function MapScreen() {
             <RegionSheet region={region} onRegion={openRegion} onStudied={() => toggleStudied(region.id)} />
           ) : null}
           <Text style={styles.credit}>
-            {online ? '© OpenFreeMap © OpenStreetMap contributors · ' : ''}Appellation outlines: Candiago et al. 2022, UC Davis AVA project · Countries: Natural Earth
+            {online ? '© OpenFreeMap © OpenStreetMap contributors · ' : ''}Outlines: Candiago et al. 2022, UC Davis AVA project, Wine Australia, IPONZ, geoBoundaries · Countries: Natural Earth
           </Text>
         </ScrollView>
       </View>
@@ -557,6 +562,7 @@ function RegionSheet({ region, onRegion, onStudied }: { region: Region; onRegion
       <View style={{ gap: 2 }}>
         <H1 size={24}>{region.name}</H1>
         {subtitle ? <Text style={styles.muted}>{subtitle}</Text> : null}
+        {APPROXIMATE.has(region.id) ? <Text style={styles.muted}>Approximate outline (nearest municipality); the official boundary differs.</Text> : null}
       </View>
 
       {region.level === 'country' ? (

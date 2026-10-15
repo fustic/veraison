@@ -110,10 +110,10 @@ if (process.argv.includes('--check')) process.exit(0);
 // for every other region.
 type Outline = { type: 'MultiPolygon'; coordinates: [number, number][][][] };
 const BOUNDARIES = join(ROOT, 'content', 'boundaries');
-const outlines: Record<string, { geometry: Outline }> = {};
+const outlines: Record<string, { geometry: Outline; approximate?: boolean }> = {};
 if (existsSync(BOUNDARIES))
   for (const file of readdirSync(BOUNDARIES).filter((f) => f.endsWith('.json')).sort())
-    Object.assign(outlines, (JSON.parse(readFileSync(join(BOUNDARIES, file), 'utf8')) as { regions: Record<string, { geometry: Outline }> }).regions);
+    Object.assign(outlines, (JSON.parse(readFileSync(join(BOUNDARIES, file), 'utf8')) as { regions: Record<string, { geometry: Outline; approximate?: boolean }> }).regions);
 
 function circle([lon, lat]: readonly [number, number], radiusKm: number, steps = 48): [number, number][] {
   const ring: [number, number][] = [];
@@ -156,6 +156,7 @@ const geojson = {
           parentId: r.parentId,
           climate: r.climate?.type ?? null,
           placeholder: !outline,
+          approximate: !!outlines[r.id]?.approximate,
           bbox: outline ? bbox(outline) : null,
         },
         geometry: outline ?? { type: 'Polygon', coordinates: [circle(r.centroid, r.radiusKm)] },
