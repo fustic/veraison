@@ -131,6 +131,8 @@ None of the build-tool advisories reach the phone. Recheck when moving to Expo S
   They make the world and Europe map levels work offline.
 - **Appellation outlines** (`content/boundaries/regions.json`): Candiago et al. 2022, EU wine
   PDO inventory, simplified by `tools/build-boundaries.ts`. See `tools/boundaries/README.md`.
+- **US AVA outlines** (`content/boundaries/us.json`): UC Davis Library AVA Digitizing Project (CC0),
+  simplified by `tools/build-ava-boundaries.ts` (`npm run map:us`).
 
 ## Distribution
 

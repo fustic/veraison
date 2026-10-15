@@ -416,7 +416,7 @@ export default function MapScreen() {
             <RegionSheet region={region} onRegion={openRegion} onStudied={() => toggleStudied(region.id)} />
           ) : null}
           <Text style={styles.credit}>
-            {online ? '© OpenFreeMap © OpenStreetMap contributors · ' : ''}Appellation outlines: Candiago et al. 2022 · Countries: Natural Earth
+            {online ? '© OpenFreeMap © OpenStreetMap contributors · ' : ''}Appellation outlines: Candiago et al. 2022, UC Davis AVA project · Countries: Natural Earth
           </Text>
         </ScrollView>
       </View>

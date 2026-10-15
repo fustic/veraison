@@ -36,5 +36,9 @@ European LAEA grid (EPSG:3035) to longitude/latitude itself, so no GDAL is neede
 
 | Area | Source |
 | --- | --- |
-| USA | UC Davis AVA project (GitHub `UCDavisLibrary/ava`), GeoJSON per AVA, CC0 |
-| Others | Hand-traced from official descriptions, about 40 syllabus areas |
+| USA | Done: UC Davis AVA project (GitHub `UCDavisLibrary/ava`, CC0). Put `avas_aggregated_files/avas.geojson` in `source/ava/`, run `npm run map:us`; mappings in `us-ava-regions.ts` |
+| Australia | Wine Australia GI feature service (zones, regions, subregions), CC BY 4.0. Not reachable from the cloud shell; download layers as GeoJSON |
+| New Zealand | IPONZ GI register: each registered GI has a downloadable "geographical data file" (ZIP) |
+| Chile | Decree 464 (SAG) defines valleys by provinces and comunas: build from geoBoundaries CHL ADM2/ADM3 (CC BY 4.0) |
+| Argentina | INV IG list: IGs are departments or provinces (Valle de Uco = San Carlos + Tunuyán + Tupungato): build from geoBoundaries ARG ADM1/ADM2 |
+| South Africa | SAWIS publishes Wine of Origin maps as PDFs only; approximate from municipalities or trace by hand |

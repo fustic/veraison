@@ -7,7 +7,7 @@
 // yet (e.g. a look-alike grape outside France) — the app shows those as "coming soon".
 
 import { createHash } from 'node:crypto';
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import type { ContentBundle, Range, StructureRanges } from '../core/src/content.ts';
@@ -105,13 +105,15 @@ console.log(
 );
 if (process.argv.includes('--check')) process.exit(0);
 
-// Real outlines from content/boundaries/regions.json (npm run map:boundaries) where they
-// exist; a placeholder circle for every other region.
+// Real outlines from every file in content/boundaries/ (regions.json from npm run
+// map:boundaries, us.json from npm run map:us, …) where they exist; a placeholder circle
+// for every other region.
 type Outline = { type: 'MultiPolygon'; coordinates: [number, number][][][] };
-const BOUNDARIES = join(ROOT, 'content', 'boundaries', 'regions.json');
-const outlines: Record<string, { geometry: Outline }> = existsSync(BOUNDARIES)
-  ? (JSON.parse(readFileSync(BOUNDARIES, 'utf8')) as { regions: Record<string, { geometry: Outline }> }).regions
-  : {};
+const BOUNDARIES = join(ROOT, 'content', 'boundaries');
+const outlines: Record<string, { geometry: Outline }> = {};
+if (existsSync(BOUNDARIES))
+  for (const file of readdirSync(BOUNDARIES).filter((f) => f.endsWith('.json')).sort())
+    Object.assign(outlines, (JSON.parse(readFileSync(join(BOUNDARIES, file), 'utf8')) as { regions: Record<string, { geometry: Outline }> }).regions);
 
 function circle([lon, lat]: readonly [number, number], radiusKm: number, steps = 48): [number, number][] {
   const ring: [number, number][] = [];
@@ -136,7 +138,7 @@ function bbox(geometry: Outline): [number, number, number, number] {
   return [w, s, e, n];
 }
 
-for (const id of Object.keys(outlines)) if (!regions.some((r) => r.id === id)) console.warn(`warning: content/boundaries/regions.json has an outline for unknown ${id}`);
+for (const id of Object.keys(outlines)) if (!regions.some((r) => r.id === id)) console.warn(`warning: content/boundaries/ has an outline for unknown ${id}`);
 
 const geojson = {
   type: 'FeatureCollection',
