@@ -3,16 +3,7 @@
 // Centroids are approximate [longitude, latitude]; real boundaries come later (tools/boundaries/README.md).
 
 import type { Region } from '../../core/src/content.ts';
-
-const r = (x: Omit<Region, 'why' | 'principalGrapes' | 'otherGrapes' | 'labelTerms' | 'producers' | 'verified'> & Partial<Region>): Region => ({
-  why: [],
-  principalGrapes: [],
-  otherGrapes: [],
-  labelTerms: [],
-  producers: [],
-  verified: false,
-  ...x,
-});
+import { r } from './r.ts';
 
 export const france: Region[] = [
   r({
@@ -392,6 +383,19 @@ export const france: Region[] = [
     labelTerms: ['Premier cru', 'Grand cru'],
   }),
 
+  r({
+    id: 'region:fr-burgundy-maconnais',
+    name: 'Mâconnais',
+    parentId: 'region:fr-burgundy',
+    level: 'district',
+    centroid: [4.78, 46.38],
+    radiusKm: 20,
+    climate: { type: 'moderate', influence: 'continental' },
+    why: [{ factor: 'Further south and warmer than the Côte d’Or', effect: 'riper Chardonnay', result: 'fuller, rounder whites, often unoaked or lightly oaked; good value' }],
+    principalGrapes: ['grape:chardonnay'],
+    otherGrapes: ['grape:gamay'],
+    labelTerms: ['Mâcon', 'Mâcon-Villages', 'Pouilly-Fuissé', 'Saint-Véran', 'Viré-Clessé'],
+  }),
   // ── Beaujolais ──────────────────────────────────────────────────────────────
   r({
     id: 'region:fr-beaujolais',
@@ -465,5 +469,131 @@ export const france: Region[] = [
     principalGrapes: ['grape:sauvignon-blanc'],
     otherGrapes: ['grape:pinot-noir'],
     producers: ['Henri Bourgeois', 'Domaine Vacheron'],
+  }),
+
+  // ── Rhône ───────────────────────────────────────────────────────────────────
+  r({
+    id: 'region:fr-rhone',
+    name: 'Rhône Valley',
+    parentId: 'region:fr',
+    level: 'region',
+    centroid: [4.8, 44.6],
+    radiusKm: 130,
+    why: [
+      { factor: 'Two halves about 50 km apart', effect: 'moderate continental north, warm Mediterranean south', result: 'Syrah alone in the north, Grenache-led blends in the south' },
+    ],
+    principalGrapes: ['grape:syrah', 'grape:grenache'],
+    otherGrapes: ['grape:mourvedre', 'grape:viognier'],
+    labelTerms: ['Côtes du Rhône', 'Côtes du Rhône Villages'],
+  }),
+  r({
+    id: 'region:fr-rhone-northern',
+    name: 'Northern Rhône',
+    parentId: 'region:fr-rhone',
+    level: 'district',
+    centroid: [4.8, 45.1],
+    radiusKm: 45,
+    climate: { type: 'moderate', influence: 'continental' },
+    soils: 'granite on steep slopes',
+    why: [
+      { factor: 'Coolest limit for Syrah', effect: 'ripeness depends on the site', result: 'steep south-facing slopes give the best wines; flatter sites lighter, more herbaceous ones' },
+    ],
+    principalGrapes: ['grape:syrah'],
+    otherGrapes: ['grape:viognier'],
+  }),
+  r({
+    id: 'region:fr-rhone-cote-rotie',
+    name: 'Côte-Rôtie',
+    parentId: 'region:fr-rhone-northern',
+    level: 'appellation',
+    centroid: [4.79, 45.48],
+    radiusKm: 4,
+    soils: 'granite and schist on steep terraces',
+    why: [
+      { factor: 'Steep terraces facing south-east', effect: 'maximum sun on the vines', result: 'Syrah ripens at the north of its range' },
+      { factor: 'A little Viognier can be co-fermented', effect: 'adds perfume', result: 'fragrant, floral Syrah' },
+    ],
+    principalGrapes: ['grape:syrah'],
+    otherGrapes: ['grape:viognier'],
+    producers: ['E. Guigal'],
+  }),
+  r({
+    id: 'region:fr-rhone-hermitage',
+    name: 'Hermitage',
+    parentId: 'region:fr-rhone-northern',
+    level: 'appellation',
+    centroid: [4.84, 45.07],
+    radiusKm: 2.5,
+    soils: 'granite',
+    why: [{ factor: 'South-facing hill above the river', effect: 'sun and shelter from cold north winds', result: 'full, firm, long-lived Syrah' }],
+    principalGrapes: ['grape:syrah'],
+    otherGrapes: ['grape:marsanne', 'grape:roussanne'],
+    producers: ['Domaine Jean-Louis Chave', 'Paul Jaboulet Aîné'],
+  }),
+  r({
+    id: 'region:fr-rhone-southern',
+    name: 'Southern Rhône',
+    parentId: 'region:fr-rhone',
+    level: 'district',
+    centroid: [4.8, 44.15],
+    radiusKm: 45,
+    climate: { type: 'warm', influence: 'mediterranean' },
+    why: [
+      { factor: 'Hot, dry summers', effect: 'late-ripening Grenache ripens fully', result: 'full-bodied, high-alcohol blends' },
+      { factor: 'The Mistral wind', effect: 'cools and dries the vineyards', result: 'healthy grapes, little rot' },
+    ],
+    principalGrapes: ['grape:grenache'],
+    otherGrapes: ['grape:syrah', 'grape:mourvedre'],
+    labelTerms: ['Côtes du Rhône Villages'],
+  }),
+  r({
+    id: 'region:fr-rhone-chateauneuf-du-pape',
+    name: 'Châteauneuf-du-Pape',
+    parentId: 'region:fr-rhone-southern',
+    level: 'appellation',
+    centroid: [4.83, 44.06],
+    radiusKm: 6,
+    soils: 'large rounded stones in places, also sand and clay',
+    why: [
+      { factor: 'Stony soils', effect: 'store heat and release it at night', result: 'very ripe Grenache' },
+      { factor: 'Many permitted varieties', effect: 'Grenache blended with Syrah and Mourvèdre', result: 'full body, rich texture, spicy red fruit' },
+    ],
+    principalGrapes: ['grape:grenache'],
+    otherGrapes: ['grape:syrah', 'grape:mourvedre'],
+    producers: ['Château de Beaucastel', 'Château Rayas'],
+  }),
+
+  // ── South and east ─────────────────────────────────────────────────────────
+  r({
+    id: 'region:fr-languedoc',
+    name: 'Languedoc',
+    parentId: 'region:fr',
+    level: 'region',
+    centroid: [3.4, 43.5],
+    radiusKm: 100,
+    climate: { type: 'warm', influence: 'mediterranean' },
+    why: [
+      { factor: 'Hot, dry, sunny', effect: 'ripe grapes, but drought risk', result: 'ripe, full blends; also volume varietal wines (IGP Pays d’Oc)' },
+      { factor: 'Blending Mediterranean varieties', effect: 'Carignan and Mourvèdre add colour, tannin and freshness to Grenache and Syrah', result: 'balanced wines in the heat' },
+    ],
+    principalGrapes: ['grape:syrah', 'grape:grenache'],
+    otherGrapes: ['grape:carignan', 'grape:mourvedre', 'grape:cinsault'],
+    labelTerms: ['Languedoc', 'IGP Pays d’Oc'],
+  }),
+  r({
+    id: 'region:fr-alsace',
+    name: 'Alsace',
+    parentId: 'region:fr',
+    level: 'region',
+    centroid: [7.35, 48.2],
+    radiusKm: 55,
+    climate: { type: 'cool', influence: 'continental' },
+    why: [
+      { factor: 'Rain shadow of the Vosges mountains', effect: 'one of the driest, sunniest parts of France', result: 'long, slow ripening: ripe aromatic whites with fresh acidity' },
+      { factor: 'Dry autumns in some years', effect: 'grapes can hang late or catch noble rot', result: 'Vendanges Tardives and Sélection de Grains Nobles' },
+    ],
+    principalGrapes: ['grape:riesling', 'grape:gewurztraminer', 'grape:pinot-gris'],
+    otherGrapes: ['grape:muscat', 'grape:pinot-blanc', 'grape:pinot-noir'],
+    labelTerms: ['Alsace', 'Alsace Grand Cru', 'Vendanges Tardives', 'Sélection de Grains Nobles', 'Crémant d’Alsace'],
   }),
 ];

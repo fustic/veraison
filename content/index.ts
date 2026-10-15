@@ -2,7 +2,9 @@
 import type { Grape, Region, Topic } from '../core/src/content.ts';
 import { aromas } from './aromas.ts';
 import { profiles } from './profiles.ts';
+import { austria, germany, italy, spain } from './regions/europe.ts';
 import { france } from './regions/france.ts';
+import { australia, chile, newZealand, southAfrica, usa } from './regions/new-world.ts';
 import cabernetFranc from './grapes/cabernet-franc.ts';
 import cabernetSauvignon from './grapes/cabernet-sauvignon.ts';
 import chardonnay from './grapes/chardonnay.ts';
@@ -22,5 +24,5 @@ import whiteWinemaking from './topics/white-winemaking.ts';
 
 export const grapes: Grape[] = [cabernetFranc, cabernetSauvignon, chardonnay, gamay, grenache, merlot, pinotGris, pinotNoir, riesling, sauvignonBlanc, semillon, syrah];
 export const topics: Topic[] = [whiteWinemaking, redWinemaking, roseWinemaking, sweetWinemaking];
-export const regions: Region[] = [...france];
+export const regions: Region[] = [...france, ...italy, ...spain, ...germany, ...austria, ...usa, ...australia, ...newZealand, ...chile, ...southAfrica];
 export { aromas, profiles };

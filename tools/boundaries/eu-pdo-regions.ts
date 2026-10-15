@@ -61,4 +61,33 @@ export const PDO_FOR_REGION: Record<string, string[]> = {
     'Montlouis-sur-Loire', 'Sancerre', 'Pouilly-Fumé', 'Menetou-Salon', 'Quincy', 'Reuilly',
   ],
   'region:fr-loire-sancerre': ['Sancerre'],
+
+  // Mâconnais
+  'region:fr-burgundy-maconnais': ['Mâcon', 'Pouilly-Fuissé', 'Pouilly-Loché', 'Pouilly-Vinzelles', 'Saint-Véran', 'Viré-Clessé'],
+
+  // Rhône (the north is the named crus; the south is the Villages area plus its crus)
+  'region:fr-rhone': [
+    'Côtes du Rhône', 'Côtes du Rhône Villages', 'Côte Rôtie', 'Condrieu', 'Château-Grillet', 'Saint-Joseph', 'Hermitage', 'Crozes-Hermitage', 'Cornas',
+    'Châteauneuf-du-Pape', 'Gigondas', 'Vacqueyras', 'Rasteau', 'Tavel', 'Lirac',
+  ],
+  'region:fr-rhone-northern': ['Côte Rôtie', 'Condrieu', 'Château-Grillet', 'Saint-Joseph', 'Hermitage', 'Crozes-Hermitage', 'Cornas'],
+  'region:fr-rhone-cote-rotie': ['Côte Rôtie'],
+  'region:fr-rhone-hermitage': ['Hermitage'],
+  'region:fr-rhone-southern': ['Côtes du Rhône Villages', 'Châteauneuf-du-Pape', 'Gigondas', 'Vacqueyras', 'Rasteau', 'Tavel', 'Lirac'],
+  'region:fr-rhone-chateauneuf-du-pape': ['Châteauneuf-du-Pape'],
+
+  // South and east
+  'region:fr-languedoc': ['Languedoc'],
+  'region:fr-alsace': ['Alsace'],
+
+  // Italy (Veneto has no single PDO for the whole region, so use its main ones)
+  'region:it-veneto': ['Soave', 'Valpolicella', 'Bardolino', 'Piave', 'Lison-Pramaggiore', 'Conegliano Valdobbiadene - Prosecco', 'Colli Asolani - Prosecco', 'Venezia'],
+  'region:it-alto-adige': ['Alto Adige'],
+
+  // Spain
+  'region:es-rioja': ['Rioja'],
+  'region:es-priorat': ['Priorat'],
+
+  // Germany
+  'region:de-baden': ['Baden'],
 };
