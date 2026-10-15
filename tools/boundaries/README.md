@@ -1,7 +1,13 @@
 # Appellation outlines
 
-The map draws real outlines for regions listed in `eu-pdo-regions.ts` and a placeholder
-circle (from `centroid` and `radiusKm` in `/content`) for everything else.
+The map draws real outlines for EU regions and a placeholder circle (from `centroid` and
+`radiusKm` in `/content`) for everything else.
+
+How a region gets its outline:
+
+1. An entry in `eu-pdo-regions.ts` (a list of PDO names; an empty list keeps the circle).
+2. Otherwise the PDO in the same country with the region's own name (accents and punctuation ignored).
+3. Otherwise the combined outlines of the regions inside it (Côte de Nuits, Roussillon…).
 
 ## Source
 
@@ -17,10 +23,10 @@ and it covers Italy, Spain, Germany and the rest when those chapters arrive.
 
 1. Download `EU_PDO.gpkg` and `PDO_EU_id.csv` to `tools/boundaries/source/` (ignored by git).
    The GeoPackage only has PDO codes; the CSV supplies the names.
-2. Map study regions to PDO names in `eu-pdo-regions.ts`. `npm run map:boundaries -- --list fr`
-   prints every French PDO name; use `it`, `es`, `de`… for other countries.
+2. Most regions match by name. For the rest, add PDO names to `eu-pdo-regions.ts`.
+   `npm run map:boundaries -- --list fr` prints every French PDO name; use `it`, `es`, `de`…
 3. `npm run map:boundaries` writes `content/boundaries/regions.json` (simplified, committed)
-   and lists any names it could not find.
+   and lists names it could not find and EU regions left without an outline.
 4. `npm run content:build` puts the outlines into `app/src/generated/regions.geojson.json`.
 
 `build-boundaries.ts` reads the GeoPackage with Node's built-in SQLite and converts the

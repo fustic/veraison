@@ -13,6 +13,11 @@
 - Content must be written in our own words, never copied from WSET materials. New entries
   start with `verified: false`. Study notes the user shares go into `content/topics/` (theory)
   and the matching `content/grapes/` / `content/regions/` files (facts), condensed and reworded.
+- Regions live in `content/regions/` (`france.ts`, `europe.ts`, `new-world.ts`, built with the `r()`
+  helper in `r.ts`); grapes one per file in `content/grapes/`; topics in `content/topics/`. Register new
+  files or arrays in `content/index.ts` (topic order there is the Study tab order).
+- Map outlines: `npm run map:boundaries` matches EU regions to PDOs by name; list exceptions and
+  composites in `tools/boundaries/eu-pdo-regions.ts`, then `npm run content:build`.
 - IDs are stable strings: `grape:`, `region:<iso2>-...` (a country is `region:<iso2>`), `aroma:`,
   `profile:`, `topic:`. Renaming one
   orphans user data that references it.

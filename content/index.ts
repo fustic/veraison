@@ -78,6 +78,16 @@ import xarello from './grapes/xarello.ts';
 import xinomavro from './grapes/xinomavro.ts';
 import zinfandel from './grapes/zinfandel.ts';
 import zweigelt from './grapes/zweigelt.ts';
+import climateAndWeather from './topics/climate-and-weather.ts';
+import madeiraAndVdn from './topics/madeira-and-vdn.ts';
+import port from './topics/port.ts';
+import sherry from './topics/sherry.ts';
+import sparklingWinemaking from './topics/sparkling-winemaking.ts';
+import sparklingWines from './topics/sparkling-wines.ts';
+import storageServiceAndFood from './topics/storage-service-and-food.ts';
+import vineyardManagement from './topics/vineyard-management.ts';
+import winemakingBasics from './topics/winemaking-basics.ts';
+import wineLawAndLabelling from './topics/wine-law-and-labelling.ts';
 import redWinemaking from './topics/red-winemaking.ts';
 import roseWinemaking from './topics/rose-winemaking.ts';
 import sweetWinemaking from './topics/sweet-winemaking.ts';
@@ -86,7 +96,14 @@ import whiteWinemaking from './topics/white-winemaking.ts';
 export const grapes: Grape[] = [
   agiorgitiko, aglianico, albarino, assyrtiko, baga, barbera, blaufrankisch, cabernetFranc, cabernetSauvignon, carignan, carmenere, chardonnay, cheninBlanc, cinsault, cortese, corvina, dolcetto, fiano, furmint, gamay, garganega, gewurztraminer, glera, godello, graciano, greco, grenache, grunerVeltliner, malbec, marsanne, melonBlanc, mencia, merlot, montepulciano, mourvedre, mullerThurgau, muscadelle, muscat, nebbiolo, negroamaro, nerelloMascalese, neroDAvola, palomino, parellada, pedroXimenez, petitVerdot, pinotBlanc, pinotGris, pinotMeunier, pinotNoir, pinotage, riesling, roussanne, sangiovese, sauvignonBlanc, semillon, silvaner, syrah, tannat, tempranillo, torrontes, tourigaFranca, tourigaNacional, trebbiano, verdejo, verdicchio, vermentino, viognier, viura, xarello, xinomavro, zinfandel, zweigelt,
 ];
-export const topics: Topic[] = [whiteWinemaking, redWinemaking, roseWinemaking, sweetWinemaking];
+// In study order: the Study tab groups them by chapter in this order.
+export const topics: Topic[] = [
+  climateAndWeather, vineyardManagement,
+  winemakingBasics, whiteWinemaking, redWinemaking, roseWinemaking, sweetWinemaking,
+  sparklingWinemaking, sparklingWines,
+  sherry, port, madeiraAndVdn,
+  wineLawAndLabelling, storageServiceAndFood,
+];
 export const regions: Region[] = [
   ...france, ...italy, ...spain, ...portugal, ...germany, ...austria, ...hungary, ...greece, ...england,
   ...usa, ...canada, ...chile, ...argentina, ...southAfrica, ...australia, ...newZealand,
