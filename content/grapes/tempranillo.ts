@@ -1,0 +1,51 @@
+import type { Grape } from '../../core/src/content.ts';
+
+// Drafted from general WSET Level 3 knowledge. Check against your book, then set verified: true.
+export default {
+  id: 'grape:tempranillo',
+  name: 'Tempranillo',
+  colour: 'red',
+  berryColour: '#2F1A3B',
+  synonyms: ['Tinto Fino', 'Tinta del País', 'Tinta de Toro', 'Cencibel', 'Tinta Roriz', 'Aragonez'],
+  traits: ['Early ripening', 'Thick skins', 'Moderate acidity', 'Takes long oak ageing well'],
+  structure: {
+    cool: { appearanceIntensity: [1, 2], acidity: [2, 3], tannin: [2, 3], body: [2, 3], alcohol: [1, 1], noseIntensity: [2, 3] },
+    warm: { appearanceIntensity: [2, 2], acidity: [1, 2], tannin: [3, 4], body: [3, 4], alcohol: [2, 2], noseIntensity: [2, 3] },
+  },
+  aromas: [
+    { aromaId: 'aroma:red-cherry', ripeness: 'less' },
+    { aromaId: 'aroma:strawberry', ripeness: 'ripe' },
+    { aromaId: 'aroma:red-plum', ripeness: 'ripe' },
+    { aromaId: 'aroma:black-plum', ripeness: 'very' },
+    { aromaId: 'aroma:jammy', ripeness: 'very' },
+    { aromaId: 'aroma:vanilla' },
+    { aromaId: 'aroma:coconut' },
+    { aromaId: 'aroma:cloves' },
+    { aromaId: 'aroma:leather' },
+    { aromaId: 'aroma:tobacco' },
+    { aromaId: 'aroma:earth' },
+    { aromaId: 'aroma:dried-cranberry' },
+  ],
+  why: [
+    { factor: 'Needs heat for colour and sugar, cool nights for acidity', effect: 'best at altitude in continental climates', result: 'Rioja Alta, Ribera del Duero, Toro' },
+    { factor: 'Only moderate acidity', effect: 'can taste soft and flat in heat', result: 'often blended with Graciano or Mazuelo (Carignan) for freshness' },
+    { factor: 'Traditional American oak', effect: 'vanilla and coconut', result: 'classic Rioja style; French oak gives toast and cloves' },
+    { factor: 'Long ageing in barrel and bottle (Crianza → Reserva → Gran Reserva)', effect: 'fruit dries and tertiary notes develop', result: 'leather, tobacco and dried fruit with soft tannin' },
+    { factor: 'Ribera del Duero: high altitude, big day–night swings', effect: 'thick-skinned, deeply coloured grapes', result: 'deeper, more structured than Rioja' },
+    { factor: 'Toro: hot, dry', effect: 'very ripe grapes', result: 'powerful, high-alcohol, tannic reds' },
+  ],
+  lookAlikes: [
+    { grapeId: 'grape:sangiovese', tell: 'Sangiovese has higher acidity, sour cherry and tomato leaf; no coconut.' },
+    { grapeId: 'grape:grenache', tell: 'Garnacha is paler and more alcoholic, with jammy strawberry and white pepper.' },
+  ],
+  regions: [
+    { regionId: 'region:es-la-mancha', styleLevel: 1, style: 'As Cencibel: inexpensive, fruity, often unoaked.', producers: [] },
+    { regionId: 'region:es-rioja', styleLevel: 2, style: 'Medium body, red fruit; American-oak vanilla and coconut, leather with age.', producers: ['La Rioja Alta', 'CVNE', 'Marqués de Murrieta'] },
+    { regionId: 'region:es-navarra', styleLevel: 2, style: 'Often blended with international varieties.', producers: [] },
+    { regionId: 'region:es-ribera-del-duero', styleLevel: 3, style: 'As Tinto Fino: deeper, black fruit, firmer tannin, more new French oak.', producers: ['Vega Sicilia', 'Dominio de Pingus'] },
+    { regionId: 'region:pt-douro', styleLevel: 4, style: 'As Tinta Roriz: part of Port and dry Douro blends.', producers: [] },
+    { regionId: 'region:es-toro', styleLevel: 5, style: 'As Tinta de Toro: powerful, full, high alcohol, firm tannin.', producers: [] },
+  ],
+  alsoGrownIn: ['Valdepeñas', 'Alentejo (Aragonez)', 'Argentina', 'Australia'],
+  verified: false,
+} satisfies Grape;

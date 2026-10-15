@@ -109,7 +109,7 @@ const rows = (db.prepare(`SELECT * FROM "${table}"`).all() as Row[]).map((r) =>
 
 if (listCountry !== null) {
   const names = rows
-    .filter((r) => !countryCol || String(r[countryCol]).toUpperCase().startsWith(listCountry) || String(r[idCol ?? '']).toUpperCase().includes(`-${listCountry}-`))
+    .filter((r) => String(r[idCol ?? '']).toUpperCase().includes(`-${listCountry}-`) || (!!countryCol && String(r[countryCol]).toUpperCase() === listCountry))
     .map((r) => `${String(r[nameCol])}${idCol ? `  (${String(r[idCol])})` : ''}`)
     .sort((a, b) => a.localeCompare(b));
   console.log(names.join('\n'));
@@ -124,39 +124,71 @@ for (const r of rows) {
   const keys = new Set([full, ...full.split(' / ')].map(fold));
   for (const key of keys) byName.set(key, [...(byName.get(key) ?? []), r]);
 }
-// Prefer the French PDO when several countries share a name.
-const lookup = (name: string): Row | undefined => {
+const countryOf = (r: Row) => /-([A-Z]{2})-/.exec(String(r[idCol ?? ''] ?? ''))?.[1] ?? String(r[countryCol ?? ''] ?? '').toUpperCase().slice(0, 2);
+const EU = new Set(rows.map(countryOf));
+/** A PDO by name, preferring (or, with `only`, requiring) the given country. */
+const lookup = (name: string, iso: string, only = false): Row | undefined => {
   const hits = byName.get(fold(name)) ?? [];
-  return hits.find((r) => String(r[idCol ?? ''] ?? '').includes('-FR-') || String(r[countryCol ?? ''] ?? '').toUpperCase().startsWith('FR')) ?? hits[0];
+  const local = hits.find((r) => countryOf(r) === iso);
+  return local ?? (only ? undefined : hits[0]);
 };
 
 const toLonLat = (x: number, y: number): [number, number] => (srs === 3035 ? laeaToLonLat(x, y) : [x, y]);
 const levelTolerance: Record<string, number> = { country: 0.01, region: 0.004, district: 0.002, appellation: 0.0008 };
+const isoOf = (id: string) => /^region:([a-z]{2})(?:-|$)/.exec(id)?.[1]?.toUpperCase() ?? '';
 
-const out: Record<string, { pdo: string[]; geometry: { type: 'MultiPolygon'; coordinates: Ring[][] } }> = {};
+// 1. Regions that are PDOs themselves: the explicit list in eu-pdo-regions.ts, else the PDO
+//    with the region's own name in the same country.
+type Raw = { pdo: string[]; polygons: [number, number][][][] };
+const raw = new Map<string, Raw>();
 const missing: string[] = [];
+let byOwnName = 0;
 for (const region of regions) {
-  const names = PDO_FOR_REGION[region.id];
-  if (!names) continue;
-  const polygons: Ring[][] = [];
+  if (region.level === 'country') continue;
+  const iso = isoOf(region.id);
+  const explicit = PDO_FOR_REGION[region.id];
+  if (!explicit && !EU.has(iso)) continue;
+  const names = explicit ?? [region.name];
   const used: string[] = [];
+  const polygons: [number, number][][][] = [];
   for (const name of names) {
-    const row = lookup(name);
+    const row = lookup(name, iso, !explicit);
     if (!row) {
-      missing.push(`${region.id}: "${name}"`);
+      if (explicit) missing.push(`${region.id}: "${name}"`);
       continue;
     }
     used.push(String(row[nameCol]));
-    const geometry = decodeGpkgGeometry(row[geomInfo.column_name] as Uint8Array);
-    for (const poly of geometry) {
-      const rings = poly
-        .map((ring) => simplifyRing(ring.map(([x, y]) => toLonLat(x, y)), levelTolerance[region.level] ?? 0.001))
-        .filter((r): r is Ring => r !== null);
-      if (rings.length && rings[0]) polygons.push(rings);
-    }
+    for (const poly of decodeGpkgGeometry(row[geomInfo.column_name] as Uint8Array)) polygons.push(poly.map((ring) => ring.map(([x, y]) => toLonLat(x, y))));
   }
-  if (polygons.length) out[region.id] = { pdo: used, geometry: { type: 'MultiPolygon', coordinates: polygons } };
+  if (!explicit && used.length) byOwnName++;
+  if (polygons.length) raw.set(region.id, { pdo: used, polygons });
 }
+
+// 2. Regions with no PDO of their own (Côte de Nuits, Wachau's parent…): the outlines of
+//    everything inside them.
+const childrenOf = new Map<string, string[]>();
+for (const r of regions) if (r.parentId) childrenOf.set(r.parentId, [...(childrenOf.get(r.parentId) ?? []), r.id]);
+const inside = (id: string): Raw[] => (childrenOf.get(id) ?? []).flatMap((k) => (raw.has(k) ? [raw.get(k)!] : inside(k)));
+let combined = 0;
+for (const region of [...regions].reverse()) {
+  if (region.level === 'country' || raw.has(region.id) || !EU.has(isoOf(region.id))) continue;
+  const parts = inside(region.id);
+  if (!parts.length) continue;
+  raw.set(region.id, { pdo: [...new Set(parts.flatMap((p) => p.pdo))], polygons: parts.flatMap((p) => p.polygons) });
+  combined++;
+}
+
+const out: Record<string, { pdo: string[]; geometry: { type: 'MultiPolygon'; coordinates: Ring[][] } }> = {};
+for (const region of regions) {
+  const r = raw.get(region.id);
+  if (!r) continue;
+  const tol = levelTolerance[region.level] ?? 0.001;
+  const polygons = r.polygons
+    .map((poly) => poly.map((ring) => simplifyRing(ring, tol)).filter((x): x is Ring => x !== null))
+    .filter((rings) => rings.length > 0 && rings[0]);
+  if (polygons.length) out[region.id] = { pdo: r.pdo, geometry: { type: 'MultiPolygon', coordinates: polygons } };
+}
+const unmatched = regions.filter((r) => r.level !== 'country' && EU.has(isoOf(r.id)) && !out[r.id]).map((r) => r.id);
 
 const file = outFile;
 mkdirSync(dirname(file), { recursive: true });
@@ -168,8 +200,8 @@ writeFileSync(
     regions: out,
   }),
 );
-const mapped = Object.keys(PDO_FOR_REGION).length;
-console.log(`wrote ${Object.keys(out).length} of ${mapped} mapped regions to ${file}`);
+console.log(`wrote ${Object.keys(out).length} outlines to ${file} (${byOwnName} matched by name, ${combined} combined from the regions inside them)`);
+if (unmatched.length) console.log(`\nNo outline (no PDO of that name; add it to tools/boundaries/eu-pdo-regions.ts if there should be):\n  ${unmatched.join('\n  ')}`);
 if (missing.length) {
   console.log(`\nNot found in the GeoPackage (fix the names in tools/boundaries/eu-pdo-regions.ts; --list fr shows them):`);
   for (const m of missing) console.log(`  ${m}`);

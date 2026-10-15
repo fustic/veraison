@@ -117,6 +117,11 @@ export const aromas: Aroma[] = [
     ['wet stones', 'stone', '#9EA3A8'],
     ['wet wool', 'berries', '#EDE8DC', '#BEB7A6'],
   ]),
+  // Fermentation aromas: cool white ferments (pear drop) and carbonic maceration (bubblegum).
+  ...cluster('secondary', 'Fermentation', 'both', [
+    ['pear drop', 'pear', '#F2B8C6', '#E58AA3'],
+    ['bubblegum', 'drop', '#F48FB1', '#EC6A9A'],
+  ]),
 
   // Secondary: winemaking
   ...cluster('secondary', 'Yeast (lees, autolysis)', 'white', [
