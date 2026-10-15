@@ -95,7 +95,12 @@ export default {
       style: 'Riper black fruit, fuller body, higher alcohol and plenty of new oak.',
       producers: [],
     },
+    { regionId: 'region:us-santa-cruz-mountains', styleLevel: 3, style: "High, cool: structured, long-lived.", producers: [] },
+    { regionId: 'region:it-tuscany-bolgheri', styleLevel: 4, style: "Super Tuscan blends: ripe, structured.", producers: [] },
+    { regionId: 'region:cl-maipo-valley', styleLevel: 4, style: "Classic Chilean Cabernet: ripe blackcurrant, mint.", producers: [] },
+    { regionId: 'region:us-columbia-valley', styleLevel: 4, style: "Ripe fruit, fresh acidity.", producers: [] },
+    { regionId: 'region:us-alexander-valley', styleLevel: 4, style: "Soft, ripe.", producers: [] },
   ],
-  alsoGrownIn: ['South of France', 'Italy (with Sangiovese)', 'Spain (with Tempranillo)', 'Bolgheri', 'Maipo Valley'],
+  alsoGrownIn: ['South of France', 'Italy (with Sangiovese)', 'Spain (with Tempranillo)', 'Mendoza'],
   verified: false,
 } satisfies Grape;

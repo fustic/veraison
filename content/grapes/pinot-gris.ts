@@ -59,7 +59,11 @@ export default {
       style: 'Dry or off-dry, oily texture, ripe tropical fruit, ginger and honey; often golden.',
       producers: [],
     },
+    { regionId: 'region:it-trentino', styleLevel: 1, style: "Volume Pinot Grigio from the valley floor.", producers: [] },
+    { regionId: 'region:it-friuli', styleLevel: 2, style: "Fresh, more aromatic Pinot Grigio from the hills.", producers: [] },
+    { regionId: 'region:de-baden', styleLevel: 3, style: "As Grauburgunder: dry, full.", producers: [] },
+    { regionId: 'region:us-willamette-valley', styleLevel: 3, style: "Fresh, fruity Pinot Gris.", producers: [] },
   ],
-  alsoGrownIn: ['Trentino', 'Friuli-Venezia Giulia', 'Tasmania', 'Oregon'],
+  alsoGrownIn: ['Tasmania', 'Romania', 'Hungary'],
   verified: false,
 } satisfies Grape;

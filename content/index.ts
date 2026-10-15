@@ -2,9 +2,9 @@
 import type { Grape, Region, Topic } from '../core/src/content.ts';
 import { aromas } from './aromas.ts';
 import { profiles } from './profiles.ts';
-import { austria, germany, italy, spain } from './regions/europe.ts';
+import { austria, england, germany, greece, hungary, italy, portugal, spain } from './regions/europe.ts';
 import { france } from './regions/france.ts';
-import { australia, chile, newZealand, southAfrica, usa } from './regions/new-world.ts';
+import { argentina, australia, canada, chile, newZealand, southAfrica, usa } from './regions/new-world.ts';
 import agiorgitiko from './grapes/agiorgitiko.ts';
 import aglianico from './grapes/aglianico.ts';
 import albarino from './grapes/albarino.ts';
@@ -87,5 +87,8 @@ export const grapes: Grape[] = [
   agiorgitiko, aglianico, albarino, assyrtiko, baga, barbera, blaufrankisch, cabernetFranc, cabernetSauvignon, carignan, carmenere, chardonnay, cheninBlanc, cinsault, cortese, corvina, dolcetto, fiano, furmint, gamay, garganega, gewurztraminer, glera, godello, graciano, greco, grenache, grunerVeltliner, malbec, marsanne, melonBlanc, mencia, merlot, montepulciano, mourvedre, mullerThurgau, muscadelle, muscat, nebbiolo, negroamaro, nerelloMascalese, neroDAvola, palomino, parellada, pedroXimenez, petitVerdot, pinotBlanc, pinotGris, pinotMeunier, pinotNoir, pinotage, riesling, roussanne, sangiovese, sauvignonBlanc, semillon, silvaner, syrah, tannat, tempranillo, torrontes, tourigaFranca, tourigaNacional, trebbiano, verdejo, verdicchio, vermentino, viognier, viura, xarello, xinomavro, zinfandel, zweigelt,
 ];
 export const topics: Topic[] = [whiteWinemaking, redWinemaking, roseWinemaking, sweetWinemaking];
-export const regions: Region[] = [...france, ...italy, ...spain, ...germany, ...austria, ...usa, ...australia, ...newZealand, ...chile, ...southAfrica];
+export const regions: Region[] = [
+  ...france, ...italy, ...spain, ...portugal, ...germany, ...austria, ...hungary, ...greece, ...england,
+  ...usa, ...canada, ...chile, ...argentina, ...southAfrica, ...australia, ...newZealand,
+];
 export { aromas, profiles };

@@ -15,6 +15,7 @@ export const COUNTRIES: readonly (readonly [code: string, name: string])[] = [
   ['ch', 'Switzerland'],
   ['hu', 'Hungary'],
   ['gr', 'Greece'],
+  ['gb', 'United Kingdom'],
   ['us', 'USA'],
   ['ca', 'Canada'],
   ['ar', 'Argentina'],

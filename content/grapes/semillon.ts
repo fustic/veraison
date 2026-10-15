@@ -45,7 +45,11 @@ export default {
       style: 'Noble rot: luscious, with apricot, marmalade and honey.',
       producers: ["Château d'Yquem"],
     },
+    { regionId: 'region:au-hunter-valley', styleLevel: 1, style: "Picked early, about 10–11%, unoaked: lemon and grass, ageing for decades into toast and honey.", producers: [] },
+    { regionId: 'region:au-margaret-river', styleLevel: 2, style: "Blended with Sauvignon Blanc: fresh, citrus, grassy.", producers: [] },
+    { regionId: 'region:fr-south-west-monbazillac', styleLevel: 4, style: "Botrytised: honey, apricot; lighter than Sauternes.", producers: [] },
+    { regionId: 'region:au-riverina', styleLevel: 5, style: "Botrytised: luscious, marmalade, honey.", producers: [] },
   ],
-  alsoGrownIn: ['Hunter Valley', 'Barossa', 'Margaret River'],
+  alsoGrownIn: ['Barossa', 'Franschhoek', 'Washington State'],
   verified: false,
 } satisfies Grape;

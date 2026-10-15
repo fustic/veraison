@@ -54,7 +54,12 @@ export default {
       style: 'Plush and rich, black plum and chocolate, velvety tannin.',
       producers: ['Pétrus', 'Château Lafleur'],
     },
+    { regionId: 'region:it-friuli', styleLevel: 1, style: "Light, fresh, herbaceous.", producers: [] },
+    { regionId: 'region:nz-hawkes-bay', styleLevel: 3, style: "Gimblett Gravels blends: plum and cedar, fresh.", producers: [] },
+    { regionId: 'region:us-columbia-valley', styleLevel: 4, style: "Ripe, plummy, fresh acidity from cold nights.", producers: [] },
+    { regionId: 'region:cl-central-valley', styleLevel: 4, style: "Ripe, soft, good value.", producers: [] },
+    { regionId: 'region:us-napa-valley', styleLevel: 5, style: "Ripe, plush, new oak.", producers: [] },
   ],
-  alsoGrownIn: ["Hawke's Bay", 'Washington State', 'Napa Valley', 'Chile', 'Veneto'],
+  alsoGrownIn: ['Veneto', 'Ticino', 'Languedoc (IGP Pays d’Oc)'],
   verified: false,
 } satisfies Grape;

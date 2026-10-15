@@ -90,4 +90,20 @@ export const PDO_FOR_REGION: Record<string, string[]> = {
 
   // Germany
   'region:de-baden': ['Baden'],
+
+  // Names that differ from ours
+  'region:it-sicily': ['Sicilia'],
+  // Regions with no region-wide PDO: their main PDOs combined.
+  'region:it-puglia': ['Aleatico di Puglia', 'Castel del Monte', 'Gioia del Colle', 'Colline Joniche Tarantine', 'Primitivo di Manduria', 'Salice Salentino', 'Brindisi'],
+  'region:it-umbria': ['Orvieto', 'Montefalco', 'Torgiano', 'Todi', 'Assisi', 'Amelia', 'Colli del Trasimeno'],
+  'region:it-basilicata': ['Aglianico del Vulture', 'Matera', 'Grottino di Roccanova', 'Terre dell\'Alta Val d\'Agri'],
+  'region:it-sardinia': ['Cannonau di Sardegna', 'Vermentino di Sardegna'],
+  'region:pt-lisboa': ['Alenquer', 'Arruda', 'Bucelas', 'Carcavelos', 'Colares', 'Encostas d’Aire', 'Óbidos', 'Torres Vedras'],
+  'region:gr-naoussa': ['Νάουσα'],
+  'region:gr-nemea': ['Νεμέα'],
+  'region:gr-santorini': ['Σαντορίνη'],
+  'region:gb-england': ['English'],
+
+  // Dataset errors: the 2022 file gives Valdeorras the municipalities of Alicante. Keep the circle.
+  'region:es-valdeorras': [],
 };

@@ -42,7 +42,7 @@ const ZONES: { id: ZoneId; label: string; bounds: Bounds }[] = [
   { id: 'oc', label: 'Australia · NZ', bounds: [112, -47, 179, -12] },
 ];
 const ZONE_OF: Record<string, ZoneId> = {
-  fr: 'europe', it: 'europe', es: 'europe', pt: 'europe', de: 'europe', at: 'europe', ch: 'europe', hu: 'europe', gr: 'europe',
+  fr: 'europe', it: 'europe', es: 'europe', pt: 'europe', de: 'europe', at: 'europe', ch: 'europe', hu: 'europe', gr: 'europe', gb: 'europe',
   us: 'na', ca: 'na', ar: 'sa', cl: 'sa', za: 'za', au: 'oc', nz: 'oc',
 };
 const OLD_WORLD = COUNTRIES.filter(([c]) => ZONE_OF[c] === 'europe');
@@ -59,6 +59,7 @@ const COUNTRY_AREAS: Record<string, string> = {
   hu: 'Tokaj',
   gr: 'Naoussa, Nemea, Santorini',
   ch: 'Valais, Vaud',
+  gb: 'England (sparkling)',
   us: 'Napa, Sonoma, Willamette Valley, Washington…',
   ca: 'Niagara Peninsula, Okanagan Valley',
   ar: 'Mendoza, Salta',
@@ -221,7 +222,10 @@ export default function MapScreen() {
   const countryShape = useMemo(
     () => ({
       ...countries,
-      features: countries.features.map((f) => ({ ...f, properties: { ...f.properties, focused: f.properties.iso === iso ? 1 : 0 } })),
+      features: countries.features.map((f) => ({
+        ...f,
+        properties: { ...f.properties, syllabus: f.properties.syllabus || f.properties.iso in ZONE_OF, focused: f.properties.iso === iso ? 1 : 0 },
+      })),
     }),
     [countries, iso],
   );
