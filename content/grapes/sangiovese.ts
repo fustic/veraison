@@ -25,6 +25,7 @@ export default {
     { aromaId: 'aroma:earth' },
     { aromaId: 'aroma:game' },
     { aromaId: 'aroma:dried-cranberry' },
+    { aromaId: 'aroma:meaty' },
   ],
   why: [
     { factor: 'Late ripening', effect: 'needs warm, sunny slopes', result: 'cool sites and vintages give lean, very acidic wines' },
@@ -33,6 +34,7 @@ export default {
     { factor: 'Montalcino: warmer and drier', effect: 'riper grapes', result: 'Brunello: fuller, more powerful, 100% Sangiovese, released after 5 years' },
     { factor: 'Large old botti or small new barriques', effect: 'little oak flavour, or vanilla and spice', result: 'traditional and modern styles' },
     { factor: 'Blended with Cabernet and Merlot (Super Tuscans)', effect: 'more colour, body and black fruit', result: 'international-style IGT Toscana' },
+    { factor: 'Bottle age', effect: 'primary fruit fades', result: 'meaty, gamey notes' },
   ],
   lookAlikes: [
     { grapeId: 'grape:nebbiolo', tell: 'Nebbiolo is paler, more tannic and more perfumed (rose, tar).' },

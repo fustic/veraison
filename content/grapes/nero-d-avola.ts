@@ -20,7 +20,10 @@ export default {
     { aromaId: 'aroma:black-pepper' },
     { aromaId: 'aroma:chocolate-oak' },
   ],
-  why: [{ factor: 'Keeps reasonable acidity in Sicilian heat', effect: 'ripe fruit with freshness', result: 'from inexpensive Terre Siciliane to oaked premium reds' }],
+  why: [
+    { factor: 'Keeps reasonable acidity in Sicilian heat', effect: 'ripe fruit with freshness', result: 'from inexpensive Terre Siciliane to oaked premium reds' },
+    { factor: 'Grown all over Sicily: Terre Siciliane IGT and Sicilia DOC', effect: 'medium to full body, medium acid and tannin', result: 'fruity early-drinking style; more concentrated from top producers' },
+  ],
   lookAlikes: [{ grapeId: 'grape:syrah', tell: 'Syrah is more peppery and savoury.' }],
   regions: [{ regionId: 'region:it-sicily', styleLevel: 3, style: 'Plush black cherry and plum; in Cerasuolo di Vittoria blended with Frappato.', producers: [] }],
   verified: false,

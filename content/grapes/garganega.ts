@@ -18,11 +18,13 @@ export default {
     { aromaId: 'aroma:chamomile' },
     { aromaId: 'aroma:almond' },
     { aromaId: 'aroma:honey' },
+    { aromaId: 'aroma:white-pepper' },
   ],
   why: [
     { factor: 'High yields on the plains', effect: 'dilute fruit', result: 'light, neutral Soave' },
     { factor: 'Low yields on volcanic and limestone hills (Soave Classico)', effect: 'concentration', result: 'stone fruit, chamomile, almond; can age' },
     { factor: 'Grapes dried before fermentation', effect: 'sugar concentrated', result: 'Recioto di Soave, sweet' },
+    { factor: 'Cool limestone, clay and volcanic soils in the foothills', effect: 'slow ripening, full flavour with high acidity', result: 'Soave Classico that ages to almond and honey; the sandy plain gives fruitier wines to drink young' },
   ],
   lookAlikes: [{ grapeId: 'grape:cortese', tell: 'Gavi is crisper and leaner; Soave a little rounder, with almond.' }],
   regions: [{ regionId: 'region:it-veneto-soave', styleLevel: 3, style: 'Soave Classico: pear, stone fruit, almond; the plains give lighter wines.', producers: ['Pieropan', 'Inama'] }],

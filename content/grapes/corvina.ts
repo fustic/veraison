@@ -27,6 +27,7 @@ export default {
     { factor: 'Thick skins', effect: 'resist rot while drying for months after picking (appassimento)', result: 'Amarone (dry, 15%+) and Recioto (sweet)' },
     { factor: 'Valpolicella: fresh, light', effect: 'high acidity, little tannin', result: 'sour cherry and a bitter-almond finish' },
     { factor: 'Ripasso: Valpolicella refermented on Amarone skins', effect: 'more extract, alcohol and flavour', result: 'between Valpolicella and Amarone in weight' },
+    { factor: 'Moderate colour, low to medium tannin, high acidity', effect: 'other local grapes are added to the blend', result: 'more colour and tannin in Valpolicella' },
   ],
   lookAlikes: [
     { grapeId: 'grape:pinot-noir', tell: 'Pinot Noir is earthier, without the bitter-almond finish.' },

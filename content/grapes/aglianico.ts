@@ -21,11 +21,13 @@ export default {
     { aromaId: 'aroma:leather' },
     { aromaId: 'aroma:earth' },
     { aromaId: 'aroma:tar' },
+    { aromaId: 'aroma:forest-floor' },
   ],
   why: [
     { factor: 'Very late ripening (picked as late as November)', effect: 'needs the warm south', result: 'Campania and Basilicata' },
     { factor: 'High-altitude volcanic sites', effect: 'cool nights keep acidity', result: 'structured, long-lived reds' },
     { factor: 'Very high tannin and acidity', effect: 'tough when young', result: 'needs years in oak and bottle' },
+    { factor: 'Oak maturation and bottle age', effect: 'tannins soften', result: 'earthy, forest-floor notes; at its best in Taurasi' },
   ],
   lookAlikes: [{ grapeId: 'grape:nebbiolo', tell: 'Nebbiolo is pale with red fruit and rose; Aglianico is deep with black fruit.' }],
   regions: [

@@ -25,11 +25,13 @@ export default {
     { factor: 'Late ripening', effect: 'needs warmth', result: 'grown in central and southern Italy' },
     { factor: 'High yields on the coastal plains', effect: 'fruity, soft', result: 'inexpensive Montepulciano d’Abruzzo' },
     { factor: 'Lower yields, oak ageing', effect: 'concentration and structure', result: 'deep, tannic premium wines' },
+    { factor: 'High colour and tannin, medium acidity', effect: 'black plum and cherry', result: 'mostly unoaked and fruity; the most concentrated get a short spell in oak' },
   ],
   lookAlikes: [{ grapeId: 'grape:sangiovese', tell: 'Sangiovese is paler with higher acidity and sour cherry.' }],
   regions: [
     { regionId: 'region:it-abruzzo-montepulciano-d-abruzzo', styleLevel: 3, style: 'From soft, fruity, inexpensive to deep and tannic; Cerasuolo d’Abruzzo is the rosé.', producers: [] },
     { regionId: 'region:it-marche', styleLevel: 3, style: 'Rosso Conero and Rosso Piceno.', producers: [] },
+    { regionId: 'region:it-marche-conero', styleLevel: 3, style: 'Conero DOCG: with some Sangiovese; the Marche’s best-known red.', producers: [] },
   ],
   verified: false,
 } satisfies Grape;

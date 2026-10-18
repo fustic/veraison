@@ -86,6 +86,7 @@ export default {
     { regionId: 'region:fr-rhone-cornas', styleLevel: 3, style: "Deep, tannic, rustic.", producers: [] },
     { regionId: 'region:za-swartland', styleLevel: 4, style: "Ripe, spicy, often with Rhône partners.", producers: [] },
     { regionId: 'region:us-walla-walla-valley', styleLevel: 4, style: "Rich, ripe, savoury.", producers: [] },
+    { regionId: 'region:it-sicily', styleLevel: 3, style: 'Has done particularly well among the international grapes.', producers: [] },
   ],
   alsoGrownIn: ['Chile', 'Washington State'],
   verified: false,

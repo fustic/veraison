@@ -78,6 +78,7 @@ export default {
     { regionId: 'region:nz-gisborne', styleLevel: 4, style: "Warm and sunny: ripe tropical fruit.", producers: [] },
     { regionId: 'region:au-margaret-river', styleLevel: 4, style: "Ripe stone fruit, creamy texture, quality oak.", producers: [] },
     { regionId: 'region:us-russian-river-valley', styleLevel: 4, style: "Ripe, rich, creamy; MLC and new oak common.", producers: [] },
+    { regionId: 'region:it-trentino', styleLevel: 2, style: 'Main white grape with Pinot Grigio; valley floor gives medium-bodied, ripe stone-fruit wines; also the base for Trento DOC sparkling.', producers: [] },
   ],
   alsoGrownIn: ['Santa Barbara', 'Mornington Peninsula', 'Marlborough', 'Casablanca Valley', 'Jura', 'Franciacorta (sparkling)'],
   verified: false,

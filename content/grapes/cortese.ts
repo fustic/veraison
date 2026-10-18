@@ -18,7 +18,10 @@ export default {
     { aromaId: 'aroma:acacia' },
     { aromaId: 'aroma:wet-stones' },
   ],
-  why: [{ factor: 'Keeps its acidity in Piemonte’s warm summers, helped by breezes from Liguria', effect: 'crisp, light wines', result: 'Gavi: lemon, green apple, blossom' }],
+  why: [
+    { factor: 'Keeps its acidity in Piemonte’s warm summers, helped by breezes from Liguria', effect: 'crisp, light wines', result: 'Gavi: lemon, green apple, blossom' },
+    { factor: 'Cool stainless-steel fermentation is the norm; some use old oak and lees stirring', effect: 'fresh fruit, or extra texture', result: 'most ready on release; the best age in bottle' },
+  ],
   lookAlikes: [{ grapeId: 'grape:chardonnay', tell: 'Unoaked Chardonnay is fuller with more fruit.' }],
   regions: [{ regionId: 'region:it-piemonte-gavi', styleLevel: 3, style: 'Light to medium body, high acidity, citrus and blossom.', producers: [] }],
   verified: false,

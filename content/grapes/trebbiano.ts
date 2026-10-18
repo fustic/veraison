@@ -25,6 +25,7 @@ export default {
   regions: [
     { regionId: 'region:fr-south-west-cotes-de-gascogne', styleLevel: 1, style: 'As Ugni Blanc, often with Colombard: crisp, fruity, inexpensive.', producers: [] },
     { regionId: 'region:it-umbria-orvieto', styleLevel: 2, style: 'As Procanico, blended with Grechetto.', producers: [] },
+    { regionId: 'region:it-lazio-frascati', styleLevel: 2, style: 'Blended with Malvasia: fresh, unoaked, citrus.', producers: [] },
   ],
   alsoGrownIn: ['Tuscany (Vin Santo with Malvasia)', 'Abruzzo', 'Cognac'],
   verified: false,

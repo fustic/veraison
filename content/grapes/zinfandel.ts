@@ -39,6 +39,7 @@ export default {
     { regionId: 'region:us-lodi', styleLevel: 4, style: 'Hot inland: ripe, jammy, high alcohol; many old vines.', producers: [] },
     { regionId: 'region:us-paso-robles', styleLevel: 4, style: 'Warm Central Coast: rich, ripe.', producers: [] },
     { regionId: 'region:it-puglia-primitivo-di-manduria', styleLevel: 5, style: 'As Primitivo: very ripe, full, high alcohol, dried fruit.', producers: [] },
+    { regionId: 'region:it-puglia', styleLevel: 3, style: 'As Primitivo: high yields give simple Puglia IGT; at controlled yields full, high alcohol, very ripe berry fruit.', producers: [] },
   ],
   alsoGrownIn: ['Croatia (Crljenak Kaštelanski / Tribidrag)', 'Australia'],
   verified: false,

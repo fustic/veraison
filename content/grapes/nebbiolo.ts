@@ -34,6 +34,7 @@ export default {
     { factor: 'Very high tannin and acidity', effect: 'tough when young', result: 'long ageing: Barolo at least 38 months (18 in wood), Barbaresco 26 (9 in wood)' },
     { factor: 'Traditional large old botti or modern small barriques', effect: 'little oak flavour or vanilla and toast', result: 'two styles of Barolo' },
     { factor: 'Bottle age', effect: 'tertiary development', result: 'tar, roses, leather, truffle and dried cherry' },
+    { factor: 'Barbaresco: lower slopes (200–400 m) near the Tanaro', effect: 'ripens earlier than in Barolo', result: 'fruitier, less perfumed, with similar acid and tannin' },
   ],
   lookAlikes: [
     { grapeId: 'grape:sangiovese', tell: 'Sangiovese is less tannic and less perfumed, with tomato leaf and more red cherry.' },

@@ -18,10 +18,13 @@ export default {
     { aromaId: 'aroma:rose' },
     { aromaId: 'aroma:dried-herbs' },
     { aromaId: 'aroma:earth' },
+    { aromaId: 'aroma:cranberry' },
+    { aromaId: 'aroma:mushroom' },
   ],
   why: [
     { factor: 'Vineyards up to about 1,000 m on Mount Etna', effect: 'cool nights, long ripening', result: 'pale, fragrant, high-acid reds compared with Pinot Noir and Nebbiolo' },
     { factor: 'Volcanic soils, old ungrafted bush vines', effect: 'low yields', result: 'concentrated, mineral wines' },
+    { factor: 'Blended with Nerello Cappuccio on Etna', effect: 'fragrant, high acid and tannin', result: 'sour cherry, cranberry, raspberry, herbs; mushroom with age' },
   ],
   lookAlikes: [
     { grapeId: 'grape:nebbiolo', tell: 'Nebbiolo is even more tannic, with tar and rose.' },

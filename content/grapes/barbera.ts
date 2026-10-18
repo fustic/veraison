@@ -20,11 +20,13 @@ export default {
     { aromaId: 'aroma:vanilla' },
     { aromaId: 'aroma:toast-oak' },
     { aromaId: 'aroma:cloves' },
+    { aromaId: 'aroma:red-plum' },
   ],
   why: [
     { factor: 'High acidity, low tannin', effect: 'fresh, juicy and easy with food', result: 'everyday Piemonte red' },
     { factor: 'Small new oak barrels for premium wines', effect: 'adds the tannin it lacks plus spice', result: 'richer, structured Barbera' },
     { factor: 'High yields', effect: 'dilute fruit with sharp acidity', result: 'quality depends on yield control' },
+    { factor: 'Late ripening, medium to deep colour, low to medium tannin, high acidity', effect: 'red cherry and plum, sometimes black pepper', result: 'unoaked and fruity, or barrel-aged and spicy; the best age several years' },
   ],
   lookAlikes: [
     { grapeId: 'grape:dolcetto', tell: 'Dolcetto is the opposite: lower acidity, more tannin.' },
@@ -32,7 +34,7 @@ export default {
   ],
   regions: [
     { regionId: 'region:it-piemonte-barbera-d-alba', styleLevel: 3, style: 'Grown on sites not used for Nebbiolo; often a little fuller.', producers: [] },
-    { regionId: 'region:it-piemonte-barbera-d-asti', styleLevel: 3, style: 'Its main home; best from the Nizza zone (now DOCG).', producers: [] },
+    { regionId: 'region:it-piemonte-barbera-d-asti', styleLevel: 3, style: 'DOCG, often thought finer than Barbera d’Alba; best from the Nizza zone.', producers: [] },
   ],
   alsoGrownIn: ['Monferrato', 'California', 'Australia', 'Argentina'],
   verified: false,

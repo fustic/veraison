@@ -18,8 +18,12 @@ export default {
     { aromaId: 'aroma:dried-herbs' },
     { aromaId: 'aroma:earth' },
     { aromaId: 'aroma:chocolate-oak' },
+    { aromaId: 'aroma:baked-fruit' },
   ],
-  why: [{ factor: 'Hot, flat Salento peninsula', effect: 'very ripe grapes', result: 'full, rich, earthy reds with a bitter twist; also deep rosato' }],
+  why: [
+    { factor: 'Hot, flat Salento peninsula', effect: 'very ripe grapes', result: 'full, rich, earthy reds with a bitter twist; also deep rosato' },
+    { factor: 'Controlled yields', effect: 'concentration', result: 'full body, medium tannin and acid, high alcohol, baked red and black fruit; high yields give simple Puglia IGT' },
+  ],
   lookAlikes: [{ grapeId: 'grape:zinfandel', tell: 'Primitivo is jammier and more raisined.' }],
   regions: [{ regionId: 'region:it-puglia-salice-salentino', styleLevel: 3, style: 'Blended with a little Malvasia Nera: plum, earth, soft tannin.', producers: [] }],
   verified: false,

@@ -30,6 +30,7 @@ export default {
     { factor: 'Small-berried French/German clones (Alto Adige)', effect: 'concentrated flavour', result: 'premium Pinot Grigio with depth' },
     { factor: 'Pale, large-berried Veneto clone at high yields', effect: 'dilute, neutral juice', result: 'light, inexpensive Pinot Grigio' },
     { factor: 'Old oak, lees contact, sometimes residual sugar', effect: 'texture and roundness', result: 'oily, rich Alsace style' },
+    { factor: 'Pinot Grigio delle Venezie DOC (since 2017) covers Veneto, Friuli and Trentino', effect: 'replaces local IGTs for many producers', result: 'the usual label for volume Pinot Grigio' },
   ],
   lookAlikes: [
     { grapeId: 'grape:chardonnay', tell: 'Unoaked Chardonnay is similarly neutral; rich Pinot Gris is oilier, often off-dry, with ginger and honey.' },
@@ -59,8 +60,8 @@ export default {
       style: 'Rich, full, high alcohol, more acidity than Gewurztraminer and less aromatic; fresh and dried fruit, honey; often golden, dry or off-dry.',
       producers: [],
     },
-    { regionId: 'region:it-trentino', styleLevel: 1, style: "Volume Pinot Grigio from the valley floor.", producers: [] },
-    { regionId: 'region:it-friuli', styleLevel: 2, style: "Fresh, more aromatic Pinot Grigio from the hills.", producers: [] },
+    { regionId: 'region:it-trentino', styleLevel: 1, style: "Valley floor: medium body and acid, ripe stone fruit; higher sites closer to Alto Adige.", producers: [] },
+    { regionId: 'region:it-friuli', styleLevel: 2, style: "Some of Italy’s richest Pinot Grigio: medium to full body, juicy peach and tropical fruit.", producers: [] },
     { regionId: 'region:de-baden', styleLevel: 3, style: "As Grauburgunder: dry, full.", producers: [] },
     { regionId: 'region:us-willamette-valley', styleLevel: 3, style: "Fresh, fruity Pinot Gris.", producers: [] },
   ],
