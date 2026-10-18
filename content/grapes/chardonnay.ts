@@ -34,6 +34,8 @@ export default {
     { factor: 'Barrel fermentation and new oak', effect: 'vanilla, toast and integration', result: 'premium styles that can age' },
     { factor: 'Warm or hot climate', effect: 'acidity drops fast late in ripening', result: 'harvest timing is critical; acidification common in cheap wines' },
     { factor: 'Climate', effect: 'cool: apple and lemon; moderate: white peach, melon, lemon; warm: peach, banana, pineapple', result: 'the fruit tells you the climate' },
+    { factor: 'Burgundy method: barrel fermentation, 6–9 months in barrel, MLC, lees', effect: 'texture and complexity', result: 'the model for premium Chardonnay worldwide' },
+    { factor: 'Premature oxidation (seen since the 1990s)', effect: 'some top white Burgundies aged badly', result: 'producers have changed vineyard and winery practice; it is now rarer' },
   ],
   lookAlikes: [
     { grapeId: 'grape:sauvignon-blanc', tell: 'Unoaked Chablis is less aromatic than Sancerre and never grassy or herbaceous.' },

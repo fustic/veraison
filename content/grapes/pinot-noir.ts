@@ -39,6 +39,7 @@ export default {
     { factor: 'Warm fermentation (often above 30 °C)', effect: 'more colour, flavour and tannin', result: 'for longer-lived wines; cooler for lighter styles' },
     { factor: 'Mostly second- or third-fill barrels, 12–24 months', effect: 'oak without overpowering the fruit', result: 'delicate flavours stay in front' },
     { factor: 'Bottle age', effect: 'tertiary development', result: 'forest floor and mushroom' },
+    { factor: 'Burgundy: the best spend 16–18 months in barrel, part new', effect: 'oak frames the fruit', result: 'red fruit young; earth, game and mushroom with age' },
   ],
   lookAlikes: [
     { grapeId: 'grape:gamay', tell: 'Gamay is juicier, often with banana or bubblegum from carbonic maceration, and rarely earthy.' },

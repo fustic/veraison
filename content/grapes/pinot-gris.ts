@@ -56,7 +56,7 @@ export default {
     {
       regionId: 'region:fr-alsace',
       styleLevel: 5,
-      style: 'Dry or off-dry, oily texture, ripe tropical fruit, ginger and honey; often golden.',
+      style: 'Rich, full, high alcohol, more acidity than Gewurztraminer and less aromatic; fresh and dried fruit, honey; often golden, dry or off-dry.',
       producers: [],
     },
     { regionId: 'region:it-trentino', styleLevel: 1, style: "Volume Pinot Grigio from the valley floor.", producers: [] },

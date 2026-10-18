@@ -24,6 +24,7 @@ export default {
   why: [
     { factor: 'Extremely tannic skins and seeds', effect: 'harsh when young', result: 'micro-oxygenation (developed in Madiran) and long oak ageing soften it' },
     { factor: 'Blended with Cabernet Franc or Cabernet Sauvignon', effect: 'adds fruit and fragrance', result: 'more approachable Madiran' },
+    { factor: 'Riper grapes and modern winemaking', effect: 'softer, riper tannins', result: 'concentrated black fruit; less bottle age needed than before' },
   ],
   lookAlikes: [{ grapeId: 'grape:malbec', tell: 'Malbec is softer and fruitier; Tannat’s tannin is far grippier.' }],
   regions: [{ regionId: 'region:fr-south-west-madiran', styleLevel: 3, style: 'Deep, very tannic, black fruit; needs years in bottle.', producers: [] }],

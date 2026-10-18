@@ -27,6 +27,7 @@ export default {
     { factor: 'Thin skins', effect: 'susceptible to noble rot', result: 'the backbone of Sauternes and Barsac' },
     { factor: 'Early picking (Hunter Valley)', effect: 'low alcohol, high acid, neutral when young', result: 'develops toast and honey after years in bottle' },
     { factor: 'Blended with Sauvignon Blanc', effect: 'adds body to Sauvignon’s acid and aroma', result: 'classic white Bordeaux' },
+    { factor: 'Ages in new oak (Pessac-Léognan, Sauternes)', effect: 'toast and nutty richness', result: 'long-lived dry and sweet whites' },
   ],
   lookAlikes: [
     { grapeId: 'grape:sauvignon-blanc', tell: 'Sauvignon Blanc is far more aromatic and herbaceous.' },

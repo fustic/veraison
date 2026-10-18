@@ -29,6 +29,7 @@ export default {
     { factor: 'Thick skins', effect: 'deep colour, high tannin', result: 'adds structure and colour to Grenache blends (GSM)' },
     { factor: 'Bandol: at least half the blend, long oak ageing', effect: 'firm tannins soften slowly', result: 'dense, gamey, long-lived red' },
     { factor: 'Jumilla and Yecla heat, old bush vines', effect: 'very ripe grapes', result: 'full, high-alcohol, jammy Monastrell' },
+    { factor: 'Southern Rhône is its northern limit', effect: 'ripens only in the warmest sites', result: 'dense black fruit with gamey, meaty notes prized in Châteauneuf' },
   ],
   lookAlikes: [
     { grapeId: 'grape:syrah', tell: 'Syrah has more black pepper and violet; Mourvèdre is gamier and earthier.' },

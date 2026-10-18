@@ -26,6 +26,7 @@ export default {
     { factor: 'Old, low-yielding bush vines', effect: 'concentration with natural acidity', result: 'serious wines in Priorat, Languedoc and Chile’s Maule' },
     { factor: 'Carbonic maceration', effect: 'softens the tannin', result: 'fruitier, rounder southern French reds' },
     { factor: 'Keeps acidity in heat', effect: 'freshens Grenache-based blends', result: 'colour, tannin and acidity for the blend' },
+    { factor: 'Permitted in every Languedoc-Roussillon appellation', effect: 'still widely planted though much reduced', result: 'old vines on poor soils give the best wines' },
   ],
   lookAlikes: [{ grapeId: 'grape:grenache', tell: 'Grenache is softer, paler and more alcoholic; Carignan is sharper and more tannic.' }],
   regions: [

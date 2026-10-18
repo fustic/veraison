@@ -22,6 +22,7 @@ export default {
   why: [
     { factor: 'Ripens later than Cabernet Sauvignon', effect: 'only ripens fully in warm Bordeaux vintages', result: 'used in small amounts for colour, tannin and spice' },
     { factor: 'Warm New World regions', effect: 'ripens reliably', result: 'occasional deep, tannic varietal wines' },
+    { factor: 'Only ripens fully in very hot years', effect: 'very deep colour, tannic, slow-ageing wine', result: 'never more than a minor part of the blend: tannin, colour, spice' },
   ],
   lookAlikes: [{ grapeId: 'grape:cabernet-sauvignon', tell: 'Petit Verdot is even deeper and more floral, with violet; rarely met on its own.' }],
   regions: [{ regionId: 'region:fr-bordeaux-haut-medoc', styleLevel: 3, style: 'A few per cent of Left Bank blends for colour, tannin and spice.', producers: [] }],

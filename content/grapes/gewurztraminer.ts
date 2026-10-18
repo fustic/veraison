@@ -27,6 +27,7 @@ export default {
     { factor: 'Aromas develop late, with high sugar', effect: 'must ripen fully', result: 'full body, high alcohol, low acidity, oily texture' },
     { factor: 'Low acidity and a slight bitterness', effect: 'a touch of sweetness balances it', result: 'many are off-dry' },
     { factor: 'Dry autumns in Alsace', effect: 'late picking or noble rot', result: 'Vendanges Tardives and Sélection de Grains Nobles' },
+    { factor: 'Pink-tinged skins', effect: 'some colour pick-up', result: 'golden wines; 14% abv is not unusual in Alsace' },
   ],
   lookAlikes: [
     { grapeId: 'grape:muscat', tell: 'Muscat is lighter and grapey; Gewurz is oilier with lychee and rose.' },

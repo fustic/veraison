@@ -18,10 +18,12 @@ export default {
     { aromaId: 'aroma:honeysuckle' },
     { aromaId: 'aroma:honey' },
     { aromaId: 'aroma:nutty' },
+    { aromaId: 'aroma:hazelnut' },
   ],
   why: [
     { factor: 'Low acidity, high extract', effect: 'broad, waxy texture', result: 'full-bodied whites that can turn flabby in hot sites' },
     { factor: 'Bottle age', effect: 'tertiary development', result: 'honey, nuts and beeswax after a decade' },
+    { factor: 'Blended with Roussanne', effect: 'Marsanne gives weight, Roussanne acidity and perfume', result: 'whites that age to hazelnut' },
   ],
   lookAlikes: [{ grapeId: 'grape:viognier', tell: 'Viognier is far more perfumed; Marsanne is broad and quieter.' }],
   regions: [

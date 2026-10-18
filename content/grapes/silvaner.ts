@@ -18,7 +18,10 @@ export default {
     { aromaId: 'aroma:dried-herbs' },
     { aromaId: 'aroma:wet-stones' },
   ],
-  why: [{ factor: 'Continental Franken, limestone and marl soils', effect: 'subtle fruit, firm acidity', result: 'dry, earthy, mineral wines, traditionally in the flat Bocksbeutel bottle' }],
+  why: [
+    { factor: 'Continental Franken, limestone and marl soils', effect: 'subtle fruit, firm acidity', result: 'dry, earthy, mineral wines, traditionally in the flat Bocksbeutel bottle' },
+    { factor: 'Replaced by the noble varieties in Alsace', effect: 'fewer plantings', result: 'delicately perfumed wines, best drunk young' },
+  ],
   lookAlikes: [{ grapeId: 'grape:riesling', tell: 'Riesling is far more aromatic and acidic.' }],
   regions: [
     { regionId: 'region:de-franken', styleLevel: 3, style: 'Dry, earthy, mineral.', producers: [] },

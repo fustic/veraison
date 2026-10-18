@@ -27,6 +27,7 @@ export default {
     { factor: 'Picked too early', effect: 'little aroma', result: 'neutral, thin wine; too late and it turns oily and flabby' },
     { factor: 'Some lees, MLC and old oak (Condrieu)', effect: 'more texture and complexity', result: 'rich, creamy, apricot and blossom' },
     { factor: 'Co-fermented with Syrah (Côte-Rôtie)', effect: 'adds perfume', result: 'floral Syrah' },
+    { factor: 'Low acidity, high sugar', effect: 'risk of an oily texture that hides the aroma', result: 'needs careful handling; new oak used with restraint' },
   ],
   lookAlikes: [
     { grapeId: 'grape:chardonnay', tell: 'Oaked Chardonnay has more acidity and far less floral perfume.' },

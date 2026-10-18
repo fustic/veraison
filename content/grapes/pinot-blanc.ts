@@ -18,7 +18,10 @@ export default {
     { aromaId: 'aroma:peach', ripeness: 'very' },
     { aromaId: 'aroma:blossom' },
   ],
-  why: [{ factor: 'Gentle, neutral fruit', effect: 'soft, round, easy wines', result: 'a staple of Crémant d’Alsace and dry Alsace and Alto Adige whites' }],
+  why: [
+    { factor: 'Gentle, neutral fruit', effect: 'soft, round, easy wines', result: 'a staple of Crémant d’Alsace and dry Alsace and Alto Adige whites' },
+    { factor: 'Planted on the fertile plain rather than the slopes', effect: 'light, simple, non-aromatic', result: 'widely used for Crémant d’Alsace; Auxerrois is similar but spicier and fuller' },
+  ],
   lookAlikes: [{ grapeId: 'grape:chardonnay', tell: 'Unoaked Chardonnay is very similar; Pinot Blanc is usually lighter.' }],
   regions: [
     { regionId: 'region:fr-alsace', styleLevel: 2, style: 'Soft, apple and pear; main grape of Crémant d’Alsace.', producers: [] },

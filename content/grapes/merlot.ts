@@ -6,7 +6,7 @@ export default {
   name: 'Merlot',
   colour: 'red',
   berryColour: '#3E2348',
-  traits: ['Early budding', 'Early ripening', 'Prone to coulure', 'Likes cooler clay', 'Softer skins than Cabernet'],
+  traits: ['Early budding', 'Early ripening', 'Most planted grape in Bordeaux', 'Prone to coulure', 'Likes cooler clay', 'Softer skins than Cabernet'],
   structure: {
     cool: { appearanceIntensity: [1, 2], acidity: [2, 3], tannin: [2, 3], body: [2, 3], alcohol: [1, 1] },
     warm: { appearanceIntensity: [2, 2], acidity: [1, 2], tannin: [2, 2], body: [3, 4], alcohol: [2, 2] },
@@ -33,6 +33,7 @@ export default {
     { factor: 'Picked earlier (mostly Bordeaux)', effect: 'more acidity, moderate sugar', result: 'medium body and alcohol, fresh red fruit, leafy notes' },
     { factor: 'Softer skins than Cabernet', effect: 'colour and tannin come out more easily', result: 'less vigorous extraction needed' },
     { factor: 'New oak, 12–18 months', effect: 'toast, vanilla and clove', result: 'suits its juicy plum fruit, adds complexity' },
+    { factor: 'Soft, fruity and reliable', effect: 'easy drinking young', result: 'the main grape of inexpensive Bordeaux' },
   ],
   lookAlikes: [{ grapeId: 'grape:cabernet-sauvignon', tell: 'Cabernet is firmer and more acidic, with blackcurrant, mint and cedar.' }],
   regions: [

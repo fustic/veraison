@@ -5,7 +5,7 @@ export default {
   name: 'Cabernet Franc',
   colour: 'red',
   berryColour: '#4A2A55',
-  traits: ['Earlier ripening than Cabernet Sauvignon', 'Thinner skins'],
+  traits: ['Earlier ripening than Cabernet Sauvignon', 'Thinner skins', 'Prefers warm, well-drained soils', 'Herbaceous if under-ripe'],
   structure: {
     cool: { appearanceIntensity: [1, 1], acidity: [3, 4], tannin: [2, 3], body: [1, 2], alcohol: [1, 1] },
     warm: { appearanceIntensity: [1, 2], acidity: [3, 3], tannin: [3, 3], body: [2, 3], alcohol: [1, 2] },
@@ -22,6 +22,11 @@ export default {
   why: [
     { factor: 'Ripens earlier than Cabernet Sauvignon', effect: 'succeeds in cooler sites', result: 'the main red of the Loire' },
     { factor: 'Less tannin and body', effect: 'adds fragrance rather than power', result: 'a blending partner for Merlot in Saint-Émilion' },
+    { factor: 'Under-ripe', effect: 'methoxypyrazines and stalky flavours', result: 'green, herbaceous notes' },
+    { factor: 'Fully ripe', effect: 'vibrant red fruit and floral notes', result: 'fragrance in Bordeaux blends' },
+    { factor: 'Saint-Émilion’s warm gravel and limestone plateau', effect: 'ripens fully', result: 'more Cabernet Franc in plateau wines (Cheval Blanc)' },
+    { factor: 'Loire: sandy soils vs south-facing limestone-clay slopes', effect: 'light and fruity vs fuller and tannic', result: 'from chillable, early-drinking reds to wines that age for years' },
+    { factor: 'Saumur-Champigny', effect: 'floral lift', result: 'a characteristic violet note' },
   ],
   lookAlikes: [{ grapeId: 'grape:cabernet-sauvignon', tell: 'Cabernet Sauvignon is fuller and more tannic, with darker fruit.' }],
   regions: [

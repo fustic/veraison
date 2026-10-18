@@ -71,7 +71,7 @@ export default {
     {
       regionId: 'region:fr-alsace',
       styleLevel: 4,
-      style: 'Mainly dry; late-harvest and botrytised sweet wines in suitable vintages. Old foudres common.',
+      style: 'The most planted noble grape: medium to full body, dry, high acid, citrus and stone fruit, often steely; less floral than German Riesling. More now made with some sweetness; VT and SGN in good years.',
       producers: [],
     },
     { regionId: 'region:de-mosel', styleLevel: 1, style: "Light, low alcohol, high acid; slate; dry to sweet.", producers: [] },

@@ -18,6 +18,7 @@ export default {
     { aromaId: 'aroma:blossom' },
     { aromaId: 'aroma:dried-herbs' },
     { aromaId: 'aroma:honey' },
+    { aromaId: 'aroma:hazelnut' },
   ],
   why: [{ factor: 'Blended with Marsanne', effect: 'adds aroma and acidity to Marsanne’s body', result: 'balanced Rhône whites that age well' }],
   lookAlikes: [{ grapeId: 'grape:marsanne', tell: 'Marsanne is broader with lower acidity; Roussanne more herbal and perfumed.' }],

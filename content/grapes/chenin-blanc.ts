@@ -31,6 +31,9 @@ export default {
     { factor: 'Misty autumns along the Layon', effect: 'noble rot', result: 'sweet Coteaux du Layon, Bonnezeaux, Quarts de Chaume' },
     { factor: 'Old bush vines in South Africa', effect: 'low yields', result: 'concentrated, often lees- or oak-aged premium Chenin' },
     { factor: 'Bottle age', effect: 'tertiary development', result: 'honey, toast, lanolin; acidity keeps it fresh for decades' },
+    { factor: 'Grapes in one bunch ripen unevenly', effect: 'green, herbaceous notes if unripe berries are picked', result: 'several passes through the vineyard' },
+    { factor: 'Barely ripe fruit (10–11% potential alcohol)', effect: 'high acid, neutral base', result: 'used for sparkling wine; riper fruit for dry, medium and sweet' },
+    { factor: 'Riper picking for dry wines in recent years', effect: 'more alcohol, a few grams of sugar', result: 'fuller, rounder dry Chenin' },
   ],
   lookAlikes: [
     { grapeId: 'grape:riesling', tell: 'Riesling is more floral and citrus; Chenin has apple, quince and a waxy, woolly note.' },

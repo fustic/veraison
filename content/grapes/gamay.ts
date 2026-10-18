@@ -25,6 +25,9 @@ export default {
   why: [
     { factor: 'Carbonic or semi-carbonic maceration', effect: 'fermentation inside whole berries', result: 'soft tannin, banana and bubblegum aromas' },
     { factor: 'Granite soils of the crus', effect: 'lower vigour and yields', result: 'more concentrated wines that can age' },
+    { factor: 'Early budding and ripening', effect: 'suits the moderate climate of Beaujolais', result: 'fragrant raspberry and cherry, low to medium tannin' },
+    { factor: 'Vigorous: high yields if unmanaged', effect: 'dilute wine', result: 'yield control and poor granite soils make the best wines' },
+    { factor: 'Crus: crushed-fruit fermentation, sometimes old large vats or some whole bunches', effect: 'more structure, little oak flavour', result: 'Morgon and Moulin-à-Vent age; Fleurie and Brouilly are lighter and more perfumed' },
   ],
   lookAlikes: [{ grapeId: 'grape:pinot-noir', tell: 'Pinot is more savoury, with earth or forest floor and often oak spice; Gamay is juicier and purer.' }],
   regions: [

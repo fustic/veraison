@@ -35,6 +35,7 @@ export default {
     { factor: 'Post-fermentation maceration', effect: 'slow, gentle extraction', result: 'softer, rounder tannin' },
     { factor: 'Intense flavour and high tannin', effect: 'can take a lot of new oak', result: 'French barriques, typically 12–18 months; cedar and vanilla' },
     { factor: 'Can lack flesh on its own', effect: 'blended with Merlot (Shiraz in Australia)', result: 'softer, fruitier, fuller wine' },
+    { factor: 'Bordeaux Left Bank gravel', effect: 'late ripening succeeds even in cool, wet sites and years', result: 'up to about three-quarters of the blend in the finest Haut-Médoc' },
   ],
   lookAlikes: [
     { grapeId: 'grape:merlot', tell: 'Merlot is softer and plummier, with less acidity and gentler tannin.' },

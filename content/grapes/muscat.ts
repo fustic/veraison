@@ -30,6 +30,7 @@ export default {
     { factor: 'Asti and Moscato d’Asti: fermentation stopped by chilling', effect: 'low alcohol, sugar kept', result: 'light, sweet, fresh sparkling or frizzante wine' },
     { factor: 'Vin doux naturel: grape spirit added mid-fermentation', effect: 'sweet, about 15% abv', result: 'Muscat de Beaumes-de-Venise, Muscat de Rivesaltes' },
     { factor: 'Rutherglen: very ripe, raisined grapes, years of oxidative ageing', effect: 'concentration, tertiary flavours', result: 'luscious toffee and raisin Muscat' },
+    { factor: 'Muscat Blanc à Petits Grains sets fruit poorly and rots (Alsace)', effect: 'unreliable crops', result: 'the less aromatic Muscat Ottonel is more widely planted there' },
   ],
   lookAlikes: [
     { grapeId: 'grape:gewurztraminer', tell: 'Gewurztraminer is oilier with lychee, rose and ginger rather than fresh grape.' },

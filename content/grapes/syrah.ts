@@ -34,6 +34,7 @@ export default {
     { factor: 'Cooler climate', effect: 'slower ripening', result: 'leaner, medium-bodied, more peppery wines' },
     { factor: 'Vigorous cap management and new oak', effect: 'maximum extraction plus toasty flavours', result: 'powerful, concentrated style' },
     { factor: 'Earlier picking, gentle extraction, some whole bunches, long post-fermentation maceration, 300–500 L older barrels', effect: 'lower alcohol, finer tannin, less oak flavour', result: 'restrained, elegant style' },
+    { factor: 'Easily damaged by the mistral in the Southern Rhône', effect: 'needs trellising; struggles in the hottest sites', result: 'a supporting role for colour and tannin in Grenache blends' },
   ],
   lookAlikes: [
     { grapeId: 'grape:grenache', tell: 'Grenache is paler with red fruit, softer tannin and higher alcohol; Syrah is deep purple with black fruit and pepper.' },

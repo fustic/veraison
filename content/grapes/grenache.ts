@@ -32,6 +32,7 @@ export default {
     { factor: 'Old bush vines at low yields', effect: 'small crops of concentrated grapes', result: 'intense red berry and peppery spice (Barossa, McLaren Vale)' },
     { factor: 'Cold soak, gentle punching down, little post-fermentation maceration', effect: 'colour and flavour without harsh tannin', result: 'finesse in premium wines' },
     { factor: 'Large old oak (foudres)', effect: 'no toasty new-oak flavours', result: 'red fruit stays in front' },
+    { factor: 'Southern Rhône: bush-trained low to the ground', effect: 'shelter from the mistral, warmth from the stony soil', result: 'fully ripe Grenache; baked and jammy in hot years' },
   ],
   lookAlikes: [
     { grapeId: 'grape:syrah', tell: 'Syrah is deeper in colour with black fruit, pepper and firmer tannin; Grenache is paler, redder and more alcoholic.' },

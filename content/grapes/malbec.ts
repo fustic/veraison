@@ -35,7 +35,7 @@ export default {
     { grapeId: 'grape:syrah', tell: 'Syrah shows black pepper and meaty notes; Malbec is fruitier and floral.' },
   ],
   regions: [
-    { regionId: 'region:fr-south-west-cahors', styleLevel: 2, style: 'Deep colour, high tannin, black fruit and earthy notes; needs age.', producers: [] },
+    { regionId: 'region:fr-south-west-cahors', styleLevel: 2, style: 'Either side of the Lot; best oak-aged: deep colour, high tannin, intense dark berries, maturing slowly to cedar and earth.', producers: [] },
     { regionId: 'region:ar-uco-valley', styleLevel: 3, style: 'Highest Mendoza vineyards: intense colour, fresh acidity, floral lift.', producers: [] },
     { regionId: 'region:ar-lujan-de-cuyo', styleLevel: 4, style: 'Traditional heart of Mendoza Malbec: ripe plum and blackberry, velvety tannin, often oaked.', producers: ['Catena Zapata'] },
     { regionId: 'region:ar-salta', styleLevel: 5, style: 'Extreme altitude: very deep, concentrated, firm tannins.', producers: [] },
