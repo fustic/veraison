@@ -23,6 +23,7 @@ export default {
   why: [
     { factor: 'Late ripening in damp, Atlantic Bairrada', effect: 'rot risk, vintage variation', result: 'harvest timing is a gamble' },
     { factor: 'Very tannic skins', effect: 'traditionally harsh and long-lived', result: 'modern destemming and gentler extraction make softer wines' },
+    { factor: 'Small, thick-skinned, late-ripening berries; harvest rain risk', effect: 'deep colour, high tannin; under-ripe gives sharp acid and astringency', result: 'later picking, gentler crushing and blending give softer, black-fruited wines' },
   ],
   lookAlikes: [{ grapeId: 'grape:nebbiolo', tell: 'Both very tannic and acidic; Nebbiolo is paler and more floral.' }],
   regions: [{ regionId: 'region:pt-bairrada', styleLevel: 3, style: 'Tannic, high-acid reds that need age; also traditional-method sparkling.', producers: [] }],

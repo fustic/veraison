@@ -23,6 +23,7 @@ export default {
   why: [
     { factor: 'Old vines on steep slate slopes (Bierzo)', effect: 'low yields, good drainage', result: 'concentrated, fragrant, fresh reds' },
     { factor: 'Atlantic-influenced north-west Spain', effect: 'moderate ripening', result: 'medium body, red fruit, floral lift' },
+    { factor: 'Suits moderate climates', effect: 'fresh fruit, medium to high acid, sometimes herbaceous', result: 'unoaked for perfume or new oak for toast' },
   ],
   lookAlikes: [
     { grapeId: 'grape:cabernet-franc', tell: 'Cabernet Franc is leafier, with more pencil-shaving and green notes.' },

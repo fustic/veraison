@@ -25,6 +25,7 @@ export default {
     { factor: 'Cool, wet Atlantic climate', effect: 'slow ripening', result: 'light to medium body, high acidity, citrus and stone fruit' },
     { factor: 'Some lees ageing', effect: 'texture', result: 'rounder, fuller examples' },
     { factor: 'Monção e Melgaço: sheltered, warmer', effect: 'riper grapes', result: 'fuller, more aromatic Alvarinho' },
+    { factor: 'Vinho Verde Alvarinho: 100% Alvarinho from Monção e Melgaço', effect: 'riper than other Vinho Verde', result: '11.5–14% abv, more tropical fruit' },
   ],
   lookAlikes: [{ grapeId: 'grape:sauvignon-blanc', tell: 'Sauvignon Blanc is grassy and herbaceous; Albariño is peachy and floral, with no green notes.' }],
   regions: [

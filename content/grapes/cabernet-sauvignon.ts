@@ -101,6 +101,8 @@ export default {
     { regionId: 'region:cl-maipo-valley', styleLevel: 4, style: "Classic Chilean Cabernet: ripe blackcurrant, mint.", producers: [] },
     { regionId: 'region:us-columbia-valley', styleLevel: 4, style: "Ripe fruit, fresh acidity.", producers: [] },
     { regionId: 'region:us-alexander-valley', styleLevel: 4, style: "Soft, ripe.", producers: [] },
+    { regionId: 'region:es-penedes', styleLevel: 3, style: 'Among the most planted reds; in many leading blends.', producers: [] },
+    { regionId: 'region:es-navarra', styleLevel: 3, style: 'Blended with Tempranillo or Merlot.', producers: [] },
   ],
   alsoGrownIn: ['South of France', 'Italy (with Sangiovese)', 'Spain (with Tempranillo)', 'Mendoza'],
   verified: false,

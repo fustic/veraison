@@ -18,10 +18,13 @@ export default {
     { aromaId: 'aroma:grass' },
     { aromaId: 'aroma:fennel' },
     { aromaId: 'aroma:almond' },
+    { aromaId: 'aroma:melon' },
   ],
   why: [
     { factor: 'Prone to oxidation', effect: 'protective handling: night picking, inert gas, cool ferment', result: 'fresh, aromatic style' },
     { factor: 'High plateau of Rueda: hot days, cold nights', effect: 'keeps acidity', result: 'fresh, herbal whites with a bitter-almond finish' },
+    { factor: 'Once made into Sherry-like oxidised wines', effect: 'protective winemaking now', result: 'light body, medium to high acid, melon and peach' },
+    { factor: 'Barrel fermentation and lees stirring', effect: 'more texture', result: 'richer, fuller style; Rueda blends must be at least 50% Verdejo' },
   ],
   lookAlikes: [{ grapeId: 'grape:sauvignon-blanc', tell: 'Often blended in Rueda; Sauvignon is more pungent, Verdejo has fennel and a bitter-almond finish.' }],
   regions: [{ regionId: 'region:es-rueda', styleLevel: 3, style: 'Fresh, citrus and herbal; some lees- or oak-aged premium examples.', producers: [] }],

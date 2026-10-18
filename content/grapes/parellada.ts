@@ -16,7 +16,10 @@ export default {
     { aromaId: 'aroma:lemon', ripeness: 'less' },
     { aromaId: 'aroma:blossom' },
   ],
-  why: [{ factor: 'Delicate and fresh', effect: 'adds finesse and floral notes', result: 'the lightest of the three Cava grapes' }],
+  why: [
+    { factor: 'Delicate and fresh', effect: 'adds finesse and floral notes', result: 'the lightest of the three Cava grapes' },
+    { factor: 'One of the three main Cava grapes', effect: 'widely planted in Catalunya', result: 'delicate, floral sparkling base' },
+  ],
   lookAlikes: [{ grapeId: 'grape:xarello', tell: 'Xarel·lo is fuller and earthier.' }],
   regions: [{ regionId: 'region:es-penedes', styleLevel: 2, style: 'In Cava blends, from higher, cooler sites.', producers: [] }],
   verified: false,

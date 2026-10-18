@@ -106,4 +106,6 @@ export const PDO_FOR_REGION: Record<string, string[]> = {
 
   // Dataset errors: the 2022 file gives Valdeorras the municipalities of Alicante. Keep the circle.
   'region:es-valdeorras': [],
+  'region:pt-tejo': ['DoTejo'],
+  'region:pt-setubal': ['Setúbal', 'Palmela'],
 };

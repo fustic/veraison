@@ -6,7 +6,7 @@ export default {
   name: 'Tempranillo',
   colour: 'red',
   berryColour: '#2F1A3B',
-  synonyms: ['Tinto Fino', 'Tinta del País', 'Tinta de Toro', 'Cencibel', 'Tinta Roriz', 'Aragonez'],
+  synonyms: ['Tinto Fino', 'Tinta del País', 'Tinta de Toro', 'Cencibel', 'Tinta Roriz', 'Aragonez', 'Aragonês', 'Ull de Llebre'],
   traits: ['Early ripening', 'Thick skins', 'Moderate acidity', 'Takes long oak ageing well'],
   structure: {
     cool: { appearanceIntensity: [1, 2], acidity: [2, 3], tannin: [2, 3], body: [2, 3], alcohol: [1, 1], noseIntensity: [2, 3] },
@@ -33,6 +33,8 @@ export default {
     { factor: 'Long ageing in barrel and bottle (Crianza → Reserva → Gran Reserva)', effect: 'fruit dries and tertiary notes develop', result: 'leather, tobacco and dried fruit with soft tannin' },
     { factor: 'Ribera del Duero: high altitude, big day–night swings', effect: 'thick-skinned, deeply coloured grapes', result: 'deeper, more structured than Rioja' },
     { factor: 'Toro: hot, dry', effect: 'very ripe grapes', result: 'powerful, high-alcohol, tannic reds' },
+    { factor: 'Fermented alone, often semi-carbonic', effect: 'fresh strawberry fruit, soft tannin', result: 'Joven: an increasingly popular early-drinking style' },
+    { factor: 'Best where sea or altitude tempers summer heat', effect: 'keeps its medium acidity', result: 'hot sites without a big day–night range give flabby wine' },
   ],
   lookAlikes: [
     { grapeId: 'grape:sangiovese', tell: 'Sangiovese has higher acidity, sour cherry and tomato leaf; no coconut.' },
@@ -45,6 +47,10 @@ export default {
     { regionId: 'region:es-ribera-del-duero', styleLevel: 3, style: 'As Tinto Fino: deeper, black fruit, firmer tannin, more new French oak.', producers: ['Vega Sicilia', 'Dominio de Pingus'] },
     { regionId: 'region:pt-douro', styleLevel: 4, style: 'As Tinta Roriz: part of Port and dry Douro blends.', producers: [] },
     { regionId: 'region:es-toro', styleLevel: 5, style: 'As Tinta de Toro: powerful, full, high alcohol, firm tannin.', producers: [] },
+    { regionId: 'region:es-valdepenas', styleLevel: 2, style: 'As Cencibel: varietal or with international grapes; fruity to oak-aged.', producers: [] },
+    { regionId: 'region:pt-alentejo', styleLevel: 3, style: 'As Aragonês, blended with Trincadeira and Alicante Bouschet: deep, soft, ripe.', producers: [] },
+    { regionId: 'region:pt-dao', styleLevel: 3, style: 'As Tinta Roriz, in the replanted Dão blends.', producers: [] },
+    { regionId: 'region:es-penedes', styleLevel: 2, style: 'As Ull de Llebre.', producers: [] },
   ],
   alsoGrownIn: ['Valdepeñas', 'Alentejo (Aragonez)', 'Argentina', 'Australia'],
   verified: false,

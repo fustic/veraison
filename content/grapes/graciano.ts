@@ -17,7 +17,10 @@ export default {
     { aromaId: 'aroma:violet' },
     { aromaId: 'aroma:dried-herbs' },
   ],
-  why: [{ factor: 'High acidity, colour and aroma', effect: 'lifts and freshens Tempranillo', result: 'a small but valued part of Rioja blends' }],
+  why: [
+    { factor: 'High acidity, colour and aroma', effect: 'lifts and freshens Tempranillo', result: 'a small but valued part of Rioja blends' },
+    { factor: 'Highly valued but hard to grow', effect: 'small amounts add black fruit, acidity and tannin', result: 'helps many of the finest Riojas age' },
+  ],
   lookAlikes: [{ grapeId: 'grape:tempranillo', tell: 'Tempranillo is softer in acidity and redder in fruit.' }],
   regions: [{ regionId: 'region:es-rioja', styleLevel: 3, style: 'Blending partner for freshness, colour and perfume.', producers: [] }],
   verified: false,

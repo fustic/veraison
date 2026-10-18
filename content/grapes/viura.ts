@@ -22,6 +22,8 @@ export default {
   why: [
     { factor: 'Neutral grape', effect: 'takes on winemaking character', result: 'fresh unoaked white Rioja, or traditional long-oaked nutty styles' },
     { factor: 'Fresh acidity and neutrality', effect: 'a clean base wine', result: 'main grape of Cava with Xarel·lo and Parellada' },
+    { factor: 'Unoaked', effect: 'subtle herb and spice', result: 'fresh modern white Rioja; also a Cava grape as Macabeo' },
+    { factor: 'Traditional long ageing in American oak', effect: 'golden colour, nutty, oxidative', result: 'the old-style white Rioja, now out of fashion' },
   ],
   lookAlikes: [{ grapeId: 'grape:chardonnay', tell: 'Unoaked Chardonnay has a little more fruit and body.' }],
   regions: [
