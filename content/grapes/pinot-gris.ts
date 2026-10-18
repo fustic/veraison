@@ -7,7 +7,7 @@ export default {
   name: 'Pinot Gris',
   colour: 'white',
   berryColour: '#B48A93',
-  synonyms: ['Pinot Grigio'],
+  synonyms: ['Pinot Grigio', 'Grauburgunder', 'Ruländer'],
   traits: ['Early budding', 'Early ripening', 'Less aromatic', 'Deep-coloured skins'],
   structure: {
     cool: { appearanceIntensity: [0, 0], sweetness: [0, 0], acidity: [2, 3], body: [0, 2], alcohol: [1, 1], noseIntensity: [0, 2] },

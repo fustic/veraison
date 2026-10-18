@@ -40,6 +40,7 @@ export default {
     { factor: 'Mostly second- or third-fill barrels, 12–24 months', effect: 'oak without overpowering the fruit', result: 'delicate flavours stay in front' },
     { factor: 'Bottle age', effect: 'tertiary development', result: 'forest floor and mushroom' },
     { factor: 'Burgundy: the best spend 16–18 months in barrel, part new', effect: 'oak frames the fruit', result: 'red fruit young; earth, game and mushroom with age' },
+    { factor: 'Spätburgunder: Germany’s third most planted grape, in the warmer areas (Pfalz, Baden)', effect: 'light and fruity, or concentrated and oaked', result: 'always dry' },
   ],
   lookAlikes: [
     { grapeId: 'grape:gamay', tell: 'Gamay is juicier, often with banana or bubblegum from carbonic maceration, and rarely earthy.' },

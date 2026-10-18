@@ -24,6 +24,7 @@ export default {
     { factor: 'Strong winds on Santorini', effect: 'vines trained into low baskets (kouloura)', result: 'grapes protected from wind and sun' },
     { factor: 'Volcanic soils phylloxera cannot live in', effect: 'very old, ungrafted vines', result: 'low yields, concentrated, mineral wines' },
     { factor: 'Sun-dried grapes', effect: 'concentrated sugar', result: 'sweet Vinsanto' },
+    { factor: 'Vinsanto: late-picked, sun-dried up to 14 days, two years or more in old oak', effect: 'concentrated and oxidised', result: 'luscious, high-acid, caramel and nuts with age' },
   ],
   lookAlikes: [{ grapeId: 'grape:riesling', tell: 'Dry Riesling is lighter and more floral, with lower alcohol.' }],
   regions: [{ regionId: 'region:gr-santorini', styleLevel: 4, style: 'High acid, citrus, smoky-mineral; Nykteri is oaked; Vinsanto is sweet.', producers: [] }],

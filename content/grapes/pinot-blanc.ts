@@ -21,6 +21,7 @@ export default {
   why: [
     { factor: 'Gentle, neutral fruit', effect: 'soft, round, easy wines', result: 'a staple of Crémant d’Alsace and dry Alsace and Alto Adige whites' },
     { factor: 'Planted on the fertile plain rather than the slopes', effect: 'light, simple, non-aromatic', result: 'widely used for Crémant d’Alsace; Auxerrois is similar but spicier and fuller' },
+    { factor: 'Germany’s fourth white grape (Weissburgunder)', effect: 'usually dry', result: 'often labelled with the French or Italian name' },
   ],
   lookAlikes: [{ grapeId: 'grape:chardonnay', tell: 'Unoaked Chardonnay is very similar; Pinot Blanc is usually lighter.' }],
   regions: [

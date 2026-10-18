@@ -25,6 +25,7 @@ export default {
     { factor: 'High yields on fertile loess plains', effect: 'lighter fruit', result: 'fresh, peppery, light everyday wines (Weinviertel)' },
     { factor: 'Low yields on Danube terraces of loess and rock', effect: 'concentration', result: 'full, rich, long-lived wines (Wachau, Kremstal, Kamptal)' },
     { factor: 'Warm days, cold nights by the Danube', effect: 'ripe fruit with high acidity', result: 'balance even at 13–14% abv' },
+    { factor: 'Mostly steel; old oak casks common; some top wines in new barriques', effect: 'pure fruit or extra texture', result: 'citrus and stone fruit with white pepper young; honey and toast with age' },
   ],
   lookAlikes: [
     { grapeId: 'grape:riesling', tell: 'Riesling is more floral and fruity, with no white pepper.' },

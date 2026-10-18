@@ -9,8 +9,8 @@ export default {
   synonyms: ['Kékfrankos', 'Lemberger'],
   traits: ['Late ripening', 'Deep colour', 'High acidity', 'Spicy'],
   structure: {
-    cool: { appearanceIntensity: [2, 2], acidity: [3, 4], tannin: [3, 3], body: [2, 3], alcohol: [1, 1], noseIntensity: [2, 3] },
-    warm: { appearanceIntensity: [2, 2], acidity: [3, 3], tannin: [3, 4], body: [3, 3], alcohol: [1, 2], noseIntensity: [3, 3] },
+    cool: { appearanceIntensity: [2, 2], acidity: [4, 4], tannin: [2, 2], body: [2, 3], alcohol: [1, 1], noseIntensity: [2, 3] },
+    warm: { appearanceIntensity: [2, 2], acidity: [3, 4], tannin: [2, 3], body: [3, 3], alcohol: [1, 2], noseIntensity: [3, 3] },
   },
   aromas: [
     { aromaId: 'aroma:sour-cherry', ripeness: 'less' },
@@ -24,6 +24,7 @@ export default {
   why: [
     { factor: 'Late ripening', effect: 'needs the warmest sites', result: 'Burgenland in Austria' },
     { factor: 'High acidity and spice', effect: 'freshness with structure', result: 'fresh, peppery reds; top wines oak-aged and long-lived' },
+    { factor: 'Austria’s most highly regarded black grape', effect: 'medium tannin, high acidity', result: 'peppery, sour-cherry reds; several DACs (Leithaberg, Mittelburgenland)' },
   ],
   lookAlikes: [{ grapeId: 'grape:syrah', tell: 'Syrah is fuller and meatier; Blaufränkisch fresher and more acidic.' }],
   regions: [

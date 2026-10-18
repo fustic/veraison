@@ -7,7 +7,7 @@ export default {
   name: 'Muscat',
   colour: 'white',
   berryColour: '#D6C46A',
-  synonyms: ['Moscato', 'Moscatel', 'Muscat Blanc à Petits Grains', 'Muscat of Alexandria'],
+  synonyms: ['Moscato', 'Moscatel', 'Muscat Blanc à Petits Grains', 'Muscat of Alexandria', 'Muscat Ottonel', 'Sárga Muskotály'],
   traits: ['Very aromatic (grapey, floral)', 'A family of varieties', 'Dry, sweet, sparkling and fortified styles'],
   structure: {
     cool: { appearanceIntensity: [0, 0], sweetness: [0, 3], acidity: [2, 3], body: [0, 1], alcohol: [0, 1], noseIntensity: [3, 4] },

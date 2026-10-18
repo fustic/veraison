@@ -63,6 +63,7 @@ import sangiovese from './grapes/sangiovese.ts';
 import sauvignonBlanc from './grapes/sauvignon-blanc.ts';
 import semillon from './grapes/semillon.ts';
 import silvaner from './grapes/silvaner.ts';
+import stLaurent from './grapes/st-laurent.ts';
 import syrah from './grapes/syrah.ts';
 import tannat from './grapes/tannat.ts';
 import tempranillo from './grapes/tempranillo.ts';
@@ -75,10 +76,12 @@ import verdicchio from './grapes/verdicchio.ts';
 import vermentino from './grapes/vermentino.ts';
 import viognier from './grapes/viognier.ts';
 import viura from './grapes/viura.ts';
+import welschriesling from './grapes/welschriesling.ts';
 import xarello from './grapes/xarello.ts';
 import xinomavro from './grapes/xinomavro.ts';
 import zinfandel from './grapes/zinfandel.ts';
 import zweigelt from './grapes/zweigelt.ts';
+import centralEuropeLaw from './topics/central-europe-law.ts';
 import climateAndWeather from './topics/climate-and-weather.ts';
 import franceClassifications from './topics/france-classifications.ts';
 import madeiraAndVdn from './topics/madeira-and-vdn.ts';
@@ -96,7 +99,7 @@ import sweetWinemaking from './topics/sweet-winemaking.ts';
 import whiteWinemaking from './topics/white-winemaking.ts';
 
 export const grapes: Grape[] = [
-  agiorgitiko, aglianico, aligote, albarino, assyrtiko, baga, barbera, blaufrankisch, cabernetFranc, cabernetSauvignon, carignan, carmenere, chardonnay, cheninBlanc, cinsault, cortese, corvina, dolcetto, fiano, furmint, gamay, garganega, gewurztraminer, glera, godello, graciano, greco, grenache, grunerVeltliner, malbec, marsanne, melonBlanc, mencia, merlot, montepulciano, mourvedre, mullerThurgau, muscadelle, muscat, nebbiolo, negroamaro, nerelloMascalese, neroDAvola, palomino, parellada, pedroXimenez, petitVerdot, pinotBlanc, pinotGris, pinotMeunier, pinotNoir, pinotage, riesling, roussanne, sangiovese, sauvignonBlanc, semillon, silvaner, syrah, tannat, tempranillo, torrontes, tourigaFranca, tourigaNacional, trebbiano, verdejo, verdicchio, vermentino, viognier, viura, xarello, xinomavro, zinfandel, zweigelt,
+  agiorgitiko, aglianico, aligote, albarino, assyrtiko, baga, barbera, blaufrankisch, cabernetFranc, cabernetSauvignon, carignan, carmenere, chardonnay, cheninBlanc, cinsault, cortese, corvina, dolcetto, fiano, furmint, gamay, garganega, gewurztraminer, glera, godello, graciano, greco, grenache, grunerVeltliner, malbec, marsanne, melonBlanc, mencia, merlot, montepulciano, mourvedre, mullerThurgau, muscadelle, muscat, nebbiolo, negroamaro, nerelloMascalese, neroDAvola, palomino, parellada, pedroXimenez, petitVerdot, pinotBlanc, pinotGris, pinotMeunier, pinotNoir, pinotage, riesling, roussanne, sangiovese, sauvignonBlanc, semillon, silvaner, stLaurent, syrah, tannat, tempranillo, torrontes, tourigaFranca, tourigaNacional, trebbiano, verdejo, verdicchio, vermentino, viognier, viura, welschriesling, xarello, xinomavro, zinfandel, zweigelt,
 ];
 // In study order: the Study tab groups them by chapter in this order.
 export const topics: Topic[] = [
@@ -104,7 +107,7 @@ export const topics: Topic[] = [
   winemakingBasics, whiteWinemaking, redWinemaking, roseWinemaking, sweetWinemaking,
   sparklingWinemaking, sparklingWines,
   sherry, port, madeiraAndVdn,
-  wineLawAndLabelling, franceClassifications, storageServiceAndFood,
+  wineLawAndLabelling, franceClassifications, centralEuropeLaw, storageServiceAndFood,
 ];
 export const regions: Region[] = [
   ...france, ...italy, ...spain, ...portugal, ...germany, ...austria, ...hungary, ...greece, ...england,

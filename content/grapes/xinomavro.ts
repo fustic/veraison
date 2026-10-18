@@ -21,7 +21,10 @@ export default {
     { aromaId: 'aroma:leather' },
     { aromaId: 'aroma:earth' },
   ],
-  why: [{ factor: 'Moderate, continental, hillside Naoussa', effect: 'slow ripening, firm structure', result: 'pale, savoury, tannic reds that age into dried fruit and leather' }],
+  why: [
+    { factor: 'Moderate, continental, hillside Naoussa', effect: 'slow ripening, firm structure', result: 'pale, savoury, tannic reds that age into dried fruit and leather' },
+    { factor: 'Medium colour that fades quickly to tawny', effect: 'little fresh fruit even young', result: 'spice and earth with age; some producers now make deeper, softer, oaked styles' },
+  ],
   lookAlikes: [{ grapeId: 'grape:nebbiolo', tell: 'Very similar structure; Nebbiolo is more floral (rose) with tar.' }],
   regions: [{ regionId: 'region:gr-naoussa', styleLevel: 3, style: 'Red fruit, tomato, olive and herbs; high acid and tannin.', producers: [] }],
   verified: false,

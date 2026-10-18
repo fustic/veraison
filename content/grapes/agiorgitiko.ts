@@ -9,8 +9,8 @@ export default {
   synonyms: ['St George'],
   traits: ['Deep colour', 'Soft tannin', 'Versatile: rosé to oaked reds'],
   structure: {
-    cool: { appearanceIntensity: [1, 2], acidity: [3, 3], tannin: [2, 3], body: [2, 3], alcohol: [1, 1], noseIntensity: [2, 3] },
-    warm: { appearanceIntensity: [2, 2], acidity: [2, 2], tannin: [2, 3], body: [3, 3], alcohol: [1, 2], noseIntensity: [2, 3] },
+    cool: { appearanceIntensity: [1, 2], acidity: [2, 3], tannin: [3, 3], body: [2, 3], alcohol: [1, 1], noseIntensity: [2, 3] },
+    warm: { appearanceIntensity: [2, 2], acidity: [1, 2], tannin: [3, 4], body: [3, 3], alcohol: [1, 2], noseIntensity: [2, 3] },
   },
   aromas: [
     { aromaId: 'aroma:raspberry', ripeness: 'less' },
@@ -20,7 +20,10 @@ export default {
     { aromaId: 'aroma:cloves' },
     { aromaId: 'aroma:vanilla' },
   ],
-  why: [{ factor: 'Altitude bands in Nemea', effect: 'valley floor ripest, slopes fresher', result: 'soft, fruity wines low down; structured, oaked wines mid-slope; rosé from the highest sites' }],
+  why: [
+    { factor: 'Altitude bands in Nemea', effect: 'valley floor ripest, slopes fresher', result: 'soft, fruity wines low down; structured, oaked wines mid-slope; rosé from the highest sites' },
+    { factor: 'Best wines from mid-slope Nemea', effect: 'deep ruby, high smooth tannin, low to medium acid', result: 'red fruit and spice; take new oak well and age' },
+  ],
   lookAlikes: [{ grapeId: 'grape:merlot', tell: 'Similar soft, plummy fruit; Agiorgitiko is often spicier.' }],
   regions: [{ regionId: 'region:gr-nemea', styleLevel: 3, style: 'Soft, fruity, red plum and spice; premium wines oak-aged.', producers: [] }],
   verified: false,
