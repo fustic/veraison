@@ -6,12 +6,17 @@
     "version": "0.1.0",
     "orientation": "portrait",
     "userInterfaceStyle": "light",
+    "icon": "./assets/icon.png",
     "ios": {
       "bundleIdentifier": "com.fustic.veraison",
       "supportsTablet": false
     },
     "android": {
-      "package": "com.fustic.veraison"
+      "package": "com.fustic.veraison",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#7A1F3D"
+      }
     },
     "plugins": [
       "expo-router",
@@ -29,6 +34,9 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
     }
   }
 }

@@ -1,7 +1,7 @@
 // Map drill-down helpers: the chain of places above a region (for the breadcrumb) and
 // the area to frame when a region is opened.
 
-import type { Region } from './content.ts';
+import type { Grape, Region } from './content.ts';
 
 export type Bounds = [west: number, south: number, east: number, north: number];
 
@@ -67,4 +67,36 @@ export function mainlandBounds(geometry: { type: string; coordinates: unknown })
     n = Math.max(n, y);
   }
   return [w, s, e, n];
+}
+
+/**
+ * Grapes grown in a region or anywhere inside it, most important first: principal grapes
+ * of the region itself, then grapes that lead in its sub-regions, then the rest. Ties go to
+ * the grape found in more sub-regions, then by name.
+ */
+export function grapesInRegion(
+  region: Region,
+  childrenOf: ReadonlyMap<string | null, readonly Region[]>,
+  grapes: readonly Grape[],
+): string[] {
+  const score = new globalThis.Map<string, { weight: number; places: number }>();
+  const add = (id: string, weight: number) => {
+    const cur = score.get(id) ?? { weight: 0, places: 0 };
+    score.set(id, { weight: Math.max(cur.weight, weight), places: cur.places + 1 });
+  };
+  const inside = new Set<string>();
+  const walk = (r: Region, depth: number) => {
+    inside.add(r.id);
+    for (const g of r.principalGrapes) add(g, depth === 0 ? 3 : 2);
+    for (const g of r.otherGrapes) add(g, 1);
+    for (const c of childrenOf.get(r.id) ?? []) walk(c, depth + 1);
+  };
+  walk(region, 0);
+  // Grape pages can name a region the region page does not list.
+  for (const g of grapes) for (const gr of g.regions) if (inside.has(gr.regionId)) add(g.id, 1);
+  const known = new globalThis.Map(grapes.map((g) => [g.id, g.name]));
+  return [...score.entries()]
+    .filter(([id]) => known.has(id))
+    .sort(([a, x], [b, y]) => y.weight - x.weight || y.places - x.places || known.get(a)!.localeCompare(known.get(b)!))
+    .map(([id]) => id);
 }

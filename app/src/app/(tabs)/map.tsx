@@ -8,7 +8,7 @@ import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import type { Region } from '../../../../core/src/content.ts';
-import { ancestry, mainlandBounds, regionBounds, type Bounds } from '../../../../core/src/mapnav.ts';
+import { ancestry, grapesInRegion, mainlandBounds, regionBounds, type Bounds } from '../../../../core/src/mapnav.ts';
 import { COUNTRIES, countryName, regionCountry } from '../../../../core/src/reveal.ts';
 import { setStudyStatus } from '../../../../core/src/userdb/progress.ts';
 import { getSetting, setSetting } from '../../../../core/src/userdb/settings.ts';
@@ -104,6 +104,8 @@ export default function MapScreen() {
   };
   const [colouring, setColouring] = useState<Colouring>('status');
   const [grapeId, setGrapeId] = useState<string | null>(null);
+  // Grape chips list the focused region's grapes unless the user asks for all of them.
+  const [allGrapes, setAllGrapes] = useState(false);
   // Sheet height lives in a ref: changing it must not re-render the map.
   const sheetH = useRef(320);
   const fitPending = useRef(false);
@@ -163,6 +165,17 @@ export default function MapScreen() {
   const chain = region ? ancestry(region.id, content.regionById) : [];
   const iso = focus.kind === 'country' ? focus.iso : region ? regionCountry(region.id) : null;
   live.current = { openRegion, openCountry, focus, regionLevel: region?.level };
+
+  const localGrapes = useMemo(
+    () => (region ? grapesInRegion(region, content.childrenOf, content.grapes) : []),
+    [region, content],
+  );
+  useEffect(() => setAllGrapes(false), [focus]);
+  const filtered = localGrapes.length > 0 && !allGrapes;
+  // The selected grape stays visible even when it does not grow in the focused region.
+  const chipIds = filtered
+    ? grapeId && !localGrapes.includes(grapeId) ? [grapeId, ...localGrapes] : localGrapes
+    : content.grapes.map((g) => g.id);
   const zone: ZoneId | null = focus.kind === 'zone' ? focus.id : iso ? (ZONE_OF[iso] ?? null) : null;
 
   // Move the camera when the focus changes, leaving room for the sheet. The new sheet
@@ -383,9 +396,13 @@ export default function MapScreen() {
       {colouring === 'grape' ? (
         <View style={[styles.grapeBar, { top: insets.top + 68 }]}>
           <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 6, alignItems: 'center' }}>
-            {content.grapes.map((g) => (
-              <Pill key={g.id} small label={g.name} on={grapeId === g.id} onPress={() => setGrapeId(grapeId === g.id ? null : g.id)} />
+            {region && allGrapes && localGrapes.length > 0 ? (
+              <Pill small label={`Only ${region.name}`} on={false} onPress={() => setAllGrapes(false)} />
+            ) : null}
+            {chipIds.map((id) => (
+              <Pill key={id} small label={content.grapeById.get(id)?.name ?? prettyId(id)} on={grapeId === id} onPress={() => setGrapeId(grapeId === id ? null : id)} />
             ))}
+            {filtered ? <Pill small label={`All ${content.grapes.length} grapes`} on={false} onPress={() => setAllGrapes(true)} /> : null}
           </ScrollView>
         </View>
       ) : null}
@@ -410,7 +427,11 @@ export default function MapScreen() {
         <ScrollView contentContainerStyle={{ gap: 12, paddingBottom: 16 }} scrollEnabled={!collapsed}>
           {offlineNote ? <Text style={styles.muted}>No connection: showing the offline map.</Text> : null}
           {colouring === 'climate' ? <ClimateLegend /> : null}
-          {colouring === 'grape' && !grapeId ? <Text style={styles.muted}>Pick a grape above to see where it grows.</Text> : null}
+          {colouring === 'grape' && !grapeId ? (
+            <Text style={styles.muted}>
+              {filtered && region ? `Grapes of ${region.name} above. Pick one to see where else it grows.` : 'Pick a grape above to see where it grows.'}
+            </Text>
+          ) : null}
           {focus.kind === 'world' ? (
             <WorldSheet onZone={(id) => setFocus({ kind: 'zone', id })} />
           ) : focus.kind === 'zone' ? (
