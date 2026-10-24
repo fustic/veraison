@@ -1,10 +1,12 @@
 // expo-sqlite implementation of the shared Db interface (core/src/userdb/db.ts).
 import * as SQLite from 'expo-sqlite';
+import { Platform } from 'react-native';
 import type { Db, SqlValue } from '../../../core/src/userdb/db.ts';
 
 export async function openUserDb(name = 'user.db'): Promise<Db> {
   const raw = await SQLite.openDatabaseAsync(name);
-  await raw.execAsync('PRAGMA journal_mode = WAL; PRAGMA foreign_keys = ON;');
+  // The web build stores the database in the browser (OPFS), where WAL is not available.
+  await raw.execAsync(Platform.OS === 'web' ? 'PRAGMA foreign_keys = ON;' : 'PRAGMA journal_mode = WAL; PRAGMA foreign_keys = ON;');
   let depth = 0;
   const params = (p?: readonly SqlValue[]) => (p ?? []) as SqlValue[];
 

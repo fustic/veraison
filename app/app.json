@@ -19,7 +19,15 @@
       }
     },
     "plugins": [
-      "expo-router",
+      [
+        "expo-router",
+        {
+          "headers": {
+            "Cross-Origin-Embedder-Policy": "require-corp",
+            "Cross-Origin-Opener-Policy": "same-origin"
+          }
+        }
+      ],
       "expo-sqlite",
       [
         "expo-build-properties",
@@ -36,7 +44,13 @@
       "typedRoutes": true
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "output": "single",
+      "bundler": "metro",
+      "favicon": "./assets/favicon.png",
+      "name": "Veraison",
+      "shortName": "Veraison",
+      "themeColor": "#7A1F3D",
+      "backgroundColor": "#F4F5F2"
     }
   }
 }

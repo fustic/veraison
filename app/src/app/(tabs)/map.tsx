@@ -2,7 +2,6 @@
 // Works offline: countries come from bundled Natural Earth outlines and regions from the
 // study content (placeholder circles until real boundaries are imported). The street
 // basemap from OpenFreeMap can be switched on when online.
-import { Camera, GeoJSONSource, Layer, Map, Marker, type CameraRef, type StyleSpecification } from '@maplibre/maplibre-react-native';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
@@ -12,6 +11,8 @@ import { ancestry, grapesInRegion, mainlandBounds, regionBounds, type Bounds } f
 import { COUNTRIES, countryName, regionCountry } from '../../../../core/src/reveal.ts';
 import { setStudyStatus } from '../../../../core/src/userdb/progress.ts';
 import { getSetting, setSetting } from '../../../../core/src/userdb/settings.ts';
+import { OFFLINE_STYLE, ONLINE_STYLE, WATER, type CountryProps, type RegionProps, type WineMapHandle } from '../../map/layers';
+import { WineMap } from '../../map/WineMap';
 import { GrapeLine, H1, Kicker, LayersLine, PrimaryButton, ThermoLine } from '../../components';
 import { useData } from '../../data/DataProvider';
 import countriesGeoJson from '../../generated/countries.geojson.json';
@@ -20,15 +21,6 @@ import { prettyId } from '../../names';
 import { Pill } from '../../tasting/parts';
 import { Text } from '../../Text';
 import { colors, fonts, statusColors } from '../../theme';
-
-const WATER = '#B9CCD8';
-const OFFLINE_STYLE: StyleSpecification = {
-  version: 8,
-  name: 'veraison-offline',
-  sources: {},
-  layers: [{ id: 'background', type: 'background', paint: { 'background-color': WATER } }],
-};
-const ONLINE_STYLE = 'https://tiles.openfreemap.org/styles/liberty';
 
 const CLIMATE_COLOURS = { cool: '#7FA7C9', moderate: '#8DBE8A', warm: '#E3A857', hot: '#D0623E' } as const;
 const WORLD = { center: [12, 28] as [number, number], zoom: 0.6 };
@@ -92,7 +84,7 @@ export default function MapScreen() {
   const { content, statuses, seen, db, deps, refreshStatuses } = useData();
   const insets = useSafeAreaInsets();
   const params = useLocalSearchParams<{ focus?: string }>();
-  const camera = useRef<CameraRef>(null);
+  const camera = useRef<WineMapHandle>(null);
   const [focus, setFocus] = useState<Focus>({ kind: 'world' });
   // Street basemap on by default; falls back to the offline map when it cannot load.
   const [online, setOnlineState] = useState(true);
@@ -191,8 +183,8 @@ export default function MapScreen() {
       const outline = outlineBounds.get(region.id);
       bounds = region.level === 'country' && countryBounds ? countryBounds : outline ?? regionBounds(region, content.childrenOf);
     }
-    if (bounds) camera.current?.fitBounds(bounds, { padding, duration: 900 });
-    else camera.current?.flyTo({ ...WORLD, duration: 900 });
+    if (bounds) camera.current?.fitBounds(bounds, padding, 900);
+    else camera.current?.flyTo(WORLD, 900);
   };
   const fitRef = useRef(fit);
   fitRef.current = fit;
@@ -267,106 +259,49 @@ export default function MapScreen() {
     await refreshStatuses();
   };
 
-  // Sources are memoised: the countries file is large, and re-rendering a source
-  // re-sends its whole GeoJSON to the native map.
-  const countrySource = useMemo(
-    () => (
-      <GeoJSONSource
-        id="countries"
-        data={countryShape as never}
-        onPress={(e) => {
-          const { focus: f, regionLevel, openCountry: open } = live.current;
-          // Countries only respond above region level, so a near-miss on a region does not jump away.
-          if (f.kind === 'region' && regionLevel !== 'country') return;
-          const hit = (e.nativeEvent.features as unknown as CountryFeature[])[0];
-          if (hit?.properties.syllabus) open(hit.properties.iso);
-        }}
-      >
-        <Layer
-          id="country-fill"
-          type="fill"
-          paint={{
-            'fill-color': ['case', ['==', ['get', 'focused'], 1], '#EFE4E7', ['get', 'syllabus'], '#E6EADF', '#EEF0EA'] as never,
-            'fill-opacity': online ? 0 : 1,
-          }}
-        />
-        <Layer
-          id="country-line"
-          type="line"
-          paint={{ 'line-color': online ? colors.wine : '#FFFFFF', 'line-width': online ? 0.6 : 0.9, 'line-opacity': online ? 0.4 : 1 }}
-        />
-      </GeoJSONSource>
-    ),
-    [countryShape, online],
-  );
+  // Memoised: a new value re-sends the region layer to the map.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const regionFill = useMemo(() => fillColor, [colouring]);
+  const labels = useMemo(() => labelled.map((r) => ({ id: r.id, name: r.name, lngLat: [r.centroid[0], r.centroid[1]] as [number, number], on: region?.id === r.id })), [labelled, region?.id]);
 
-  const regionSource = useMemo(
-    () => (
-      <GeoJSONSource
-        id="regions"
-        data={regionShape as never}
-        onPress={(e) => {
-          // A tap on a name label can also reach the map underneath; the label wins.
-          if (Date.now() - lastMarkerTap.current < 400) return;
-          // Smallest polygon first: an appellation sits on top of its district.
-          const hits = [...(e.nativeEvent.features as unknown as RegionFeature[])];
-          const hit = hits.sort((a, b) => rank(b.properties.level) - rank(a.properties.level))[0];
-          if (hit) live.current.openRegion(hit.properties.id);
-        }}
-      >
-        <Layer
-          id="region-fill"
-          type="fill"
-          minzoom={3.5}
-          paint={{
-            'fill-color': fillColor as never,
-            'fill-opacity': ['match', ['get', 'level'], 'region', 0.18, 'district', 0.38, 0.7] as never,
-          }}
-        />
-        <Layer
-          id="region-line"
-          type="line"
-          minzoom={3.5}
-          paint={{ 'line-color': colors.wine, 'line-width': ['case', ['==', ['get', 'selected'], 1], 2.5, 1] as never, 'line-opacity': 0.7 }}
-        />
-      </GeoJSONSource>
-    ),
-    // fillColor is rebuilt every render; its content only changes with the colouring mode.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [regionShape, colouring],
-  );
+  const onCountryPress = (hits: CountryProps[]) => {
+    const { focus: f, regionLevel, openCountry: open } = live.current;
+    // Countries only respond above region level, so a near-miss on a region does not jump away.
+    if (f.kind === 'region' && regionLevel !== 'country') return;
+    const hit = hits[0];
+    if (hit?.syllabus) open(hit.iso);
+  };
+  const onRegionPress = (hits: RegionProps[]) => {
+    // A tap on a name label can also reach the map underneath; the label wins.
+    if (Date.now() - lastMarkerTap.current < 400) return;
+    // Smallest polygon first: an appellation sits on top of its district.
+    const hit = [...hits].sort((a, b) => rank(b.level) - rank(a.level))[0];
+    if (hit) live.current.openRegion(hit.id);
+  };
 
   return (
     <View style={styles.screen}>
-      <Map style={StyleSheet.absoluteFill} mapStyle={online ? ONLINE_STYLE : OFFLINE_STYLE}
-        logo={false}
-        attribution
-        compass={false}
-        onDidFailLoadingMap={() => {
+      <WineMap
+        ref={camera}
+        mapStyle={online ? ONLINE_STYLE : OFFLINE_STYLE}
+        online={online}
+        initialCamera={WORLD}
+        countries={countryShape as never}
+        regions={regionShape as never}
+        regionFill={regionFill}
+        labels={labels}
+        onCountryPress={onCountryPress}
+        onRegionPress={onRegionPress}
+        onLabelPress={(id) => {
+          lastMarkerTap.current = Date.now();
+          openRegion(id);
+        }}
+        onLoadError={() => {
           if (!online) return;
           setOnlineState(false);
           setOfflineNote(true);
         }}
-      >
-        <Camera ref={camera} initialViewState={WORLD} />
-
-        {countrySource}
-        {regionSource}
-
-        {labelled.map((r) => (
-          <Marker key={r.id} lngLat={[r.centroid[0], r.centroid[1]]} anchor="center">
-            <Pressable
-              accessibilityRole="button"
-              onPress={() => {
-                lastMarkerTap.current = Date.now();
-                openRegion(r.id);
-              }}
-              style={[styles.label, region?.id === r.id && styles.labelOn]}>
-              <Text style={[styles.labelText, region?.id === r.id && { color: '#FFFFFF' }]}>{r.name}</Text>
-            </Pressable>
-          </Marker>
-        ))}
-      </Map>
+      />
 
       <View style={[styles.crumbs, { top: insets.top + 12 }]}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ alignItems: 'center', gap: 6, paddingHorizontal: 14 }}>
@@ -662,9 +597,6 @@ const styles = StyleSheet.create({
   toolOn: { backgroundColor: colors.wine, borderColor: colors.wine },
   grapeBar: { position: 'absolute', left: 16, right: 68, height: 44, justifyContent: 'center' },
   credit: { fontSize: 10, color: colors.muted },
-  label: { paddingHorizontal: 7, paddingVertical: 3, borderRadius: 999, backgroundColor: 'rgba(255,255,255,0.92)', borderWidth: 1, borderColor: colors.line },
-  labelOn: { backgroundColor: colors.wine, borderColor: colors.wine },
-  labelText: { fontSize: 11, fontWeight: '600', color: colors.ink },
   sheet: {
     position: 'absolute',
     left: 0,

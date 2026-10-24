@@ -62,6 +62,32 @@ Xcode 27 requires the UIKit scene lifecycle; without it the app crashes at launc
 switched on by `ios.enableSceneSupport` in the `expo-build-properties` plugin (needs
 expo ≥ 57.0.23). Remove that option when moving to SDK 58, which has it built in.
 
+### Web
+
+The same app also builds for the browser. The map screen draws with MapLibre GL JS there
+(`app/src/map/WineMap.web.tsx`; the native map is `WineMap.tsx`, both share `layers.ts`), and
+your progress is stored in the browser by expo-sqlite's WebAssembly build.
+
+```sh
+cd app
+npm run web              # dev server at http://localhost:8081
+npm run build:web        # static site in app/dist
+```
+
+SQLite in the browser needs a cross-origin isolated page, so the host must send
+`Cross-Origin-Opener-Policy: same-origin` and `Cross-Origin-Embedder-Policy: require-corp`.
+The dev server does this (`metro.config.js`), `public/_headers` does it on Netlify and
+Cloudflare Pages, and the `expo-router` plugin in `app.json` does it on EAS Hosting.
+GitHub Pages cannot set headers, so it will not work there. Deploy `app/dist` with one of:
+
+- EAS Hosting: `npx eas-cli deploy --prod`
+- Netlify: drag `app/dist` onto app.netlify.com/drop, or `npx netlify-cli deploy --dir dist --prod`
+- Cloudflare Pages: `npx wrangler pages deploy dist`
+
+On an iPhone, open the site in Safari and use Share › Add to Home Screen. Progress lives in
+that browser only; it does not sync with the native app. Only one tab can hold the database
+at a time.
+
 ### First-run checklist (milestone 1: the map test)
 
 1. The app opens on **Today** without the "Could not open your notes database" screen.
@@ -139,4 +165,5 @@ None of the build-tool advisories reach the phone. Recheck when moving to Expo S
 
 ## Distribution
 
-Private for now: TestFlight (internal testers) and Google Play internal testing.
+Private for now: TestFlight (internal testers) and Google Play internal testing, plus the web
+build (see Running the app › Web).

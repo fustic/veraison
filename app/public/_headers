@@ -1,0 +1,5 @@
+# Netlify and Cloudflare Pages read this file from the web build (dist/).
+# Cross-origin isolation lets expo-sqlite run SQLite in the browser.
+/*
+  Cross-Origin-Embedder-Policy: require-corp
+  Cross-Origin-Opener-Policy: same-origin
