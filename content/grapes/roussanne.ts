@@ -25,6 +25,7 @@ export default {
   regions: [
     { regionId: 'region:fr-rhone-hermitage', styleLevel: 4, style: 'Blending partner in white Hermitage.', producers: [] },
     { regionId: 'region:fr-rhone-chateauneuf-du-pape', styleLevel: 4, style: 'Part of rich white Châteauneuf blends.', producers: [] },
+    { regionId: 'region:za-swartland', styleLevel: 3, style: 'In Chenin-based white blends.', producers: [] },
   ],
   alsoGrownIn: ['Savoie (Bergeron)', 'California'],
   verified: false,

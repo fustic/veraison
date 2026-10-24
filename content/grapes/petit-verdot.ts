@@ -25,7 +25,10 @@ export default {
     { factor: 'Only ripens fully in very hot years', effect: 'very deep colour, tannic, slow-ageing wine', result: 'never more than a minor part of the blend: tannin, colour, spice' },
   ],
   lookAlikes: [{ grapeId: 'grape:cabernet-sauvignon', tell: 'Petit Verdot is even deeper and more floral, with violet; rarely met on its own.' }],
-  regions: [{ regionId: 'region:fr-bordeaux-haut-medoc', styleLevel: 3, style: 'A few per cent of Left Bank blends for colour, tannin and spice.', producers: [] }],
+  regions: [
+    { regionId: 'region:fr-bordeaux-haut-medoc', styleLevel: 3, style: 'A few per cent of Left Bank blends for colour, tannin and spice.', producers: [] },
+    { regionId: 'region:au-riverland', styleLevel: 2, style: 'Late ripening, suits hot regions.', producers: [] },
+  ],
   alsoGrownIn: ['Australia', 'Spain', 'California', 'Chile'],
   verified: false,
 } satisfies Grape;

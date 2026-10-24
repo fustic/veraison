@@ -32,6 +32,8 @@ export default {
     { factor: 'Rutherglen: very ripe, raisined grapes, years of oxidative ageing', effect: 'concentration, tertiary flavours', result: 'luscious toffee and raisin Muscat' },
     { factor: 'Muscat Blanc à Petits Grains sets fruit poorly and rots (Alsace)', effect: 'unreliable crops', result: 'the less aromatic Muscat Ottonel is more widely planted there' },
     { factor: 'Muscat of Alexandria in Valencia and Setúbal', effect: 'fortified, sweet', result: 'Moscatel de Valencia and Moscatel de Setúbal' },
+    { factor: 'Muscat of Alexandria in Chile', effect: 'third white grape', result: 'mostly distilled into Pisco' },
+    { factor: 'South Africa (Hanepoot)', effect: 'grapes shrivel on the vine, sometimes botrytised', result: 'late-harvest dessert wines; Vin de Constance in Constantia' },
   ],
   lookAlikes: [
     { grapeId: 'grape:gewurztraminer', tell: 'Gewurztraminer is oilier with lychee, rose and ginger rather than fresh grape.' },
@@ -45,6 +47,8 @@ export default {
     { regionId: 'region:au-rutherglen', styleLevel: 5, style: 'Fortified, aged: luscious, raisin, toffee, coffee.', producers: [] },
     { regionId: 'region:es-valencia', styleLevel: 3, style: 'Muscat of Alexandria for sweet, fortified Moscatel de Valencia.', producers: [] },
     { regionId: 'region:pt-setubal', styleLevel: 4, style: 'Moscatel de Setúbal: sweet, fortified, orange peel and raisin.', producers: [] },
+    { regionId: 'region:cl-itata-valley', styleLevel: 2, style: 'Muscat of Alexandria from old bush vines.', producers: [] },
+    { regionId: 'region:za-constantia', styleLevel: 5, style: 'Vin de Constance: late-harvest, sweet.', producers: [] },
   ],
   alsoGrownIn: ['Spain (Moscatel, Málaga)', 'Greece (Samos)', 'Austria (Muscat Ottonel)'],
   verified: false,

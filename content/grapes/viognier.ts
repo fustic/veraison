@@ -38,6 +38,8 @@ export default {
     { regionId: 'region:fr-rhone-cote-rotie', styleLevel: 2, style: 'Up to a fifth of the vineyard; co-fermented with Syrah.', producers: [] },
     { regionId: 'region:fr-languedoc', styleLevel: 3, style: 'Varietal IGP Pays d’Oc: ripe, peachy, inexpensive.', producers: [] },
     { regionId: 'region:au-eden-valley', styleLevel: 3, style: 'Fresh, aromatic Australian examples.', producers: ['Yalumba'] },
+    { regionId: 'region:za-swartland', styleLevel: 3, style: 'Rich, perfumed, a hint of toasty oak; in white blends.', producers: [] },
+    { regionId: 'region:cl-southern', styleLevel: 2, style: 'Fresh, fruity, from cool regions.', producers: [] },
   ],
   alsoGrownIn: ['California', 'Chile', 'South Africa'],
   verified: false,

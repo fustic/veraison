@@ -35,6 +35,7 @@ export default {
     { factor: 'New oak, 12–18 months', effect: 'toast, vanilla and clove', result: 'suits its juicy plum fruit, adds complexity' },
     { factor: 'Soft, fruity and reliable', effect: 'easy drinking young', result: 'the main grape of inexpensive Bordeaux' },
     { factor: 'Largest plantings in San Joaquin (Central Valley)', effect: 'high yields', result: 'simple, inexpensive, soft wines; better from cooler Monterey, Napa and Sonoma' },
+    { factor: 'Chile and Australia', effect: 'soft, plummy', result: 'inexpensive medium-bodied Chilean Merlot sells widely; in Australia mostly blended with Cabernet for flesh' },
   ],
   lookAlikes: [{ grapeId: 'grape:cabernet-sauvignon', tell: 'Cabernet is firmer and more acidic, with blackcurrant, mint and cedar.' }],
   regions: [
@@ -66,6 +67,8 @@ export default {
     { regionId: 'region:us-sonoma', styleLevel: 4, style: 'Deep colour, velvety tannin, luscious body, blackberry and plum.', producers: [] },
     { regionId: 'region:us-monterey', styleLevel: 3, style: 'Inland, where the wind fades.', producers: [] },
     { regionId: 'region:ca-okanagan-valley', styleLevel: 3, style: 'The most planted grape; ripens in the warmer south.', producers: [] },
+    { regionId: 'region:za-stellenbosch', styleLevel: 4, style: 'Full-bodied, plummy; often in Bordeaux blends.', producers: [] },
+    { regionId: 'region:au-margaret-river', styleLevel: 4, style: 'Blended with Cabernet.', producers: [] },
   ],
   alsoGrownIn: ['Veneto', 'Ticino', 'Languedoc (IGP Pays d’Oc)'],
   verified: false,

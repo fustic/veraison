@@ -28,6 +28,7 @@ export default {
     { factor: 'Keeps acidity in heat', effect: 'freshens Grenache-based blends', result: 'colour, tannin and acidity for the blend' },
     { factor: 'Permitted in every Languedoc-Roussillon appellation', effect: 'still widely planted though much reduced', result: 'old vines on poor soils give the best wines' },
     { factor: 'Mazuelo in Rioja, Cariñena elsewhere in Spain', effect: 'high acid, tannin and colour', result: 'a little suits Tempranillo; in Priorat it firms up Garnacha' },
+    { factor: 'Maule: ancient, dry-farmed, low-yielding bush vines', effect: 'tiny crops', result: 'full-bodied, intensely concentrated; Maule’s star grape' },
   ],
   lookAlikes: [{ grapeId: 'grape:grenache', tell: 'Grenache is softer, paler and more alcoholic; Carignan is sharper and more tannic.' }],
   regions: [

@@ -34,6 +34,8 @@ export default {
     { factor: 'Grapes in one bunch ripen unevenly', effect: 'green, herbaceous notes if unripe berries are picked', result: 'several passes through the vineyard' },
     { factor: 'Barely ripe fruit (10–11% potential alcohol)', effect: 'high acid, neutral base', result: 'used for sparkling wine; riper fruit for dry, medium and sweet' },
     { factor: 'Riper picking for dry wines in recent years', effect: 'more alcohol, a few grams of sugar', result: 'fuller, rounder dry Chenin' },
+    { factor: 'South Africa’s most planted grape', effect: 'versatile', result: 'simple stone fruit at a basic level; old bush vines give concentration and texture; some barrel-fermented' },
+    { factor: 'Swartland white blends', effect: 'with Marsanne, Roussanne, Grenache Blanc, Viognier', result: 'premium Cape white blends' },
   ],
   lookAlikes: [
     { grapeId: 'grape:riesling', tell: 'Riesling is more floral and citrus; Chenin has apple, quince and a waxy, woolly note.' },
@@ -47,6 +49,8 @@ export default {
     { regionId: 'region:za-swartland', styleLevel: 4, style: 'Old dry-farmed bush vines: concentrated, textured.', producers: [] },
     { regionId: 'region:fr-loire-coteaux-du-layon', styleLevel: 5, style: 'Sweet, often botrytised: honey, apricot, high acidity.', producers: [] },
     { regionId: 'region:us-central-valley', styleLevel: 1, style: 'Inexpensive blending wine.', producers: [] },
+    { regionId: 'region:za-paarl', styleLevel: 3, style: 'Most planted white.', producers: [] },
+    { regionId: 'region:za-worcester', styleLevel: 1, style: 'Volume wine, much distilled.', producers: [] },
   ],
   alsoGrownIn: ['Anjou (sparkling Saumur)', 'California', 'Argentina'],
   verified: false,

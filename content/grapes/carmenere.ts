@@ -26,6 +26,8 @@ export default {
     { factor: 'Ripens even later than Cabernet Sauvignon', effect: 'needs a long, warm season', result: 'warm Chilean valleys suit it; Bordeaux largely gave it up' },
     { factor: 'Picked before full ripeness', effect: 'methoxypyrazines remain', result: 'strong green pepper and leafy notes' },
     { factor: 'Fully ripe', effect: 'soft tannin, ripe fruit', result: 'plump black fruit with a peppery, herbal edge' },
+    { factor: 'Late ripening; needs the warmest, sunniest sites', effect: 'under-ripe it is overtly herbaceous', result: 'good examples balance black fruit and herbs, full body, often high tannin' },
+    { factor: 'Native to Bordeaux but now rare there', effect: 'planted widely in Chile', result: 'seen as a Chilean speciality' },
   ],
   lookAlikes: [
     { grapeId: 'grape:merlot', tell: 'Merlot rarely has Carmenère’s green pepper and black-pepper spice.' },
@@ -35,6 +37,7 @@ export default {
     { regionId: 'region:cl-maipo-valley', styleLevel: 3, style: 'Often blended with Cabernet Sauvignon.', producers: [] },
     { regionId: 'region:cl-cachapoal-valley', styleLevel: 4, style: 'Warm Rapel sub-region; ripe, full varietal wines.', producers: [] },
     { regionId: 'region:cl-colchagua-valley', styleLevel: 4, style: 'Warm and sunny: ripe black fruit, soft tannin, spice.', producers: [] },
+    { regionId: 'region:cl-aconcagua-valley', styleLevel: 4, style: 'Increasingly important with Syrah.', producers: [] },
   ],
   alsoGrownIn: ['Bordeaux (rare)', 'North-east Italy'],
   verified: false,

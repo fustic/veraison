@@ -44,6 +44,7 @@ export default {
     { regionId: 'region:us-finger-lakes', styleLevel: 2, style: "Fresh, red-fruited cool-climate reds.", producers: [] },
     { regionId: 'region:ar-uco-valley', styleLevel: 4, style: "Rising star: ripe, floral, fresh.", producers: [] },
     { regionId: 'region:us-napa-valley', styleLevel: 3, style: 'Minor blending partner on the valley sides.', producers: [] },
+    { regionId: 'region:za-stellenbosch', styleLevel: 3, style: 'In Bordeaux-style blends.', producers: [] },
   ],
   alsoGrownIn: ['Hungary (Villány)', 'Tuscany (Bolgheri blends)'],
   verified: false,

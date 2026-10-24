@@ -31,6 +31,7 @@ export default {
     { factor: 'Jumilla and Yecla heat, old bush vines', effect: 'very ripe grapes', result: 'full, high-alcohol, jammy Monastrell' },
     { factor: 'Southern Rhône is its northern limit', effect: 'ripens only in the warmest sites', result: 'dense black fruit with gamey, meaty notes prized in Châteauneuf' },
     { factor: 'Drought tolerant but needs heat and sun', effect: 'very deep colour, full body, high tannin and alcohol, low to medium acid', result: 'ripe blackberry fruit; most Jumilla and Yecla is youthful and fruity' },
+    { factor: 'Called Mataro in Australia', effect: 'late ripening', result: 'suits hot regions; in GSM blends' },
   ],
   lookAlikes: [
     { grapeId: 'grape:syrah', tell: 'Syrah has more black pepper and violet; Mourvèdre is gamier and earthier.' },

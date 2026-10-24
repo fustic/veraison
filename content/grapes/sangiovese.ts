@@ -47,6 +47,7 @@ export default {
     { regionId: 'region:it-tuscany-vino-nobile-di-montepulciano', styleLevel: 3, style: 'As Prugnolo Gentile: between Chianti Classico and Brunello in weight.', producers: [] },
     { regionId: 'region:it-tuscany-maremma', styleLevel: 4, style: 'Coastal warmth: riper, softer; Morellino di Scansano.', producers: [] },
     { regionId: 'region:it-tuscany-brunello-di-montalcino', styleLevel: 5, style: 'Full, powerful, firm; long oak ageing; Rosso di Montalcino is the younger version.', producers: ['Biondi-Santi', 'Case Basse (Soldera)'] },
+    { regionId: 'region:au-heathcote', styleLevel: 3, style: 'Shows promise; suits heat and little water.', producers: [] },
   ],
   alsoGrownIn: ['Umbria (Montefalco)', 'Romagna', 'Corsica (Nielluccio)', 'California', 'Australia'],
   verified: false,

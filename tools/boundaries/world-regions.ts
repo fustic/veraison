@@ -26,6 +26,7 @@ export const WORLD: Record<string, Pick[]> = {
   'region:cl-coquimbo': [{ src: 'CHL-ADM1', names: ['Región de Coquimbo'] }],
   'region:cl-elqui-valley': [{ src: 'CHL-ADM2', names: ['Provincia de Elqui'] }],
   'region:cl-limari-valley': [{ src: 'CHL-ADM2', names: ['Provincia de Limarí'] }],
+  'region:cl-choapa-valley': [{ src: 'CHL-ADM2', names: ['Provincia de Choapa'] }],
   'region:cl-aconcagua-valley': [{ src: 'CHL-ADM2', names: ['Provincia de Los Andes', 'Provincia de San Felipe de Aconcagua'] }],
   'region:cl-casablanca-valley': [{ src: 'CHL-ADM3', names: ['Casablanca'] }],
   'region:cl-san-antonio-valley': [{ src: 'CHL-ADM2', names: ['Provincia de San Antonio'] }],
@@ -36,12 +37,18 @@ export const WORLD: Record<string, Pick[]> = {
   'region:cl-maule-valley': [{ src: 'CHL-ADM2', names: ['Provincia de Talca', 'Provincia de Linares', 'Provincia de Cauquenes'] }],
   'region:cl-itata-valley': [{ src: 'CHL-ADM1', names: ['Región de Ñuble'] }],
   'region:cl-bio-bio-valley': [{ src: 'CHL-ADM2', names: ['Provincia de Bío-Bío'] }],
+  'region:cl-malleco-valley': [{ src: 'CHL-ADM2', names: ['Provincia de Malleco'] }],
 
   // Argentina (INV: IGs are departments or provinces; geoBoundaries, CC BY 3.0 IGO)
   'region:ar-salta': [{ src: 'ARG-ADM2', names: ['Cafayate', 'San Carlos', 'Molinos', 'Cachi'], within: 'Salta' }],
   'region:ar-mendoza': [{ src: 'ARG-ADM1', names: ['Mendoza'] }],
   'region:ar-lujan-de-cuyo': [{ src: 'ARG-ADM2', names: ['Luján de Cuyo'], within: 'Mendoza' }],
   'region:ar-uco-valley': [{ src: 'ARG-ADM2', names: ['Tupungato', 'Tunuyán', 'San Carlos'], within: 'Mendoza' }],
+  'region:ar-maipu': [{ src: 'ARG-ADM2', names: ['Maipú'], within: 'Mendoza' }],
+  'region:ar-san-rafael': [{ src: 'ARG-ADM2', names: ['San Rafael'], within: 'Mendoza' }],
+  // geoBoundaries spells the province 'La Roja'.
+  'region:ar-la-rioja': [{ src: 'ARG-ADM2', names: ['Chilecito', 'Famatina'], within: 'La Roja' }],
+  'region:ar-san-juan': [{ src: 'ARG-ADM2', names: ['Pocito', 'Ullum', 'Zonda', 'Sarmiento'], within: 'San Juan' }],
   'region:ar-rio-negro': [{ src: 'ARG-ADM1', names: ['Río Negro'] }],
   'region:ar-neuquen': [{ src: 'ARG-ADM1', names: ['Neuquén'] }],
 
@@ -52,7 +59,13 @@ export const WORLD: Record<string, Pick[]> = {
   'region:za-swartland': [{ src: 'ZAF-ADM3', names: ['Swartland'] }],
   'region:za-robertson': [{ src: 'ZAF-ADM3', names: ['Langeberg'] }],
   'region:za-walker-bay': [{ src: 'ZAF-ADM3', names: ['Overstrand'] }],
+  'region:za-worcester': [{ src: 'ZAF-ADM3', names: ['Breede Valley'] }],
+  'region:za-cape-town': [{ src: 'ZAF-ADM3', names: ['City of Cape Town'] }],
+  'region:za-elgin': [{ src: 'ZAF-ADM3', names: ['Theewaterskloof'] }],
+  'region:za-elim': [{ src: 'ZAF-ADM3', names: ['Cape Agulhas'] }],
 };
 
 /** Regions whose outline is only an approximation of the official boundary. */
-export const APPROXIMATE = new Set(Object.keys(WORLD).filter((id) => id.startsWith('region:za-')));
+// Every South African outline is approximate, including regions drawn as the sum of their districts.
+export const isApproximate = (id: string) => id.startsWith('region:za-');
+export const APPROXIMATE = new Set(Object.keys(WORLD).filter(isApproximate));

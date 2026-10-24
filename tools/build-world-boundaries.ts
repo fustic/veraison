@@ -12,7 +12,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { regions } from '../content/index.ts';
 import { simplifyRing, toleranceFor, type Ring } from './boundaries/geo.ts';
-import { APPROXIMATE, WORLD, type Pick } from './boundaries/world-regions.ts';
+import { isApproximate, WORLD, type Pick } from './boundaries/world-regions.ts';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const SRC = join(ROOT, 'tools/boundaries/source');
@@ -121,7 +121,7 @@ for (const region of ours) {
   const coordinates = r.polygons
     .map((p) => p.map((ring) => simplifyRing(ring, tol)).filter((x): x is Ring => x !== null))
     .filter((rings) => rings.length > 0 && rings[0]);
-  if (coordinates.length) out[region.id] = { from: r.from, ...(APPROXIMATE.has(region.id) ? { approximate: true as const } : {}), geometry: { type: 'MultiPolygon', coordinates } };
+  if (coordinates.length) out[region.id] = { from: r.from, ...(isApproximate(region.id) ? { approximate: true as const } : {}), geometry: { type: 'MultiPolygon', coordinates } };
 }
 
 writeFileSync(
@@ -133,5 +133,5 @@ writeFileSync(
     regions: out,
   }),
 );
-console.log(`wrote ${Object.keys(out).length} outlines to ${outFile} (${[...APPROXIMATE].filter((id) => out[id]).length} approximate)`);
+console.log(`wrote ${Object.keys(out).length} outlines to ${outFile} (${Object.values(out).filter((o) => o.approximate).length} approximate)`);
 if (missing.length) console.log(`No outline (circle kept):\n  ${missing.join('\n  ')}`);

@@ -24,8 +24,13 @@ export default {
   why: [
     { factor: 'Bred to join Pinot Noir’s quality with Cinsault’s hardiness', effect: 'easy to grow, ripens early', result: 'deep, fruity reds' },
     { factor: 'Range of winemaking', effect: 'light and fruity to heavily oaked', result: 'from fruity rosé to "coffee" Pinotage and Cape Blends' },
+    { factor: 'South African crossing of Pinot Noir and Cinsault, rarely grown elsewhere', effect: 'a point of difference', result: 'light and red-fruited, or full and spicy from old bush vines; part of Cape blends' },
+    { factor: 'Heavily toasted oak staves', effect: 'intense coffee or chocolate notes', result: 'premium Pinotage uses oak more subtly' },
   ],
   lookAlikes: [{ grapeId: 'grape:pinot-noir', tell: 'Pinot Noir is paler and more delicate.' }],
-  regions: [{ regionId: 'region:za-stellenbosch', styleLevel: 3, style: 'Premium oaked Pinotage and Cape Blends.', producers: ['Kanonkop'] }],
+  regions: [
+    { regionId: 'region:za-stellenbosch', styleLevel: 3, style: 'Premium oaked Pinotage and Cape Blends.', producers: ['Kanonkop'] },
+    { regionId: 'region:za-paarl', styleLevel: 3, style: 'One of the key reds.', producers: [] },
+  ],
   verified: false,
 } satisfies Grape;

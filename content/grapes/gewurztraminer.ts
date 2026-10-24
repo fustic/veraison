@@ -37,6 +37,8 @@ export default {
     { regionId: 'region:it-alto-adige', styleLevel: 3, style: 'Fresher, more delicate, usually dry.', producers: [] },
     { regionId: 'region:fr-alsace', styleLevel: 5, style: 'Benchmark: deep, oily, lychee, rose, ginger; dry to luscious.', producers: ['Zind-Humbrecht', 'Trimbach'] },
     { regionId: 'region:us-anderson-valley', styleLevel: 3, style: 'Very cool coastal valley: aromatic.', producers: [] },
+    { regionId: 'region:nz-gisborne', styleLevel: 3, style: 'Small amounts, high quality.', producers: [] },
+    { regionId: 'region:cl-bio-bio-valley', styleLevel: 2, style: 'Fresh, fruity.', producers: [] },
   ],
   alsoGrownIn: ['Germany', 'Austria', 'New Zealand', 'Chile', 'Oregon'],
   verified: false,

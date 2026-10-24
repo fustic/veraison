@@ -28,6 +28,8 @@ export default {
     { factor: 'Early picking (Hunter Valley)', effect: 'low alcohol, high acid, neutral when young', result: 'develops toast and honey after years in bottle' },
     { factor: 'Blended with Sauvignon Blanc', effect: 'adds body to Sauvignon’s acid and aroma', result: 'classic white Bordeaux' },
     { factor: 'Ages in new oak (Pessac-Léognan, Sauternes)', effect: 'toast and nutty richness', result: 'long-lived dry and sweet whites' },
+    { factor: 'Hunter Valley: picked early, protected from oxygen, inert vessels', effect: 'light, low alcohol, almost neutral young', result: 'honey and toast with age; the best last 20 years or more' },
+    { factor: 'Western Australia', effect: 'herbaceous, could pass for Sauvignon Blanc', result: 'often blended with Sauvignon Blanc' },
   ],
   lookAlikes: [
     { grapeId: 'grape:sauvignon-blanc', tell: 'Sauvignon Blanc is far more aromatic and herbaceous.' },
@@ -50,6 +52,8 @@ export default {
     { regionId: 'region:au-margaret-river', styleLevel: 2, style: "Blended with Sauvignon Blanc: fresh, citrus, grassy.", producers: [] },
     { regionId: 'region:fr-south-west-monbazillac', styleLevel: 4, style: "Botrytised: honey, apricot; lighter than Sauternes.", producers: [] },
     { regionId: 'region:au-riverina', styleLevel: 5, style: "Botrytised: luscious, marmalade, honey.", producers: [] },
+    { regionId: 'region:au-barossa-valley', styleLevel: 3, style: 'Traditionally full and soft; now often early-picked and unoaked.', producers: [] },
+    { regionId: 'region:za-constantia', styleLevel: 3, style: 'With Sauvignon Blanc south of Table Mountain.', producers: [] },
   ],
   alsoGrownIn: ['Barossa', 'Franschhoek', 'Washington State'],
   verified: false,

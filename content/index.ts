@@ -17,6 +17,7 @@ import assyrtiko from './grapes/assyrtiko.ts';
 import baga from './grapes/baga.ts';
 import barbera from './grapes/barbera.ts';
 import blaufrankisch from './grapes/blaufrankisch.ts';
+import bonarda from './grapes/bonarda.ts';
 import cabernetFranc from './grapes/cabernet-franc.ts';
 import cabernetSauvignon from './grapes/cabernet-sauvignon.ts';
 import carignan from './grapes/carignan.ts';
@@ -24,6 +25,7 @@ import carmenere from './grapes/carmenere.ts';
 import chardonnay from './grapes/chardonnay.ts';
 import cheninBlanc from './grapes/chenin-blanc.ts';
 import cinsault from './grapes/cinsault.ts';
+import colombard from './grapes/colombard.ts';
 import cortese from './grapes/cortese.ts';
 import corvina from './grapes/corvina.ts';
 import dolcetto from './grapes/dolcetto.ts';
@@ -57,6 +59,7 @@ import nebbiolo from './grapes/nebbiolo.ts';
 import negroamaro from './grapes/negroamaro.ts';
 import nerelloMascalese from './grapes/nerello-mascalese.ts';
 import neroDAvola from './grapes/nero-d-avola.ts';
+import pais from './grapes/pais.ts';
 import palomino from './grapes/palomino.ts';
 import parellada from './grapes/parellada.ts';
 import pedroXimenez from './grapes/pedro-ximenez.ts';
@@ -88,8 +91,8 @@ import trebbiano from './grapes/trebbiano.ts';
 import trincadeira from './grapes/trincadeira.ts';
 import verdejo from './grapes/verdejo.ts';
 import verdicchio from './grapes/verdicchio.ts';
-import vidal from './grapes/vidal.ts';
 import vermentino from './grapes/vermentino.ts';
+import vidal from './grapes/vidal.ts';
 import viognier from './grapes/viognier.ts';
 import viura from './grapes/viura.ts';
 import welschriesling from './grapes/welschriesling.ts';
@@ -101,6 +104,7 @@ import centralEuropeLaw from './topics/central-europe-law.ts';
 import italyLawAndStyles from './topics/italy-law-and-styles.ts';
 import iberiaLawAndStyles from './topics/iberia-law-and-styles.ts';
 import northAmericaLawAndStyles from './topics/north-america-law-and-styles.ts';
+import southernHemisphereLawAndStyles from './topics/southern-hemisphere-law-and-styles.ts';
 import climateAndWeather from './topics/climate-and-weather.ts';
 import franceClassifications from './topics/france-classifications.ts';
 import madeiraAndVdn from './topics/madeira-and-vdn.ts';
@@ -118,7 +122,7 @@ import sweetWinemaking from './topics/sweet-winemaking.ts';
 import whiteWinemaking from './topics/white-winemaking.ts';
 
 export const grapes: Grape[] = [
-  agiorgitiko, aglianico, airen, albarino, alfrocheiro, alicanteBouschet, aligote, arinto, assyrtiko, baga, barbera, blaufrankisch, cabernetFranc, cabernetSauvignon, carignan, carmenere, chardonnay, cheninBlanc, cinsault, cortese, corvina, dolcetto, encruzado, fiano, friulano, furmint, gamay, garganega, gewurztraminer, glera, godello, graciano, grechetto, greco, grenache, grunerVeltliner, loureiro, malbec, malvasia, marsanne, melonBlanc, mencia, merlot, montepulciano, mourvedre, mullerThurgau, muscadelle, muscat, nebbiolo, negroamaro, nerelloMascalese, neroDAvola, palomino, parellada, pedroXimenez, petitVerdot, pinotBlanc, pinotGris, pinotMeunier, pinotNoir, pinotage, riesling, roussanne, sagrantino, sangiovese, sauvignonBlanc, schiava, semillon, silvaner, stLaurent, syrah, tannat, tempranillo, teroldego, tintaBarroca, tintoCao, torrontes, tourigaFranca, tourigaNacional, trebbiano, trincadeira, verdejo, verdicchio, vermentino, vidal, viognier, viura, welschriesling, xarello, xinomavro, zinfandel, zweigelt,
+  agiorgitiko, aglianico, airen, albarino, alfrocheiro, alicanteBouschet, aligote, arinto, assyrtiko, baga, barbera, blaufrankisch, bonarda, cabernetFranc, cabernetSauvignon, carignan, carmenere, chardonnay, cheninBlanc, cinsault, colombard, cortese, corvina, dolcetto, encruzado, fiano, friulano, furmint, gamay, garganega, gewurztraminer, glera, godello, graciano, grechetto, greco, grenache, grunerVeltliner, loureiro, malbec, malvasia, marsanne, melonBlanc, mencia, merlot, montepulciano, mourvedre, mullerThurgau, muscadelle, muscat, nebbiolo, negroamaro, nerelloMascalese, neroDAvola, pais, palomino, parellada, pedroXimenez, petitVerdot, pinotBlanc, pinotGris, pinotMeunier, pinotNoir, pinotage, riesling, roussanne, sagrantino, sangiovese, sauvignonBlanc, schiava, semillon, silvaner, stLaurent, syrah, tannat, tempranillo, teroldego, tintaBarroca, tintoCao, torrontes, tourigaFranca, tourigaNacional, trebbiano, trincadeira, verdejo, verdicchio, vermentino, vidal, viognier, viura, welschriesling, xarello, xinomavro, zinfandel, zweigelt,
 ];
 // In study order: the Study tab groups them by chapter in this order.
 export const topics: Topic[] = [
@@ -126,7 +130,7 @@ export const topics: Topic[] = [
   winemakingBasics, whiteWinemaking, redWinemaking, roseWinemaking, sweetWinemaking,
   sparklingWinemaking, sparklingWines,
   sherry, port, madeiraAndVdn,
-  wineLawAndLabelling, franceClassifications, italyLawAndStyles, iberiaLawAndStyles, centralEuropeLaw, northAmericaLawAndStyles, storageServiceAndFood,
+  wineLawAndLabelling, franceClassifications, italyLawAndStyles, iberiaLawAndStyles, centralEuropeLaw, northAmericaLawAndStyles, southernHemisphereLawAndStyles, storageServiceAndFood,
 ];
 export const regions: Region[] = [
   ...france, ...italy, ...spain, ...portugal, ...germany, ...austria, ...hungary, ...greece, ...england,

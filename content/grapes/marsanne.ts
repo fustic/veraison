@@ -30,6 +30,8 @@ export default {
     { regionId: 'region:fr-rhone-hermitage', styleLevel: 4, style: 'White Hermitage: full, long-lived, honeyed with age.', producers: [] },
     { regionId: 'region:fr-rhone-crozes-hermitage', styleLevel: 2, style: 'Fresher, earlier-drinking whites.', producers: [] },
     { regionId: 'region:fr-rhone-saint-joseph', styleLevel: 2, style: 'With Roussanne in whites.', producers: [] },
+    { regionId: 'region:au-goulburn-valley', styleLevel: 4, style: 'The speciality: citrus young, honeyed with age.', producers: [] },
+    { regionId: 'region:za-swartland', styleLevel: 3, style: 'In Chenin-based white blends.', producers: [] },
   ],
   alsoGrownIn: ['Victoria (Nagambie Lakes)', 'Switzerland (Ermitage)'],
   verified: false,

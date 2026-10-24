@@ -22,8 +22,14 @@ export default {
   why: [
     { factor: 'Very high vineyards in Salta (Cafayate)', effect: 'intense sun, cold nights', result: 'pronounced floral aromas with freshness' },
     { factor: 'Phenolic, slightly bitter skins', effect: 'careful handling and little skin contact', result: 'avoids a bitter finish' },
+    { factor: 'Aromatic: fermented cool in inert vessels', effect: 'intense floral, fruity perfume, medium body and acid', result: 'stone fruit and melon; released the year of harvest' },
+    { factor: 'Often trained on parral (pergola)', effect: 'grapes shaded from intense sun', result: 'best from high Cafayate vineyards in Salta' },
   ],
   lookAlikes: [{ grapeId: 'grape:muscat', tell: 'Dry Muscat is more grapey; Torrontés more perfumed and a little bitter.' }],
-  regions: [{ regionId: 'region:ar-salta', styleLevel: 4, style: 'Dry, perfumed: rose, peach, citrus.', producers: [] }],
+  regions: [
+    { regionId: 'region:ar-salta', styleLevel: 4, style: 'Dry, perfumed: rose, peach, citrus.', producers: [] },
+    { regionId: 'region:ar-la-rioja', styleLevel: 3, style: 'A speciality of the province.', producers: [] },
+    { regionId: 'region:ar-san-juan', styleLevel: 2, style: 'One of the main whites.', producers: [] },
+  ],
   verified: false,
 } satisfies Grape;

@@ -29,6 +29,8 @@ export default {
     { factor: 'Cahors: cooler, more Atlantic', effect: 'less ripeness, firmer skins', result: 'deep, tannic, more savoury "black wine"' },
     { factor: 'Sensitive to coulure and frost', effect: 'unreliable crops in Bordeaux', result: 'now only a minor Bordeaux variety' },
     { factor: 'Oak maturation for premium wines', effect: 'vanilla, chocolate, sweet spice', result: 'rich, plush style' },
+    { factor: 'Argentina’s flagship; the world’s largest plantings', effect: 'deep colour, full body, black fruit, smooth tannin', result: 'premium wines in new oak; some now extracted gently for elegance' },
+    { factor: 'Lower vs higher altitude', effect: 'fuller and richer vs fresher and more floral', result: 'regional styles across every province' },
   ],
   lookAlikes: [
     { grapeId: 'grape:cabernet-sauvignon', tell: 'Cabernet has firmer tannin, more acidity and blackcurrant with leafy notes; Malbec is plusher, with plum and violet.' },
@@ -39,6 +41,9 @@ export default {
     { regionId: 'region:ar-uco-valley', styleLevel: 3, style: 'Highest Mendoza vineyards: intense colour, fresh acidity, floral lift.', producers: [] },
     { regionId: 'region:ar-lujan-de-cuyo', styleLevel: 4, style: 'Traditional heart of Mendoza Malbec: ripe plum and blackberry, velvety tannin, often oaked.', producers: ['Catena Zapata'] },
     { regionId: 'region:ar-salta', styleLevel: 5, style: 'Extreme altitude: very deep, concentrated, firm tannins.', producers: [] },
+    { regionId: 'region:ar-san-juan', styleLevel: 3, style: 'Grown alongside Syrah.', producers: [] },
+    { regionId: 'region:ar-patagonia', styleLevel: 3, style: 'Fresh, concentrated.', producers: [] },
+    { regionId: 'region:ar-san-rafael', styleLevel: 3, style: 'Cooler southern Mendoza.', producers: [] },
   ],
   alsoGrownIn: ['Chile', 'Bordeaux (minor)', 'Loire (as Côt)'],
   verified: false,
