@@ -41,9 +41,13 @@ European LAEA grid (EPSG:3035) to longitude/latitude itself, so no GDAL is neede
 | New Zealand | Done: IPONZ GI register data files. Unzip each GI into `source/nz/` (the builder reads `<GI>.json`) |
 | Chile | Done: Decree 464 (SAG) valleys as provinces, regions or comunas, from geoBoundaries CHL (CC BY 3.0 IGO) in `source/gb/` |
 | Argentina | Done: INV IGs as departments or provinces, from geoBoundaries ARG |
-| South Africa | Approximate: Wine of Origin districts drawn as the nearest local municipality (geoBoundaries ZAF ADM3); Constantia, Durbanville, Franschhoek and Elgin stay circles. SAWIS publishes the real boundaries only as PDF maps |
+| South Africa | Approximate: Wine of Origin districts drawn as the nearest local municipality (geoBoundaries ZAF ADM3); regions are the sum of their districts. Constantia, Durbanville, Darling and Franschhoek stay circles (wards inside larger municipalities). SAWIS publishes the real boundaries only as PDF maps |
+| Canada | Approximate: VQA areas drawn as their municipalities (geoBoundaries CAN ADM3, filtered by province with CAN ADM1) |
+| Sub-regions elsewhere | Approximate, for areas with no GI outline of their own: Rioja Alta/Alavesa/Oriental and Valdeorras (ESP ADM3 municipalities), Chianti Rufina and Colli Senesi (ITA ADM4 comuni), the five Champagne sub-regions (FRA ADM5 communes, with a bounding box against duplicate names), Côtes de Gascogne (Gers, FRA ADM2), the Douro's Baixo Corgo, Cima Corgo and Douro Superior (PRT ADM2 concelhos), Auckland (NZL ADM1), California's Central Valley (USA ADM2 counties) |
 
-The mapping for these five countries is in `world-regions.ts`; `npm run map:world` writes
+Still circles: Wairau and Awatere (no official boundary) and the four South African wards above.
+
+The mapping for these countries and sub-regions is in `world-regions.ts`; `npm run map:world` writes
 `content/boundaries/world.json`. geoBoundaries files are the `_simplified.geojson` downloads from
 `media.githubusercontent.com/media/wmgeolab/geoBoundaries/main/releaseData/gbOpen/<ISO>/<ADM>/`,
-saved as `<ISO>-<ADM>.geojson`.
+saved as `<ISO>-<ADM>.geojson`. Files used: ARG ADM1–2, CAN ADM1 and ADM3, CHL ADM1–3, ESP ADM1 and ADM3, FRA ADM1, ADM2 and ADM5, ITA ADM1 and ADM4, NZL ADM1, PRT ADM2, USA ADM1–2, ZAF ADM3.

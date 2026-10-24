@@ -17,7 +17,7 @@ import { isApproximate, WORLD, type Pick } from './boundaries/world-regions.ts';
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const SRC = join(ROOT, 'tools/boundaries/source');
 const outFile = join(ROOT, 'content/boundaries/world.json');
-const COUNTRIES = ['au', 'nz', 'cl', 'ar', 'za'];
+const COUNTRIES = ['au', 'nz', 'cl', 'ar', 'za', 'ca'];
 
 type Polygon = [number, number][][];
 type Shape = { name: string; state: string; polygons: Polygon[] };
@@ -83,8 +83,14 @@ function resolve(pick: Pick): Shape[] {
   const all = load(pick.src);
   let hits = 'state' in pick && pick.state ? all.filter((s) => s.state === pick.state && !(pick.exclude ?? []).some((n) => fold(n) === fold(s.name))) : all.filter((s) => (pick.names ?? []).some((n) => fold(n) === fold(s.name)));
   if ('within' in pick && pick.within) {
-    const parent = load(pick.src.replace(/ADM\d$/, 'ADM1') as Pick['src']).find((s) => fold(s.name) === fold(pick.within!));
-    if (parent) hits = hits.filter((s) => s.polygons.some((p) => parent.polygons.some((q) => inRing(centre(p), q[0]!))));
+    const parent = load(pick.src.replace(/ADM\d+$/, 'ADM1') as Pick['src']).find((s) => fold(s.name) === fold(pick.within!));
+    // Most of the shape's points inside the parent: robust for units on the parent's border.
+    const share = (p: Polygon) => p[0]!.filter((pt) => parent!.polygons.some((q) => inRing(pt, q[0]!))).length / p[0]!.length;
+    if (parent) hits = hits.filter((s) => s.polygons.some((p) => share(p) >= 0.5 || parent.polygons.some((q) => inRing(centre(p), q[0]!))));
+  }
+  if ('box' in pick && pick.box) {
+    const [w, so, e, n] = pick.box;
+    hits = hits.filter((s) => s.polygons.some((p) => { const [x, y] = centre(p); return x >= w && x <= e && y >= so && y <= n; }));
   }
   return hits;
 }
@@ -97,7 +103,9 @@ function defaults(id: string, name: string): Pick[] {
 
 const raw = new Map<string, { from: string[]; polygons: Polygon[] }>();
 const missing: string[] = [];
-const ours = regions.filter((r) => r.level !== 'country' && COUNTRIES.some((c) => r.id.startsWith(`region:${c}-`)));
+const inCountries = (id: string) => COUNTRIES.some((c) => id.startsWith(`region:${c}-`));
+// Our countries, plus any region elsewhere with an explicit entry in WORLD.
+const ours = regions.filter((r) => r.level !== 'country' && (inCountries(r.id) || r.id in WORLD));
 for (const region of ours) {
   const shapes = (WORLD[region.id] ?? defaults(region.id, region.name)).flatMap(resolve);
   if (shapes.length) raw.set(region.id, { from: [...new Set(shapes.map((s) => s.name))], polygons: shapes.flatMap((s) => s.polygons) });
@@ -107,7 +115,7 @@ const childrenOf = new Map<string, string[]>();
 for (const r of regions) if (r.parentId) childrenOf.set(r.parentId, [...(childrenOf.get(r.parentId) ?? []), r.id]);
 const inside = (id: string): { from: string[]; polygons: Polygon[] }[] => (childrenOf.get(id) ?? []).flatMap((k) => (raw.has(k) ? [raw.get(k)!] : inside(k)));
 for (const region of [...ours].reverse()) {
-  if (raw.has(region.id)) continue;
+  if (raw.has(region.id) || !inCountries(region.id)) continue;
   const parts = inside(region.id);
   if (parts.length) raw.set(region.id, { from: parts.flatMap((p) => p.from), polygons: parts.flatMap((p) => p.polygons) });
   else missing.push(region.id);
