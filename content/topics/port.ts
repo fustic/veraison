@@ -1,4 +1,4 @@
-// Theory: Port. Drafted from general WSET Level 3 knowledge, in our own words.
+// Theory: Port. Condensed from the user's notes, in our own words.
 // Check against the course book, then set verified: true.
 import type { Topic } from '../../core/src/content.ts';
 
@@ -6,49 +6,80 @@ export default {
   id: 'topic:port',
   title: 'Port',
   chapter: 'Fortified wines',
-  summary: 'Black grapes from the hot Douro valley are fermented briefly with intense extraction, then fortified to stop fermentation. Ruby styles keep fruit; tawny styles age oxidatively in small casks.',
+  summary:
+    'Thick-skinned Douro grapes get one or two days of fierce extraction before grape spirit stops the fermentation. Ruby styles keep their fruit in large vessels; tawny styles fade and turn nutty in small pipes.',
   sections: [
     {
-      heading: 'The Douro',
+      heading: 'Where Port is made',
       points: [
-        'Hot, dry, continental valley sheltered from the Atlantic by mountains; gets hotter and drier further east (Baixo Corgo, Cima Corgo, Douro Superior).',
-        'Schist soils on steep terraces; schist splits vertically so roots reach water.',
-        'Main grapes: Touriga Nacional, Touriga Franca, Tinta Roriz (Tempranillo), Tinta Barroca, Tinto Cão — thick-skinned and rich in colour and tannin.',
+        'Vineyards start 70 km up the Douro from the twin cities of Porto and Vila Nova de Gaia.',
+        'Three sub-regions: Baixo Corgo (lightest wines, coolest and wettest), Cima Corgo (most top vineyards), Douro Superior (sparsely planted, hottest, also top quality).',
+        'Warm continental, sheltered from Atlantic rain by the Serra do Marão; hotter and drier going east. Spring frost, occasional downpours at flowering or harvest, very hot dry summers.',
+        'Schist bedrock fractures vertically, so roots reach water stored from winter rain.',
       ],
-      links: ['region:pt-douro', 'grape:touriga-nacional', 'grape:touriga-franca', 'grape:tempranillo'],
+      causes: [{ factor: 'Vertically fractured schist', effect: 'roots reach deep winter water', result: 'vines survive the hot, dry summers' }],
+      links: ['region:pt-douro', 'region:pt-douro-baixo-corgo', 'region:pt-douro-cima-corgo', 'region:pt-douro-superior'],
     },
     {
-      heading: 'Making Port',
+      heading: 'Slopes and terraces',
       points: [
-        'Fermentation lasts only two or three days, so extraction must be fast and intense: foot treading in stone lagares, robotic lagares or autovinifiers.',
-        'At about 6–9% abv the wine is drained onto grape spirit (about 77% abv), roughly 1 part spirit to 4 parts wine, giving 19–22% abv and plenty of sugar.',
-        'Traditionally aged in Vila Nova de Gaia, cooler and more humid than the Douro.',
+        'Very steep, high slopes in Baixo and Cima Corgo; growers use altitude and aspect (north-facing sites avoid full sun).',
+        'Socalcos: narrow, stone-walled terraces of a few rows; no machines, costly walls, still widely used.',
+        'Patamares: wider terraces without walls, wide enough for a tractor.',
+        'Vinha ao alto: rows up and down gentler slopes, worked by winches from cross-slope roads.',
+        'Patamares and especially vinha ao alto are prone to erosion; vinha ao alto is impossible on the steepest slopes.',
+      ],
+    },
+    {
+      heading: 'Grapes',
+      points: [
+        'Most red Port blends many grapes: thick-skinned, tannic, black-fruited and floral.',
+        'Five preferred for premium Port: Touriga Franca, Tinta Roriz, Tinta Barroca, Touriga Nacional, Tinto Cão.',
+      ],
+      links: ['grape:touriga-nacional', 'grape:touriga-franca', 'grape:tempranillo', 'grape:tinta-barroca', 'grape:tinto-cao'],
+    },
+    {
+      heading: 'Fermentation and extraction',
+      points: [
+        'Fermentation is stopped at 5–9% abv, after only 24–48 hours, so normal extraction is not enough.',
+        'Foot treading: teams tread for three or four hours in shallow granite lagares, then punch down the cap; the benchmark, now used only for some premium wines.',
+        'Autovinifiers: CO₂ pressure pushes juice up into a holding tank; a valve releases it to flood the cap, every 15–20 minutes at peak. Little pre-fermentation extraction, so newer ones add paddles.',
+        'Piston plungers (robotic pistons pushing the cap in shallow round vats) and robotic lagares (a gantry with robotic “feet” treading in a lagar-sized steel tank): many rate them as good as feet.',
+      ],
+      causes: [{ factor: 'Only 24–48 hours on the skins', effect: 'extraction must be very vigorous', result: 'treading, autovinifiers and robotic lagares' }],
+    },
+    {
+      heading: 'Fortification',
+      points: [
+        'Spirit (aguardente) kills the yeast, giving a stable sweet wine of 19–22% abv; timing sets each house’s sweetness.',
+        'Aguardente is at most 77% abv, so a lot is needed: about 20% of a bottle of Port is spirit, compared with about 3.5% in Fino Sherry.',
+      ],
+    },
+    {
+      heading: 'Maturation: ruby vs tawny',
+      points: [
+        'Traditionally aged in cooler coastal Vila Nova de Gaia; air conditioning now allows ageing in the Douro.',
+        'Old oak (small or very large) or steel; never new-oak flavour.',
+        'Ruby styles (Ruby, Reserve Ruby, LBV, Vintage): short ageing in very large oak or steel to limit oxygen; deep colour, intense primary fruit. Ruby, Reserve Ruby and most LBV are fined and filtered and do not improve.',
+        'Unfiltered LBV and all Vintage Port improve in bottle: garnet, with cooked fruit, prune, leather, wet leaves.',
+        'True Tawny: long oxidative ageing in pipes; garnet then tawny (only the oldest fully brown); raisin, walnut, coffee, chocolate, caramel; deposit thrown in wood; ready on release.',
+        'Blending (grapes, sites) goes on throughout maturation, even for Vintage Port.',
       ],
       causes: [
-        { factor: 'Fortification after two or three days', effect: 'fermentation stops with sugar left', result: 'sweet, high-alcohol wine' },
-        { factor: 'Short time on skins', effect: 'needs vigorous extraction', result: 'treading and lagares to get colour and tannin quickly' },
+        { factor: 'Large vessels, short time', effect: 'little oxygen', result: 'ruby styles: deep colour, primary fruit' },
+        { factor: 'Years in small pipes', effect: 'slow oxidation', result: 'tawny colour, nuts, caramel, dried fruit' },
       ],
     },
     {
-      heading: 'Ruby styles (fruit kept)',
+      heading: 'Types of Port',
       points: [
-        'Aged in large vats with little oxygen: deep colour and black-fruit flavours.',
-        'Ruby: young, simple, fruity. Reserve: better quality, aged a little longer.',
-        'Late Bottled Vintage (LBV): one year, bottled 4–6 years after harvest; usually filtered and ready to drink.',
-        'Vintage Port: only in declared years, bottled after about 2 years, unfiltered; needs decades in bottle and decanting. Single Quinta Vintage: one estate, often in undeclared years.',
-        'Crusted: a blend of years, bottled unfiltered, throws a sediment.',
+        'Ruby: blends of 1–3-year-old wines, simple. Basic Tawny: no older than Ruby; colour from lighter wines (often Baixo Corgo) rather than long ageing.',
+        'Reserve / Reserva: better Ruby or Tawny approved by a tasting panel; Reserve Tawny needs at least 6 years in wood.',
+        'Late Bottled Vintage (LBV): one year, bottled after 4–6 years, mostly filtered and ready to drink (like a fine Reserve Ruby); a few unfiltered ones age and need decanting.',
+        'Tawny with an indication of age: 10, 20, 30 or 40 Years Old, matching the style of that age (an average, not a minimum); bottling year on the label; the finest Tawnies.',
+        'Vintage: declared in the second year after harvest, bottled by the third; unfined and unfiltered; the most concentrated and tannic; ages for decades with heavy sediment. About three declarations a decade; some years nearly everyone declares (2011, 2016), others not (2015).',
+        'Single Quinta Vintage: one estate named on the label. Small one-quinta producers declare only in great years; big houses use them in undeclared years, often releasing them ready to drink.',
       ],
-      causes: [{ factor: 'Bottle ageing of unfiltered Vintage Port', effect: 'slow, reductive development', result: 'fruit with dried fruit, spice and a heavy sediment' }],
-    },
-    {
-      heading: 'Tawny styles (oxidative)',
-      points: [
-        'Aged in small casks (pipes, about 550 L) for years: colour fades to amber, flavours turn to nuts, caramel and dried fruit.',
-        'Basic Tawny is a lighter, cheaper blend; age-indicated Tawnies are 10, 20, 30 or 40 Year Old (an average style, not a minimum).',
-        'Colheita: tawny from one year, at least 7 years in wood.',
-        'White Port (often served with tonic) and Rosé Port are also made.',
-      ],
-      causes: [{ factor: 'Years in small casks', effect: 'slow oxidation, evaporation', result: 'amber colour, walnut, toffee and dried fruit; ready to drink when bottled' }],
     },
   ],
   verified: false,

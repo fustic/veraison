@@ -4,9 +4,9 @@ import type { Topic } from '../../core/src/content.ts';
 
 export default {
   id: 'topic:madeira-and-vdn',
-  title: 'Madeira and vins doux naturels',
+  title: 'Madeira, fortified Muscats and VDN',
   chapter: 'Fortified wines',
-  summary: 'Madeira is deliberately heated and oxidised, so it barely changes once opened. Vins doux naturels are French wines fortified early in fermentation to keep their sweetness.',
+  summary: 'Madeira is deliberately heated and oxidised, so it barely changes once opened. Fortified Muscats are either young and grapey or aged for decades; Grenache VDN can be fruity or oxidative.',
   sections: [
     {
       heading: 'Madeira: vineyards and grapes',
@@ -28,18 +28,46 @@ export default {
       causes: [{ factor: 'Heat and oxygen during ageing', effect: 'wine is already fully oxidised', result: 'brown, tangy, caramel and nutty; lasts for months once opened' }],
     },
     {
-      heading: 'Vins doux naturels',
+      heading: 'Fortified Muscats: the grapes',
       points: [
-        'Grape spirit is added early in fermentation, keeping lots of sugar; about 15–18% abv.',
-        'Muscat VDN (Beaumes-de-Venise, Rivesaltes, Frontignan): kept away from oxygen and bottled young: fresh grape, orange blossom, peach.',
-        'Grenache VDN (Banyuls, Maury, Rivesaltes): unoxidised (Rimage, Grenat: red fruit) or oxidatively aged, sometimes outdoors in glass bonbonnes (Tuilé, Ambré, Hors d’Âge: dried fruit, nuts, rancio).',
-        'Rutherglen Muscat (Australia) is a related fortified style: very ripe, raisined grapes, years of hot oxidative ageing; graded Rutherglen, Classic, Grand, Rare.',
+        'Several grapes are called Muscat; all have low to medium acidity and perfume of orange blossom, rose and grape.',
+        'They thrive in warm and hot climates, but the best sites have some cooling to keep acidity and aroma.',
+        'Two broad styles: youthful and unaged, or fully developed after long ageing.',
       ],
-      causes: [
-        { factor: 'Muscat VDN protected from oxygen', effect: 'primary aromas kept', result: 'fresh, grapey, sweet' },
-        { factor: 'Grenache VDN aged oxidatively', effect: 'tertiary development', result: 'dried fruit, nuts, rancio' },
+      links: ['grape:muscat'],
+    },
+    {
+      heading: 'Youthful, unaged Muscat',
+      points: [
+        'Medium gold, floral, aromatic, sweet but rarely luscious; the aim is pure varietal character (e.g. Muscat de Beaumes-de-Venise, Southern Rhône).',
+        'Ripe, healthy grapes; no raisining or drying, which would add dried fruit and mask the variety.',
+        'Some skin contact, sometimes through fermentation, adds aroma and richness.',
+        'Cool fermentation stopped with 96% abv grape spirit; stored in inert vessels away from oxygen.',
       ],
-      links: ['region:fr-rhone-muscat-de-beaumes-de-venise', 'region:fr-roussillon-banyuls', 'region:fr-roussillon-maury', 'region:fr-roussillon-rivesaltes', 'region:au-rutherglen', 'grape:muscat', 'grape:grenache'],
+      causes: [{ factor: 'No raisining, inert storage, no oxygen', effect: 'primary aromas kept', result: 'fresh, grapey, floral sweet wine' }],
+      links: ['region:fr-rhone-muscat-de-beaumes-de-venise', 'region:fr-roussillon-rivesaltes'],
+    },
+    {
+      heading: 'Fully developed, aged Muscat',
+      points: [
+        'Amber to brown, sweet or luscious; the most famous luscious ones come from Rutherglen, Australia.',
+        'Style depends on harvest timing, when the wine is fortified, and how long and how it ages.',
+        'For luscious wines some raisining on the vine adds complexity, but too much loses the Muscat aroma.',
+        'Fermented on skins; drained, pressed and fortified at just 1–2% abv, so very high sugar remains.',
+        'Oxidative ageing for years, even decades, in old (often large) oak, sometimes in warm conditions; new oak would clash with the grape.',
+        'Still Muscat-scented when very old; a little younger wine is often blended in for lift.',
+      ],
+      causes: [{ factor: 'Long oxidative ageing in old wood, sometimes warm', effect: 'tertiary development', result: 'amber to brown, toffee, dried fruit, still with Muscat aroma' }],
+      links: ['region:au-rutherglen'],
+    },
+    {
+      heading: 'Grenache vins doux naturels',
+      points: [
+        'Grape spirit added early in fermentation keeps lots of sugar; about 15–18% abv.',
+        'Banyuls, Maury, Rivesaltes: unoxidised (Rimage, Grenat: red fruit) or oxidatively aged, sometimes outdoors in glass bonbonnes (Tuilé, Ambré, Hors d’Âge: dried fruit, nuts, rancio).',
+      ],
+      causes: [{ factor: 'Grenache VDN aged oxidatively', effect: 'tertiary development', result: 'dried fruit, nuts, rancio' }],
+      links: ['region:fr-roussillon-banyuls', 'region:fr-roussillon-maury', 'grape:grenache'],
     },
   ],
   verified: false,

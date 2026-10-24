@@ -24,11 +24,13 @@ export default {
     { factor: 'Small, thick-skinned berries', effect: 'lots of colour, tannin and aroma', result: 'concentrated wines from low yields' },
     { factor: 'Port: fermentation stopped early by fortification', effect: 'only a short time to extract', result: 'needs grapes this rich in colour and tannin' },
     { factor: 'Seen as the Douro’s finest grape', effect: 'low yields', result: 'intense colour and flavour, high tannin' },
+    { factor: 'Port: fermented only 24–48 hours', effect: 'needs treading or robotic lagares', result: 'deep colour and tannin before fortification' },
   ],
   lookAlikes: [{ grapeId: 'grape:syrah', tell: 'Syrah is more peppery and meaty; Touriga more floral.' }],
   regions: [
     { regionId: 'region:pt-dao', styleLevel: 3, style: 'Fresher, elegant, floral reds.', producers: [] },
     { regionId: 'region:pt-douro', styleLevel: 5, style: 'Port and powerful dry Douro reds.', producers: [] },
+    { regionId: 'region:pt-douro-cima-corgo', styleLevel: 5, style: 'Top quintas.', producers: [] },
   ],
   alsoGrownIn: ['Alentejo', 'Australia'],
   verified: false,

@@ -21,6 +21,8 @@ export default {
   why: [
     { factor: 'Delicate fruit', effect: 'second fermentation in tank, no long lees ageing', result: 'fresh pear, apple and blossom; no bready notes' },
     { factor: 'Steep hills of Conegliano Valdobbiadene', effect: 'lower yields, slower ripening', result: 'more intense, finer DOCG Prosecco' },
+    { factor: 'Formerly called Prosecco', effect: 'renamed so that Prosecco is a protected place', result: 'only Prosecco DOC/DOCG may use the name' },
+    { factor: 'Tank method, fermentation often stopped by chilling', effect: 'medium acid, green apple and melon, a touch of sweetness', result: 'drink young; rosé allowed since 2020 with up to 15% Pinot Noir' },
   ],
   lookAlikes: [{ grapeId: 'grape:muscat', tell: 'Moscato is sweeter and intensely grapey.' }],
   regions: [{ regionId: 'region:it-veneto-prosecco', styleLevel: 3, style: 'Tank-method sparkling: light, fruity; usually Brut or Extra Dry.', producers: [] }],

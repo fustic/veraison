@@ -1061,6 +1061,7 @@ export const southAfrica: Region[] = [
       { factor: 'Latitude 32–35° S should mean heat; inland summers often top 30 °C', effect: 'the cold Benguela Current cools the coast', result: 'many cooler sites near the sea' },
       { factor: 'The south-easterly summer wind, the Cape Doctor', effect: 'pushes ocean-cooled air inland, a couple of degrees cooler', result: 'fresher fruit, less disease' },
       { factor: 'Mountains everywhere: altitude, aspect, soils, shade, wind channels', effect: 'valley floors warm, slopes cooler; south-facing slopes coolest', result: 'many site climates in a small area' },
+      { factor: 'Cap Classique (traditional method): at least 12 months on lees', effect: 'best from Chardonnay and Pinot Noir on south-east slopes or near the coast', result: 'premium sparkling; plus a big market for sweeter carbonated wines' },
     ],
     labelTerms: [
       'Wine of Origin (WO): certification seal on every bottle',
@@ -1069,7 +1070,7 @@ export const southAfrica: Region[] = [
       'Estate Wine: one estate, its own vineyards in one area, made and bottled there',
       'IPW (Integrated Production of Wine): voluntary sustainability scheme shown on the seal',
       'Cape Blend',
-      'Method Cap Classique (MCC)',
+      'Cap Classique (Méthode Cap Classique: at least 12 months on lees)',
     ],
   }),
 
@@ -1528,7 +1529,11 @@ export const australia: Region[] = [
     centroid: [146.45, -36.05],
     radiusKm: 15,
     climate: { type: 'hot', influence: 'continental' },
-    why: [{ factor: 'Hot, long, dry autumns', effect: 'grapes shrivel on the vine', result: 'luscious fortified Muscat and Topaque, aged for years in hot sheds' }],
+    why: [
+      { factor: 'Hot, long, dry autumns', effect: 'some raisining on the vine (too much loses Muscat aroma)', result: 'luscious fortified Muscat and Topaque' },
+      { factor: 'Fermented on skins, fortified at just 1–2% abv', effect: 'very high sugar', result: 'sweet to luscious base' },
+      { factor: 'Decades of oxidative ageing in old wood, sometimes in warm sheds', effect: 'amber to brown, toffee, dried fruit', result: 'still Muscat-scented; a little young wine adds lift' },
+    ],
     principalGrapes: ['grape:muscat', 'grape:muscadelle'],
     labelTerms: ['Rutherglen', 'Classic', 'Grand', 'Rare'],
   }),

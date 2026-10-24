@@ -35,6 +35,7 @@ export default {
     { factor: 'Chile’s cool coast (Casablanca, San Antonio/Leyda)', effect: 'high acid, intense fruit', result: 'ripe apple, citrus, tropical, sometimes herbaceous; some with lees and oak' },
     { factor: 'South Africa', effect: 'often herbaceous', result: 'purest citrus and green fruit from the coolest sites; picked early in warm ones' },
     { factor: 'Marlborough: Wairau vs Awatere', effect: 'Wairau can be tropical; Awatere drier, cooler, windier', result: 'Awatere: higher acid, more herbaceous' },
+    { factor: 'Sparkling Sauvignon (NZ)', effect: 'carbonation or tank method', result: 'keeps intense varietal aroma' },
   ],
   lookAlikes: [
     { grapeId: 'grape:chardonnay', tell: 'Unoaked Chardonnay is far less aromatic and never grassy.' },

@@ -36,6 +36,7 @@ export default {
     { factor: 'Riper picking for dry wines in recent years', effect: 'more alcohol, a few grams of sugar', result: 'fuller, rounder dry Chenin' },
     { factor: 'South Africa’s most planted grape', effect: 'versatile', result: 'simple stone fruit at a basic level; old bush vines give concentration and texture; some barrel-fermented' },
     { factor: 'Swartland white blends', effect: 'with Marsanne, Roussanne, Grenache Blanc, Viognier', result: 'premium Cape white blends' },
+    { factor: 'Sparkling Saumur and Vouvray', effect: 'high natural acidity', result: 'autolysis shows as smoky, toasty notes rather than bready ones' },
   ],
   lookAlikes: [
     { grapeId: 'grape:riesling', tell: 'Riesling is more floral and citrus; Chenin has apple, quince and a waxy, woolly note.' },

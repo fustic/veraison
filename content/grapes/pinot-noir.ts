@@ -44,6 +44,7 @@ export default {
     { factor: 'California’s moderate sites (Russian River, Carneros, Santa Maria)', effect: 'wide range by site and winemaking', result: 'some light and gamey; most rich in ripe red cherry and strawberry with vanilla oak' },
     { factor: 'Australia’s cool sites (Yarra, Mornington, Tasmania)', effect: 'medium body and alcohol, medium to high acid', result: 'cherry and strawberry' },
     { factor: 'New Zealand', effect: 'pure fruit', result: 'Marlborough cherry and cranberry; Martinborough dark plum and spice; Central Otago juicy, concentrated red fruit' },
+    { factor: 'Champagne (Montagne de Reims, Côte des Bar)', effect: 'more body', result: 'the structural backbone of most blends; Blanc de Noirs is fuller and ages faster' },
   ],
   lookAlikes: [
     { grapeId: 'grape:gamay', tell: 'Gamay is juicier, often with banana or bubblegum from carbonic maceration, and rarely earthy.' },

@@ -21,6 +21,8 @@ export default {
   why: [
     { factor: 'Late budding, early ripening', effect: 'avoids spring frost and ripens reliably', result: 'suits the frost-prone Vallée de la Marne' },
     { factor: 'Fruity, early-developing', effect: 'adds fruit and roundness to young blends', result: 'important in non-vintage Champagne' },
+    { factor: 'Buds late', effect: 'escapes the spring frosts of the Vallée de la Marne', result: 'its main home in Champagne' },
+    { factor: 'Fruity, supple base wine', effect: 'early charm', result: 'especially important in Champagnes made to drink young' },
   ],
   lookAlikes: [{ grapeId: 'grape:pinot-noir', tell: 'Pinot Noir gives more body and structure to the blend.' }],
   regions: [{ regionId: 'region:fr-champagne-vallee-de-la-marne', styleLevel: 3, style: 'Fruity, supple base wines for Champagne blends.', producers: [] }],

@@ -34,6 +34,8 @@ export default {
     { factor: 'Muscat of Alexandria in Valencia and Setúbal', effect: 'fortified, sweet', result: 'Moscatel de Valencia and Moscatel de Setúbal' },
     { factor: 'Muscat of Alexandria in Chile', effect: 'third white grape', result: 'mostly distilled into Pisco' },
     { factor: 'South Africa (Hanepoot)', effect: 'grapes shrivel on the vine, sometimes botrytised', result: 'late-harvest dessert wines; Vin de Constance in Constantia' },
+    { factor: 'Youthful fortified Muscat (Beaumes-de-Venise)', effect: 'no raisining, skin contact, cool ferment, inert storage', result: 'floral, gold, sweet but rarely luscious' },
+    { factor: 'Aged fortified Muscat (Rutherglen)', effect: 'fortified at 1–2% abv, decades of oxidative ageing in old wood', result: 'amber to brown, luscious, still Muscat-scented' },
   ],
   lookAlikes: [
     { grapeId: 'grape:gewurztraminer', tell: 'Gewurztraminer is oilier with lychee, rose and ginger rather than fresh grape.' },

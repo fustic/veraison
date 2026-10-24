@@ -35,6 +35,7 @@ export default {
     { factor: 'Southern Rhône: bush-trained low to the ground', effect: 'shelter from the mistral, warmth from the stony soil', result: 'fully ripe Grenache; baked and jammy in hot years' },
     { factor: 'Ages quickly, with some notable exceptions', effect: 'high alcohol, early drinking', result: 'widely used for Spanish rosado' },
     { factor: 'Australia’s hot regions suit late ripeners', effect: 'old bush vines', result: 'depth and complexity in Barossa and McLaren Vale' },
+    { factor: 'Cava rosé', effect: 'with Monastrell', result: 'fresh red-fruited sparkling' },
   ],
   lookAlikes: [
     { grapeId: 'grape:syrah', tell: 'Syrah is deeper in colour with black fruit, pepper and firmer tannin; Grenache is paler, redder and more alcoholic.' },

@@ -19,6 +19,7 @@ export default {
   why: [
     { factor: 'Body and structure', effect: 'backbone of the Cava blend', result: 'helps traditional-method Cava age' },
     { factor: 'One of the three main Cava grapes', effect: 'widely planted in Catalunya', result: 'body for sparkling and still blends' },
+    { factor: 'Cava: traditional method, at least 9 months on lees', effect: 'dry, medium acid, some autolysis', result: 'approachable, mostly non-vintage' },
   ],
   lookAlikes: [{ grapeId: 'grape:viura', tell: 'Macabeo is more neutral and floral; Xarel·lo fuller and more herbal.' }],
   regions: [{ regionId: 'region:es-penedes', styleLevel: 3, style: 'Cava blends and still Penedès whites.', producers: [] }],

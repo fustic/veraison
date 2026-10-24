@@ -19,6 +19,9 @@ export default {
   ],
   why: [{ factor: 'Reliable, thick-skinned, aromatic', effect: 'fruit and perfume for the blend', result: 'backbone of most Port and Douro red blends' }],
   lookAlikes: [{ grapeId: 'grape:touriga-nacional', tell: 'Touriga Nacional is more concentrated and tannic.' }],
-  regions: [{ regionId: 'region:pt-douro', styleLevel: 4, style: 'In Port and Douro blends.', producers: [] }],
+  regions: [
+    { regionId: 'region:pt-douro', styleLevel: 4, style: 'In Port and Douro blends.', producers: [] },
+    { regionId: 'region:pt-douro-cima-corgo', styleLevel: 4, style: 'Widely planted in the best sites.', producers: [] },
+  ],
   verified: false,
 } satisfies Grape;

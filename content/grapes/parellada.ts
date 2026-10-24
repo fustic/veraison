@@ -19,6 +19,7 @@ export default {
   why: [
     { factor: 'Delicate and fresh', effect: 'adds finesse and floral notes', result: 'the lightest of the three Cava grapes' },
     { factor: 'One of the three main Cava grapes', effect: 'widely planted in Catalunya', result: 'delicate, floral sparkling base' },
+    { factor: 'Cava: traditional method, at least 9 months on lees', effect: 'dry, medium acid, some autolysis', result: 'approachable, mostly non-vintage' },
   ],
   lookAlikes: [{ grapeId: 'grape:xarello', tell: 'Xarel·lo is fuller and earthier.' }],
   regions: [{ regionId: 'region:es-penedes', styleLevel: 2, style: 'In Cava blends, from higher, cooler sites.', producers: [] }],

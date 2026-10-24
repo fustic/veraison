@@ -783,6 +783,7 @@ export const france: Region[] = [
     why: [
       { factor: 'High-acid Chenin and cool tuffeau cellars', effect: 'ideal for second fermentation and ageing', result: 'traditional-method Saumur Mousseux and Crémant de Loire' },
       { factor: 'Cabernet Franc reds', effect: 'light, fresh', result: 'often best young and lightly chilled' },
+      { factor: 'Sparkling Saumur: Chenin, Chardonnay and Cabernet Franc in the best wines; rosé from Cabernet Franc', effect: 'traditional method, at least 9 months on lees', result: 'Chenin gives smoky, toasty rather than bready autolysis' },
     ],
     principalGrapes: ['grape:chenin-blanc', 'grape:cabernet-franc'],
     labelTerms: ['Saumur Mousseux', 'Crémant de Loire'],
@@ -846,6 +847,7 @@ export const france: Region[] = [
     why: [
       { factor: 'Cool climate and clay soils', effect: 'delicate ripening', result: 'light to medium body, fresh fruity and floral Chenin; rarely new oak' },
       { factor: 'The vintage decides the style', effect: 'cool years: dry or sparkling; warm years with noble rot: sweet', result: 'Sec, Demi-Sec, Moelleux and Mousseux' },
+      { factor: 'More sparkling than still Vouvray, almost all Chenin', effect: 'traditional method, at least 9 months on lees', result: 'high-acid fizz with smoky, toasty notes' },
     ],
     principalGrapes: ['grape:chenin-blanc'],
     labelTerms: ['Sec', 'Demi-Sec', 'Moelleux', 'Mousseux', 'Pétillant'],
@@ -1126,7 +1128,10 @@ export const france: Region[] = [
     level: 'appellation',
     centroid: [5.03, 44.12],
     radiusKm: 3,
-    why: [{ factor: 'Grape spirit added during fermentation (vin doux naturel)', effect: 'sugar and fresh aroma kept', result: 'sweet, about 15% abv, orange blossom and grape' }],
+    why: [
+      { factor: 'Grape spirit added during fermentation (vin doux naturel)', effect: 'sugar and fresh aroma kept', result: 'sweet, about 15% abv, orange blossom and grape' },
+      { factor: 'Ripe healthy grapes, no raisining; some skin contact; cool ferment stopped with 96% spirit; inert storage', effect: 'pure varietal aroma kept', result: 'medium gold, floral, sweet but rarely luscious' },
+    ],
     principalGrapes: ['grape:muscat'],
     labelTerms: ['Beaumes de Venise (red cru)'],
   }),
@@ -1442,13 +1447,15 @@ export const france: Region[] = [
     climate: { type: 'cool', influence: 'continental' },
     soils: 'chalk',
     why: [
-      { factor: 'Cold northern climate', effect: 'grapes barely ripen', result: 'high-acid, low-alcohol base wines, ideal for sparkling' },
-      { factor: 'Chalk subsoil', effect: 'drains well yet holds water; cellars cut into it', result: 'steady ripening and cool, constant ageing conditions' },
-      { factor: 'Blending across villages, grapes and vintages (reserve wines)', effect: 'evens out vintage variation', result: 'a consistent non-vintage house style' },
-      { factor: 'Long ageing on lees after the second fermentation in bottle', effect: 'yeast autolysis', result: 'bread, biscuit and toast' },
+      { factor: 'Cool continental climate: winter freeze, spring frost, rain and cloud', effect: 'even in warm years sugar stays low and acid high', result: 'ideal base wine for sparkling' },
+      { factor: 'Frost is a major risk', effect: 'most vineyards on slopes', result: 'cold air drains away' },
+      { factor: 'Chalk soils', effect: 'drain after storms yet hold water in dry spells; cellars cut into them', result: 'steady ripening, cool ageing' },
+      { factor: 'One appellation; 17 grand cru and 44 premier cru villages (the whole village is rated)', effect: 'no stricter rules such as lower yields', result: 'cru terms on labels, though quality varies within villages' },
+      { factor: 'Blending dozens of small-parcel wines and reserve wines', effect: 'evens out big vintage variation', result: 'a consistent non-vintage house style' },
+      { factor: 'At least 15 months before release for NV (12 on lees), 36 for vintage (12 on lees)', effect: 'yeast autolysis', result: 'bread, biscuit and toast; most houses age far longer' },
     ],
     principalGrapes: ['grape:chardonnay', 'grape:pinot-noir', 'grape:pinot-meunier'],
-    labelTerms: ['Brut Nature', 'Extra Brut', 'Brut', 'Extra Dry', 'Sec', 'Demi-Sec', 'Doux', 'Blanc de Blancs', 'Blanc de Noirs', 'Grand Cru', 'Premier Cru', 'NM', 'RM'],
+    labelTerms: ['Brut Nature', 'Extra Brut', 'Brut', 'Extra Dry', 'Sec', 'Demi-Sec', 'Doux', 'Blanc de Blancs', 'Blanc de Noirs', 'Grand Cru (17 villages)', 'Premier Cru (44 villages)', 'Cuvée / Taille (pressings)', 'Prestige Cuvée', 'NM', 'RM'],
     producers: ['Krug', 'Bollinger', 'Louis Roederer', 'Dom Pérignon (Moët & Chandon)', 'Pol Roger'],
   }),
   r({
@@ -1484,6 +1491,16 @@ export const france: Region[] = [
     principalGrapes: ['grape:chardonnay'],
   }),
   r({
+    id: 'region:fr-champagne-cote-de-sezanne',
+    name: 'Côte de Sézanne',
+    parentId: 'region:fr-champagne',
+    level: 'district',
+    centroid: [3.72, 48.72],
+    radiusKm: 10,
+    why: [{ factor: 'About 30 km south-west of Épernay', effect: 'Chardonnay-led, like the Côte des Blancs', result: 'light, high-acid, floral and citrus base wines' }],
+    principalGrapes: ['grape:chardonnay'],
+  }),
+  r({
     id: 'region:fr-champagne-cote-des-bar',
     name: 'Côte des Bar',
     parentId: 'region:fr-champagne',
@@ -1491,7 +1508,10 @@ export const france: Region[] = [
     centroid: [4.4, 48.1],
     radiusKm: 25,
     soils: 'Kimmeridgian marl (as in Chablis)',
-    why: [{ factor: 'Further south, slightly warmer', effect: 'riper Pinot Noir', result: 'fruity, fuller Pinot-led base wines' }],
+    why: [
+      { factor: 'Further south, slightly warmer', effect: 'riper Pinot Noir', result: 'fruity, fuller Pinot-led base wines' },
+      { factor: 'Over 100 km south-east of Épernay', effect: 'Pinot Noir dominates', result: 'body and structure for blends' },
+    ],
     principalGrapes: ['grape:pinot-noir'],
   }),
 ];

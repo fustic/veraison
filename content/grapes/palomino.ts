@@ -29,8 +29,12 @@ export default {
     { factor: 'Chalky albariza soils', effect: 'store winter rain through the dry summer', result: 'vines survive the drought' },
     { factor: 'Biological ageing under flor', effect: 'yeast blocks oxygen and feeds on alcohol and glycerol', result: 'pale, light, dry Fino and Manzanilla with bread and almond' },
     { factor: 'Oxidative ageing (fortified to about 17%, no flor)', effect: 'oxygen browns and concentrates the wine', result: 'Oloroso: deep, full, walnut and toffee' },
+    { factor: 'Base wine fermented warm (22–26 °C) to about 11–12% abv', effect: 'neutral and dry', result: 'classified for biological (15–15.5%) or oxidative (17%) ageing' },
   ],
   lookAlikes: [{ grapeId: 'grape:pedro-ximenez', tell: 'PX Sherry is intensely sweet and raisiny; Palomino Sherries are dry unless sweetened.' }],
-  regions: [{ regionId: 'region:es-jerez', styleLevel: 3, style: 'All dry Sherry styles: Fino, Manzanilla, Amontillado, Palo Cortado, Oloroso.', producers: ['González Byass', 'Lustau', 'Hidalgo'] }],
+  regions: [
+    { regionId: 'region:es-jerez', styleLevel: 3, style: 'All dry Sherry styles: Fino, Manzanilla, Amontillado, Palo Cortado, Oloroso.', producers: ['González Byass', 'Lustau', 'Hidalgo'] },
+    { regionId: 'region:es-jerez-sanlucar', styleLevel: 4, style: 'Manzanilla: thick year-round flor, tangy and delicate.', producers: [] },
+  ],
   verified: false,
 } satisfies Grape;

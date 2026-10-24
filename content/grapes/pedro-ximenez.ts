@@ -26,9 +26,13 @@ export default {
     { factor: 'Thin skins', effect: 'grapes dry quickly when laid out in the sun', result: 'raisined grapes with very concentrated sugar' },
     { factor: 'Fortified and aged oxidatively', effect: 'concentration and tertiary flavours', result: 'PX: black-brown, syrupy, raisin, fig, coffee' },
     { factor: 'Hot Montilla-Moriles', effect: 'grapes reach high sugar naturally', result: 'dry styles can reach 15% without fortification' },
+    { factor: 'Little grown in Jerez; most from Montilla-Moriles', effect: 'thin skins dry well in the sun', result: 'luscious PX Sherry (often about 500 g/L): dried fruit, coffee, liquorice; also used to sweeten Medium and Cream' },
   ],
   lookAlikes: [{ grapeId: 'grape:muscat', tell: 'Aged Muscat (Rutherglen, Moscatel) is similar but keeps a floral, grapey note.' }],
-  regions: [{ regionId: 'region:es-jerez', styleLevel: 5, style: 'PX Sherry and sweetening for blended Sherries (often from Montilla-Moriles grapes).', producers: [] }],
+  regions: [
+    { regionId: 'region:es-jerez', styleLevel: 5, style: 'PX Sherry and sweetening for blended Sherries (often from Montilla-Moriles grapes).', producers: [] },
+    { regionId: 'region:es-montilla-moriles', styleLevel: 4, style: 'Grows well here; supplies most PX for Sherry.', producers: [] },
+  ],
   alsoGrownIn: ['Montilla-Moriles', 'Málaga', 'Australia (fortified)'],
   verified: false,
 } satisfies Grape;

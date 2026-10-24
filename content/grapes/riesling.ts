@@ -43,6 +43,7 @@ export default {
     { factor: 'Finger Lakes', effect: 'lakes extend the season', result: 'perfumed, the region’s best grape' },
     { factor: 'Niagara Icewine', effect: 'frozen on the vine', result: 'the finest Canadian Icewines: high acidity, complexity' },
     { factor: 'Australia (Eden, Clare)', effect: 'pronounced lime, lemon, grapefruit; unoaked, high acid, dry or off-dry', result: 'develops toast, honey and petrol quickly; Tasmania and Great Southern more floral' },
+    { factor: 'Sekt', effect: 'tank or, for top estates, traditional method', result: 'the best Deutscher Sekt is Riesling' },
   ],
   lookAlikes: [
     { grapeId: 'grape:sauvignon-blanc', tell: 'Sauvignon Blanc is grassy and herbaceous; Riesling is floral with lime and stone fruit, and develops petrol and honey with age.' },

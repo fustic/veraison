@@ -39,6 +39,7 @@ export default {
     { factor: 'Central Valley at high yields', effect: 'fruity, low to medium acid', result: 'inexpensive, sometimes with toast from staves or chips' },
     { factor: 'Old-style premium California', effect: 'very full body, high alcohol, low acid; obvious oak, hazelnut, butter over peach and banana', result: 'now joined by restrained, less oaky wines from cooler Carneros and Russian River' },
     { factor: 'Basic Australian Chardonnay', effect: 'multi-regional blend, unoaked or with oak chips', result: 'peach, sometimes toast and vanilla; premium cool-site wines are balanced and fresh with careful lees, MLC and oak' },
+    { factor: 'Champagne (Côte des Blancs, Côte de Sézanne)', effect: 'much lighter than in Burgundy, high acid, floral and citrus', result: 'finesse and longevity in blends; Blanc de Blancs ages for decades' },
   ],
   lookAlikes: [
     { grapeId: 'grape:sauvignon-blanc', tell: 'Unoaked Chablis is less aromatic than Sancerre and never grassy or herbaceous.' },
@@ -99,6 +100,7 @@ export default {
     { regionId: 'region:au-orange', styleLevel: 3, style: 'Concentrated, from altitude.', producers: [] },
     { regionId: 'region:au-tasmania', styleLevel: 4, style: 'Still and sparkling.', producers: [] },
     { regionId: 'region:nz-auckland', styleLevel: 3, style: 'Among the most planted.', producers: [] },
+    { regionId: 'region:fr-champagne-cote-de-sezanne', styleLevel: 3, style: 'Light, high-acid, floral and citrus base wine.', producers: [] },
   ],
   alsoGrownIn: ['Santa Barbara', 'Mornington Peninsula', 'Marlborough', 'Casablanca Valley', 'Jura', 'Franciacorta (sparkling)'],
   verified: false,
