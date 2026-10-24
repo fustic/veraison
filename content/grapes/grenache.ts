@@ -87,6 +87,7 @@ export default {
     { regionId: 'region:es-carinena', styleLevel: 2, style: 'Main grape: fruity early-drinking wines; old vines for intensity.', producers: [] },
     { regionId: 'region:es-toro', styleLevel: 2, style: 'A share in Joven wines.', producers: [] },
     { regionId: 'region:es-ribera-del-duero', styleLevel: 1, style: 'Mostly made into dry rosé.', producers: [] },
+    { regionId: 'region:us-paso-robles', styleLevel: 3, style: 'Rhône blends on the cooler west side.', producers: [] },
   ],
   alsoGrownIn: ['Cariñena', 'Roussillon (Maury)', 'Spanish rosado'],
   verified: false,

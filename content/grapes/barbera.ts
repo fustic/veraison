@@ -35,6 +35,7 @@ export default {
   regions: [
     { regionId: 'region:it-piemonte-barbera-d-alba', styleLevel: 3, style: 'Grown on sites not used for Nebbiolo; often a little fuller.', producers: [] },
     { regionId: 'region:it-piemonte-barbera-d-asti', styleLevel: 3, style: 'DOCG, often thought finer than Barbera d’Alba; best from the Nizza zone.', producers: [] },
+    { regionId: 'region:us-central-valley', styleLevel: 2, style: 'Widely planted for inexpensive reds.', producers: [] },
   ],
   alsoGrownIn: ['Monferrato', 'California', 'Australia', 'Argentina'],
   verified: false,

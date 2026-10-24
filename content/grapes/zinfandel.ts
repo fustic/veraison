@@ -29,6 +29,8 @@ export default {
     { factor: 'Old, dry-farmed bush vines (Lodi, Sonoma)', effect: 'low yields', result: 'concentrated, spicy premium Zinfandel' },
     { factor: 'American oak', effect: 'vanilla and coconut', result: 'sweet-spiced, rich style' },
     { factor: 'White Zinfandel', effect: 'short skin contact, sweet', result: 'pale, off-dry blush wine' },
+    { factor: 'Raisined berries in the bunch', effect: 'concentration and sugar', result: 'full body, high alcohol, sometimes a little residual sugar; red and black fruit, dried berries, liquorice; under-ripe berries can add a herbal note' },
+    { factor: 'Regarded as California’s own grape', effect: 'made in many styles', result: 'from White Zinfandel to old-vine reds; Lodi has some of the oldest and best vineyards' },
   ],
   lookAlikes: [
     { grapeId: 'grape:grenache', tell: 'Grenache is paler, with less tannin and more herbal notes.' },
@@ -40,6 +42,9 @@ export default {
     { regionId: 'region:us-paso-robles', styleLevel: 4, style: 'Warm Central Coast: rich, ripe.', producers: [] },
     { regionId: 'region:it-puglia-primitivo-di-manduria', styleLevel: 5, style: 'As Primitivo: very ripe, full, high alcohol, dried fruit.', producers: [] },
     { regionId: 'region:it-puglia', styleLevel: 3, style: 'As Primitivo: high yields give simple Puglia IGT; at controlled yields full, high alcohol, very ripe berry fruit.', producers: [] },
+    { regionId: 'region:us-sonoma-valley', styleLevel: 3, style: 'Old vines.', producers: [] },
+    { regionId: 'region:us-mendocino', styleLevel: 3, style: 'Warm, dry inland: full, soft.', producers: [] },
+    { regionId: 'region:us-napa-calistoga', styleLevel: 4, style: 'Grown alongside Cabernet in the warm north of the valley.', producers: [] },
   ],
   alsoGrownIn: ['Croatia (Crljenak Kaštelanski / Tribidrag)', 'Australia'],
   verified: false,

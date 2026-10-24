@@ -31,6 +31,7 @@ export default {
     { factor: 'Pale, large-berried Veneto clone at high yields', effect: 'dilute, neutral juice', result: 'light, inexpensive Pinot Grigio' },
     { factor: 'Old oak, lees contact, sometimes residual sugar', effect: 'texture and roundness', result: 'oily, rich Alsace style' },
     { factor: 'Pinot Grigio delle Venezie DOC (since 2017) covers Veneto, Friuli and Trentino', effect: 'replaces local IGTs for many producers', result: 'the usual label for volume Pinot Grigio' },
+    { factor: 'Willamette Valley', effect: 'widely planted', result: 'fruity, dry style' },
   ],
   lookAlikes: [
     { grapeId: 'grape:chardonnay', tell: 'Unoaked Chardonnay is similarly neutral; rich Pinot Gris is oilier, often off-dry, with ginger and honey.' },
@@ -64,6 +65,8 @@ export default {
     { regionId: 'region:it-friuli', styleLevel: 2, style: "Some of Italy’s richest Pinot Grigio: medium to full body, juicy peach and tropical fruit.", producers: [] },
     { regionId: 'region:de-baden', styleLevel: 3, style: "As Grauburgunder: dry, full.", producers: [] },
     { regionId: 'region:us-willamette-valley', styleLevel: 3, style: "Fresh, fruity Pinot Gris.", producers: [] },
+    { regionId: 'region:ca-okanagan-valley', styleLevel: 3, style: 'Among the most planted grapes; whites do well in the cooler north.', producers: [] },
+    { regionId: 'region:us-southern-oregon', styleLevel: 2, style: 'Grown alongside warmer-climate grapes.', producers: [] },
   ],
   alsoGrownIn: ['Tasmania', 'Romania', 'Hungary'],
   verified: false,

@@ -30,6 +30,8 @@ export default {
     { factor: 'SO₂ straight after fermentation, no MLC', effect: 'acidity and fruit kept intact', result: 'crisp, pungent wine best drunk young' },
     { factor: 'Long hours of intense sunlight (Marlborough)', effect: 'riper, more vivid fruit in a cool climate', result: 'gooseberry, elderflower, grapefruit, passion fruit' },
     { factor: 'Vigour and high yields', effect: 'herbaceous notes can dominate under-ripe fruit', result: 'used in cheaper wines, rarely at the lowest prices' },
+    { factor: 'Coastal California', effect: 'high acidity, ripe citrus', result: 'the best examples; warmer Central Valley gives everyday fruity wine' },
+    { factor: 'Fumé Blanc on the label', effect: 'usually an oaked style', result: 'but some producers use it for unoaked wine' },
   ],
   lookAlikes: [
     { grapeId: 'grape:chardonnay', tell: 'Unoaked Chardonnay is far less aromatic and never grassy.' },
@@ -75,6 +77,8 @@ export default {
     { regionId: 'region:au-adelaide-hills', styleLevel: 3, style: "Cool hills: passion fruit and citrus, high acid.", producers: [] },
     { regionId: 'region:cl-san-antonio-valley', styleLevel: 3, style: "Leyda: pungent, high acid, citrus and herbs.", producers: [] },
     { regionId: 'region:cl-casablanca-valley', styleLevel: 3, style: "Cool, foggy: crisp, grassy, tropical hints.", producers: [] },
+    { regionId: 'region:us-dry-creek-valley', styleLevel: 3, style: 'Valley floor sites.', producers: [] },
+    { regionId: 'region:us-napa-valley', styleLevel: 3, style: 'Ripe tropical fruit, sometimes oaked as Fumé Blanc.', producers: [] },
   ],
   alsoGrownIn: ['Styria (Austria)', 'Friuli', 'Elgin (South Africa)', 'Washington State'],
   verified: false,

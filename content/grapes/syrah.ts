@@ -35,6 +35,7 @@ export default {
     { factor: 'Vigorous cap management and new oak', effect: 'maximum extraction plus toasty flavours', result: 'powerful, concentrated style' },
     { factor: 'Earlier picking, gentle extraction, some whole bunches, long post-fermentation maceration, 300–500 L older barrels', effect: 'lower alcohol, finer tannin, less oak flavour', result: 'restrained, elegant style' },
     { factor: 'Easily damaged by the mistral in the Southern Rhône', effect: 'needs trellising; struggles in the hottest sites', result: 'a supporting role for colour and tannin in Grenache blends' },
+    { factor: 'Planted across California', effect: 'usually full-bodied and rich', result: 'some leaner, peppery styles from cooler sites' },
   ],
   lookAlikes: [
     { grapeId: 'grape:grenache', tell: 'Grenache is paler with red fruit, softer tannin and higher alcohol; Syrah is deep purple with black fruit and pepper.' },
@@ -88,6 +89,9 @@ export default {
     { regionId: 'region:us-walla-walla-valley', styleLevel: 4, style: "Rich, ripe, savoury.", producers: [] },
     { regionId: 'region:it-sicily', styleLevel: 3, style: 'Has done particularly well among the international grapes.', producers: [] },
     { regionId: 'region:pt-alentejo', styleLevel: 3, style: 'Increasingly used in Alentejo blends.', producers: [] },
+    { regionId: 'region:us-paso-robles', styleLevel: 4, style: 'West side: high-quality Rhône styles.', producers: [] },
+    { regionId: 'region:us-santa-ynez-valley', styleLevel: 4, style: 'Rich reds alongside Bordeaux varieties.', producers: [] },
+    { regionId: 'region:us-columbia-valley', styleLevel: 4, style: 'Full-bodied, intensely concentrated.', producers: [] },
   ],
   alsoGrownIn: ['Chile', 'Washington State'],
   verified: false,

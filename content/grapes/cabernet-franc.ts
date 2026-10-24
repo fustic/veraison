@@ -27,6 +27,7 @@ export default {
     { factor: 'Saint-Émilion’s warm gravel and limestone plateau', effect: 'ripens fully', result: 'more Cabernet Franc in plateau wines (Cheval Blanc)' },
     { factor: 'Loire: sandy soils vs south-facing limestone-clay slopes', effect: 'light and fruity vs fuller and tannic', result: 'from chillable, early-drinking reds to wines that age for years' },
     { factor: 'Saumur-Champigny', effect: 'floral lift', result: 'a characteristic violet note' },
+    { factor: 'Ontario’s most planted black grape', effect: 'red plum and herbal notes', result: 'varietal or in Bordeaux-style blends' },
   ],
   lookAlikes: [{ grapeId: 'grape:cabernet-sauvignon', tell: 'Cabernet Sauvignon is fuller and more tannic, with darker fruit.' }],
   regions: [
@@ -42,6 +43,7 @@ export default {
     { regionId: 'region:ca-niagara-peninsula', styleLevel: 2, style: "Red wines and Icewine.", producers: [] },
     { regionId: 'region:us-finger-lakes', styleLevel: 2, style: "Fresh, red-fruited cool-climate reds.", producers: [] },
     { regionId: 'region:ar-uco-valley', styleLevel: 4, style: "Rising star: ripe, floral, fresh.", producers: [] },
+    { regionId: 'region:us-napa-valley', styleLevel: 3, style: 'Minor blending partner on the valley sides.', producers: [] },
   ],
   alsoGrownIn: ['Hungary (Villány)', 'Tuscany (Bolgheri blends)'],
   verified: false,

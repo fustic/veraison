@@ -39,6 +39,9 @@ export default {
     { factor: 'BA (noble rot typical) and TBA (noble rot essential)', effect: 'very high must weights', result: 'sweet, low alcohol, honey, dried stone fruit, candied peel; not made every year' },
     { factor: 'Eiswein: frozen healthy grapes, no noble rot needed', effect: 'pure varietal fruit', result: 'rare, with a fine balance of sugar and acid' },
     { factor: 'No MLC or new oak, selected yeast, careful handling', effect: 'varietal flavour kept', result: 'pure, aromatic wines' },
+    { factor: 'Washington State', effect: 'usually dry', result: 'ripe stone fruit' },
+    { factor: 'Finger Lakes', effect: 'lakes extend the season', result: 'perfumed, the region’s best grape' },
+    { factor: 'Niagara Icewine', effect: 'frozen on the vine', result: 'the finest Canadian Icewines: high acidity, complexity' },
   ],
   lookAlikes: [
     { grapeId: 'grape:sauvignon-blanc', tell: 'Sauvignon Blanc is grassy and herbaceous; Riesling is floral with lime and stone fruit, and develops petrol and honey with age.' },
@@ -92,6 +95,8 @@ export default {
     { regionId: 'region:us-columbia-valley', styleLevel: 3, style: "Ripe, often off-dry.", producers: [] },
     { regionId: 'region:ca-niagara-peninsula', styleLevel: 5, style: "Icewine: luscious, very high acidity.", producers: [] },
     { regionId: 'region:de-rheinhessen', styleLevel: 3, style: 'Rheinterrasse around Nierstein: some of Germany’s fullest-bodied Rieslings.', producers: [] },
+    { regionId: 'region:us-anderson-valley', styleLevel: 3, style: 'Very cool: aromatic.', producers: [] },
+    { regionId: 'region:ca-okanagan-valley', styleLevel: 3, style: 'Also used for Icewine.', producers: [] },
   ],
   alsoGrownIn: ['New Zealand (off-dry)'],
   verified: false,

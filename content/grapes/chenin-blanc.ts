@@ -46,6 +46,7 @@ export default {
     { regionId: 'region:za-stellenbosch', styleLevel: 3, style: 'Ripe and fruity to oaked and textured.', producers: [] },
     { regionId: 'region:za-swartland', styleLevel: 4, style: 'Old dry-farmed bush vines: concentrated, textured.', producers: [] },
     { regionId: 'region:fr-loire-coteaux-du-layon', styleLevel: 5, style: 'Sweet, often botrytised: honey, apricot, high acidity.', producers: [] },
+    { regionId: 'region:us-central-valley', styleLevel: 1, style: 'Inexpensive blending wine.', producers: [] },
   ],
   alsoGrownIn: ['Anjou (sparkling Saumur)', 'California', 'Argentina'],
   verified: false,

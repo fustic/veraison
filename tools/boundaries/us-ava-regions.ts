@@ -9,6 +9,7 @@ export const AVA_FOR_REGION: Record<string, string[]> = {
   'region:us-napa-oakville': ['Oakville'],
   'region:us-napa-rutherford': ['Rutherford'],
   'region:us-napa-howell-mountain': ['Howell Mountain'],
+  'region:us-napa-mount-veeder': ['Mt. Veeder'],
 };
 
 export const STATE_OF: Record<string, string> = {
