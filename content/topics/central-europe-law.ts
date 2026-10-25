@@ -33,7 +33,7 @@ export default {
       heading: 'Germany: the VDP',
       points: [
         'A growers’ association with its own vineyard classification covering most of Germany’s best sites and strict rules; an eagle on the capsule.',
-        'VDP.Erste Lage and VDP.Grosse Lage (best sites); a dry wine from a Grosse Lage is VDP.Grosses Gewächs, marked GG with a grape bunch on the bottle neck.',
+        'Four VDP tiers, like Burgundy’s: VDP.Gutswein (estate), VDP.Ortswein (village), VDP.Erste Lage and VDP.Grosse Lage (best sites); a dry wine from a Grosse Lage is VDP.Grosses Gewächs, marked GG with a grape bunch on the bottle neck.',
         'VDP.Grosses Gewächs is a VDP trademark, not part of German law, but these are seen as Germany’s best dry wines. Permitted grapes vary by region.',
       ],
       links: ['region:de-rheingau', 'region:de-pfalz', 'region:de-mosel'],

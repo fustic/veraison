@@ -1059,7 +1059,7 @@ export const france: Region[] = [
     ],
     principalGrapes: ['grape:grenache', 'grape:syrah', 'grape:mourvedre'],
     otherGrapes: ['grape:cinsault', 'grape:viognier', 'grape:marsanne', 'grape:roussanne'],
-    labelTerms: ['Côtes du Rhône', 'Côtes du Rhône Villages', 'Côtes du Rhône Villages + village (e.g. Séguret)'],
+    labelTerms: ['Côtes du Rhône', 'Côtes du Rhône Villages', 'Côtes du Rhône Villages + village (e.g. Séguret)', 'Rasteau (red cru; also a Grenache vin doux naturel)'],
   }),
   r({
     id: 'region:fr-rhone-chateauneuf-du-pape',

@@ -30,8 +30,8 @@ export default {
     {
       heading: 'Ageing rules to know',
       points: [
-        'Barolo DOCG: 100% Nebbiolo; at least 38 months, 18 in wood; released from 1 January of the fourth year after harvest.',
-        'Barbaresco DOCG: at least 26 months, 9 in wood; released from 1 January of the third year.',
+        'Barolo DOCG: 100% Nebbiolo; at least 38 months, 18 in wood; released from 1 January of the fourth year after harvest. Riserva: at least 62 months.',
+        'Barbaresco DOCG: at least 26 months, 9 in wood; released from 1 January of the third year. Riserva: at least 50 months.',
         'Brunello di Montalcino DOCG: 100% Sangiovese; at least 2 years in wood; released from 1 January of the fifth year. Declassified: Rosso di Montalcino DOC.',
         'Vino Nobile di Montepulciano DOCG: Sangiovese plus permitted grapes; at least 2 years’ ageing. Declassified: Rosso di Montepulciano DOC.',
         'Chianti Classico: 12 months before release; Riserva 24 months (3 in bottle); Gran Selezione: single estate, 6 months more than Riserva. No oak rule, though most see oak.',
@@ -53,7 +53,7 @@ export default {
       heading: 'Passito and ripasso (Veneto)',
       points: [
         'Passito: grapes picked early (high acid), dried indoors to concentrate sugar and flavour, fermented in winter. Adds structure, flavour and, for reds, colour.',
-        'Amarone della Valpolicella DOCG: fermented dry or off-dry; full body, high alcohol, medium to high tannin, intense red berry and spice; usually aged in large casks.',
+        'Amarone della Valpolicella DOCG: fermented dry or off-dry; full body, high alcohol, medium to high tannin, intense red berry and spice; at least 14% abv; usually aged in large casks.',
         'Recioto della Valpolicella DOCG and Recioto di Soave DOCG: so sweet that fermentation stops on its own; sweet, full, red or white.',
         'Ripasso: Amarone is drained off its skins just before fermentation ends; finished Valpolicella goes onto those unpressed skins, and their leftover sugar ferments, adding colour, flavour and tannin. Valpolicella Ripasso DOC: medium to full, stewed cherry and plum.',
       ],

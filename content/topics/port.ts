@@ -62,7 +62,7 @@ export default {
         'Old oak (small or very large) or steel; never new-oak flavour.',
         'Ruby styles (Ruby, Reserve Ruby, LBV, Vintage): short ageing in very large oak or steel to limit oxygen; deep colour, intense primary fruit. Ruby, Reserve Ruby and most LBV are fined and filtered and do not improve.',
         'Unfiltered LBV and all Vintage Port improve in bottle: garnet, with cooked fruit, prune, leather, wet leaves.',
-        'True Tawny: long oxidative ageing in pipes; garnet then tawny (only the oldest fully brown); raisin, walnut, coffee, chocolate, caramel; deposit thrown in wood; ready on release.',
+        'True Tawny: long oxidative ageing in pipes (casks of about 550 L); garnet then tawny (only the oldest fully brown); raisin, walnut, coffee, chocolate, caramel; deposit thrown in wood; ready on release.',
         'Blending (grapes, sites) goes on throughout maturation, even for Vintage Port.',
       ],
       causes: [

@@ -45,7 +45,7 @@ export default {
       heading: 'Cava',
       points: [
         'A DO of several separate areas across Spain, but mostly Catalonia around Sant Sadurní d’Anoia; also parts of Navarra, Rioja and Valencia.',
-        'Traditional method, at least 9 months on lees.',
+        'Traditional method. Ageing on lees: Cava de Guarda at least 9 months; Reserva at least 18; Gran Reserva at least 30.',
         'Whites from Macabeo, Xarel·lo and Parellada; rosés from Garnacha and Monastrell. Chardonnay and Pinot Noir are now allowed (more fruit and acid), which divides opinion.',
         'Usually dry, medium acidity, some autolytic character (not the bread and toast of Champagne); mostly non-vintage and ready on release, a few long-aged premium wines.',
       ],

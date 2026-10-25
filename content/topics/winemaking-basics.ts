@@ -34,7 +34,7 @@ export default {
       points: [
         'Inert vessels (stainless steel, concrete lined) add nothing; easy to clean and control temperature.',
         'Oak adds flavour (vanilla, toast, spice) and lets in a little oxygen, which softens tannin and adds complexity.',
-        'Effect depends on size (small barriques 225 L give more), age (new gives most), toast level, and origin (French: subtle spice and toast; American: vanilla and coconut).',
+        'Effect depends on size (small barriques 225 L give more), age (new gives most), toast level, and origin (French: subtle spice and toast; American: vanilla and coconut). Sizes run from the 225 L barrique to large foudres of 2,000 L or more; staves split and air-dried outdoors give gentler flavour than sawn, kiln-dried wood. Staves and chips in tanks are the cheap alternative.',
         'Oak staves or chips in tank are a cheap, quick way to add oak flavour without the oxygen effect.',
       ],
       causes: [

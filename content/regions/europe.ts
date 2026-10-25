@@ -62,7 +62,7 @@ export const italy: Region[] = [
       { factor: 'Traditional long ageing in large casks vs modern riper tannins and shorter ageing, sometimes small new oak', effect: 'two house styles', result: 'all still gain from bottle age' },
     ],
     principalGrapes: ['grape:nebbiolo'],
-    labelTerms: ['DOCG (100% Nebbiolo)', 'Riserva', 'Village name, e.g. Barolo Serralunga d’Alba', 'Named vineyard (MGA / cru), e.g. Barolo Cannubi'],
+    labelTerms: ['DOCG (100% Nebbiolo)', 'Riserva (at least 62 months)', 'Village name, e.g. Barolo Serralunga d’Alba', 'Named vineyard (MGA / cru), e.g. Barolo Cannubi'],
     producers: ['Giacomo Conterno', 'Bartolo Mascarello', 'Vietti'],
   }),
   r({
@@ -77,7 +77,7 @@ export const italy: Region[] = [
       { factor: 'At least 26 months’ ageing (9 in wood), released from 1 January of the third year', effect: 'ready a little sooner than Barolo', result: 'the best often from a single named vineyard' },
     ],
     principalGrapes: ['grape:nebbiolo'],
-    labelTerms: ['DOCG', 'Riserva', 'Named vineyard (cru)'],
+    labelTerms: ['DOCG', 'Riserva (at least 50 months)', 'Named vineyard (cru)'],
     producers: ['Gaja', 'Produttori del Barbaresco', 'Bruno Giacosa'],
   }),
   r({
@@ -319,7 +319,7 @@ export const italy: Region[] = [
       { factor: 'Recioto: so much sugar that fermentation stops by itself', effect: 'sweetness kept', result: 'sweet, full, medium to high alcohol and tannin' },
     ],
     principalGrapes: ['grape:corvina'],
-    labelTerms: ['DOCG', 'Classico', 'Riserva'],
+    labelTerms: ['DOCG (at least 14% abv)', 'Classico', 'Riserva'],
     producers: ['Allegrini', 'Quintarelli', 'Dal Forno'],
   }),
   r({
@@ -813,7 +813,7 @@ export const spain: Region[] = [
     ],
     principalGrapes: ['grape:tempranillo', 'grape:grenache'],
     otherGrapes: ['grape:graciano', 'grape:carignan', 'grape:viura'],
-    labelTerms: ['DOCa Rioja', 'Genérico', 'Crianza', 'Reserva', 'Gran Reserva (longer minimums than national law)'],
+    labelTerms: ['DOCa Rioja', 'Genérico', 'Crianza', 'Reserva', 'Crianza and Reserva: at least 12 months in barrel', 'Gran Reserva: at least 24 months in barrel'],
     producers: ['La Rioja Alta', 'CVNE', 'R. López de Heredia', 'Marqués de Murrieta'],
   }),
   r({
@@ -928,7 +928,7 @@ export const spain: Region[] = [
       { factor: 'Cava: a DO of separate areas, mostly around Sant Sadurní d’Anoia (also Navarra, Rioja, Valencia)', effect: 'traditional method, at least 9 months on lees', result: 'dry, medium acid, approachable; Macabeo, Xarel·lo, Parellada; rosé from Garnacha and Monastrell' },
     ],
     principalGrapes: ['grape:viura', 'grape:xarello', 'grape:parellada', 'grape:tempranillo', 'grape:grenache'],
-    labelTerms: ['DO Catalunya', 'Cava'],
+    labelTerms: ['DO Catalunya', 'Cava', 'Cava de Guarda (9 months on lees)', 'Cava Reserva (18)', 'Cava Gran Reserva (30)'],
   }),
   r({
     id: 'region:es-penedes',
@@ -1416,7 +1416,7 @@ export const germany: Region[] = [
     climate: { type: 'cool', influence: 'continental' },
     soils: 'slate',
     why: [
-      { factor: 'Very steep slate slopes right by the river (Middle Mosel: Piesport, Bernkastel, Wehlen)', effect: 'maximum sun; slate and water store and reflect heat', result: 'Riesling ripens this far north' },
+      { factor: 'Very steep slate slopes, some up to about 65°, right by the river (Middle Mosel: Piesport, Bernkastel, Wehlen)', effect: 'maximum sun; slate and water store and reflect heat', result: 'Riesling ripens this far north' },
       { factor: 'Slow, cool ripening', effect: 'high acidity, low sugar', result: 'lighter body, lower alcohol and higher acidity than Rheingau, Rheinhessen or Pfalz; floral and green fruit' },
       { factor: 'Cooler tributaries, the Saar and Ruwer', effect: 'even higher acidity; in cool years grapes may not ripen fully', result: 'Middle-Mosel quality in good years; sparkling wine in poor ones' },
     ],

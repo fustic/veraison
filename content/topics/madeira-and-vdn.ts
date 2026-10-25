@@ -64,7 +64,7 @@ export default {
       heading: 'Grenache vins doux naturels',
       points: [
         'Grape spirit added early in fermentation keeps lots of sugar; about 15–18% abv.',
-        'Banyuls, Maury, Rivesaltes: unoxidised (Rimage, Grenat: red fruit) or oxidatively aged, sometimes outdoors in glass bonbonnes (Tuilé, Ambré, Hors d’Âge: dried fruit, nuts, rancio).',
+        'Banyuls, Maury, Rivesaltes, and Rasteau in the Southern Rhône: unoxidised (Rimage, Grenat: red fruit) or oxidatively aged, sometimes outdoors in glass bonbonnes (Tuilé, Ambré, Hors d’Âge: dried fruit, nuts, rancio).',
       ],
       causes: [{ factor: 'Grenache VDN aged oxidatively', effect: 'tertiary development', result: 'dried fruit, nuts, rancio' }],
       links: ['region:fr-roussillon-banyuls', 'region:fr-roussillon-maury', 'grape:grenache'],
