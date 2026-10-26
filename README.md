@@ -141,6 +141,9 @@ The Account screen opens from the chip at the top of Today.
   step with `package.json`. The session is shared with the app through IndexedDB.
 - iOS/Android: `@react-native-google-signin/google-signin` gets a Google ID token, which signs
   in to Firebase. Client IDs are in `app/src/sync/config.ts`; adding native modules needs a rebuild.
+- Sign in with Apple: not yet. It needs the paid Apple Developer Program; installing
+  `expo-apple-authentication` adds the entitlement automatically, and a free Personal Team
+  then cannot sign the app. Install it (and add the button) once the membership is active.
 - Security rules: `app/firestore.rules`. Deploy with `npx firebase-tools deploy --only firestore:rules`.
 
 ### First-run checklist (milestone 1: the map test)
