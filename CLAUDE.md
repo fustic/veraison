@@ -27,8 +27,8 @@
   it maps `fontWeight` to the bundled IBM Plex files. Headings use `fonts.display`, small caps
   labels `fonts.mono` (see `app/src/theme.ts`).
 - Route files in `app/src/app` export only their default component; shared helpers go in
-  `app/src/names.ts`, `app/src/components.tsx` or `core/`. Exception: expo-router's special
-  `+native-intent.tsx`, which exports `redirectSystemPath`.
+  `app/src/names.ts`, `app/src/components.tsx` or `core/`. Exceptions: expo-router's special
+  exports, `redirectSystemPath` in `+native-intent.tsx` and `unstable_settings` in `_layout.tsx`.
 - Never run `npm audit fix` in `app/`; use `npx expo install --fix`. See README "Dependencies".
 - The app also builds for the web. Native-only modules stay behind a platform split: the map
   draws through `app/src/map/WineMap.tsx` (MapLibre Native) and `WineMap.web.tsx` (MapLibre GL

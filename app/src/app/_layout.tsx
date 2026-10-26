@@ -6,6 +6,10 @@ import { DataProvider } from '../data/DataProvider';
 import { SyncProvider } from '../sync/SyncProvider';
 import { colors, fonts } from '../theme';
 
+// Pages opened straight from a URL (a shared link, or coming back from web sign-in) still
+// get the tabs underneath, so they have a back button.
+export const unstable_settings = { initialRouteName: '(tabs)' };
+
 export default function RootLayout() {
   const [loaded, error] = useFonts({
     [fonts.regular]: require('../../assets/fonts/IBMPlexSans-Regular.ttf'),
