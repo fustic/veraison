@@ -43,9 +43,17 @@ export function WineMap(props: WineMapProps) {
   const styleReady = useRef(false);
   const firstStyle = useRef(props.mapStyle);
 
+  // Keep the latest camera command until the style has loaded and the container has its size
+  // (opening the map from a region page asks to zoom before either has happened).
+  const pending = useRef<(() => void) | null>(null);
+  const run = (cmd: () => void) => {
+    if (styleReady.current) cmd();
+    else pending.current = cmd;
+  };
+
   useImperativeHandle(props.ref, () => ({
-    fitBounds: (b, padding, duration) => map.current?.fitBounds([[b[0], b[1]], [b[2], b[3]]], { padding, duration }),
-    flyTo: (c, duration) => map.current?.flyTo({ center: c.center, zoom: c.zoom, duration }),
+    fitBounds: (b, padding, duration) => run(() => map.current?.fitBounds([[b[0], b[1]], [b[2], b[3]]], { padding, duration })),
+    flyTo: (c, duration) => run(() => map.current?.flyTo({ center: c.center, zoom: c.zoom, duration })),
   }), []);
 
   // Create the map once.
@@ -65,6 +73,9 @@ export function WineMap(props: WineMapProps) {
     m.on('style.load', () => {
       styleReady.current = true;
       install(m, latest.current);
+      m.resize();
+      pending.current?.();
+      pending.current = null;
     });
     // An error before the style has loaded means the street map is unreachable.
     m.on('error', () => {

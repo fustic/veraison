@@ -145,10 +145,14 @@ export default function MapScreen() {
 
   // Deep link from other screens: /map?focus=region:fr-bordeaux. The param is cleared
   // once used, so opening the same region again from elsewhere still moves the map.
+  // The map may still be hidden behind the screen transition when the link arrives, so fit
+  // once more after the transition; WineMap holds the command until the map has loaded.
   useEffect(() => {
     if (params.focus && content.regionById.has(params.focus)) {
       openRegion(params.focus);
       router.setParams({ focus: undefined });
+      // No cleanup: clearing the param re-runs this effect, which would cancel the timer.
+      setTimeout(() => fitRef.current(), 600);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.focus]);

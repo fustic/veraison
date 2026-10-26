@@ -22,9 +22,23 @@ export function WineMap(props: WineMapProps) {
   const latest = useRef(props);
   latest.current = props;
 
+  // Camera commands sent before the map has loaded are dropped by the native view (opening the
+  // map from a region page does exactly that), so keep the latest one and run it on load.
+  const ready = useRef(false);
+  const pending = useRef<(() => void) | null>(null);
+  const run = (cmd: () => void) => {
+    if (ready.current) cmd();
+    else pending.current = cmd;
+  };
+  const onReady = () => {
+    ready.current = true;
+    pending.current?.();
+    pending.current = null;
+  };
+
   useImperativeHandle(props.ref, () => ({
-    fitBounds: (bounds, padding, duration) => camera.current?.fitBounds(bounds, { padding, duration }),
-    flyTo: (c, duration) => camera.current?.flyTo({ center: c.center, zoom: c.zoom, duration }),
+    fitBounds: (bounds, padding, duration) => run(() => camera.current?.fitBounds(bounds, { padding, duration })),
+    flyTo: (c, duration) => run(() => camera.current?.flyTo({ center: c.center, zoom: c.zoom, duration })),
   }), []);
 
   // Sources are memoised: the countries file is large, and re-rendering a source
@@ -65,6 +79,8 @@ export function WineMap(props: WineMapProps) {
       attribution
       compass={false}
       onDidFailLoadingMap={() => latest.current.onLoadError()}
+      onDidFinishLoadingMap={onReady}
+      onDidFinishLoadingStyle={onReady}
     >
       <Camera ref={camera} initialViewState={props.initialCamera} />
       {countrySource}
