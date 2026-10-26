@@ -1,7 +1,8 @@
 # Builds the web app and deploys it to Firebase Hosting on every push to main.
 # Signs in to Google Cloud with Workload Identity Federation (no service account key),
 # so it works under the org policy that blocks key creation. One-time setup: README, "Web".
-# Until the two repository variables exist, the deploy job is skipped.
+# The provider and service account names are not secret; only pushes to main of
+# fustic/veraison can use them.
 name: Deploy web
 
 on:
@@ -30,7 +31,6 @@ jobs:
 
   deploy:
     needs: test
-    if: vars.GCP_WIF_PROVIDER != '' && vars.GCP_DEPLOY_SA != ''
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -46,6 +46,6 @@ jobs:
       - run: npx expo export -p web
       - uses: google-github-actions/auth@v2
         with:
-          workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER }}
-          service_account: ${{ vars.GCP_DEPLOY_SA }}
+          workload_identity_provider: projects/463285819168/locations/global/workloadIdentityPools/github/providers/veraison
+          service_account: github-deploy@veraison-353ad.iam.gserviceaccount.com
       - run: npx --yes firebase-tools deploy --only hosting --non-interactive

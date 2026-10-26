@@ -118,9 +118,9 @@ echo "GCP_WIF_PROVIDER = projects/$NUM/locations/global/workloadIdentityPools/gi
 echo "GCP_DEPLOY_SA    = $SA"
 ```
 
-Add the two printed values as repository variables (GitHub › Settings › Secrets and
-variables › Actions › Variables). They are not secret. Only pushes to `main` of this repo can
-use the identity. `npm ci` needs `app/package-lock.json` to match `app/package.json`, so
+The two printed values go in the `auth` step of the workflow (already filled in for
+`veraison-353ad`). They are not secret. Only pushes to `main` of this repo can use the
+identity. `npm ci` needs `app/package-lock.json` to match `app/package.json`, so
 commit the lock file after changing dependencies.
 
 On an iPhone, open the site in Safari and use Share › Add to Home Screen. Progress lives in
