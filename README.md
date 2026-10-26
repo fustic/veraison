@@ -80,12 +80,48 @@ The dev server does this (`metro.config.js`), `public/_headers` does it on Netli
 Cloudflare Pages, and the `expo-router` plugin in `app.json` does it on EAS Hosting.
 GitHub Pages cannot set headers, so it will not work there. Deploy `app/dist` with one of:
 
-- Firebase Hosting: `app/firebase.json` sets the headers, SPA rewrite and caching. Once:
-  `npx firebase-tools login`, then `npx firebase-tools use --add` (pick your project; writes
-  `.firebaserc`). Each deploy: `npm run deploy:web`.
+- Firebase Hosting (project `veraison-353ad`, set in `app/.firebaserc`): `app/firebase.json`
+  sets the headers, SPA rewrite and caching. Once: `npx firebase-tools login`. Each deploy
+  from your machine: `npm run deploy:web`. No need for `firebase init`.
 - EAS Hosting: `npx eas-cli deploy --prod`
 - Netlify: drag `app/dist` onto app.netlify.com/drop, or `npx netlify-cli deploy --dir dist --prod`
 - Cloudflare Pages: `npx wrangler pages deploy dist`
+
+#### Deploying from GitHub on every push
+
+`.github/workflows/deploy-web.yml` runs the tests, builds `app/dist` and deploys it when
+`main` changes. It signs in with Workload Identity Federation instead of a service account
+key, because the Google Cloud organisation blocks key creation
+(`iam.managed.disableServiceAccountKeyCreation`, which is why the GitHub step of
+`firebase init` fails). One-time setup, in Google Cloud Shell (console.cloud.google.com, the
+`>_` button) or anywhere `gcloud` is signed in as the project owner:
+
+```sh
+PROJECT=veraison-353ad
+REPO=fustic/veraison
+gcloud config set project $PROJECT
+gcloud services enable iamcredentials.googleapis.com sts.googleapis.com
+gcloud iam service-accounts create github-deploy --display-name="GitHub web deploy"
+SA=github-deploy@$PROJECT.iam.gserviceaccount.com
+for ROLE in roles/firebasehosting.admin roles/serviceusage.apiKeysViewer roles/serviceusage.serviceUsageConsumer; do
+  gcloud projects add-iam-policy-binding $PROJECT --member="serviceAccount:$SA" --role=$ROLE --condition=None
+done
+gcloud iam workload-identity-pools create github --location=global --display-name="GitHub"
+gcloud iam workload-identity-pools providers create-oidc veraison --location=global \
+  --workload-identity-pool=github --issuer-uri=https://token.actions.githubusercontent.com \
+  --attribute-mapping="google.subject=assertion.sub,attribute.repository=assertion.repository,attribute.ref=assertion.ref" \
+  --attribute-condition="assertion.repository=='$REPO' && assertion.ref=='refs/heads/main'"
+NUM=$(gcloud projects describe $PROJECT --format='value(projectNumber)')
+gcloud iam service-accounts add-iam-policy-binding $SA --role=roles/iam.workloadIdentityUser \
+  --member="principalSet://iam.googleapis.com/projects/$NUM/locations/global/workloadIdentityPools/github/attribute.repository/$REPO"
+echo "GCP_WIF_PROVIDER = projects/$NUM/locations/global/workloadIdentityPools/github/providers/veraison"
+echo "GCP_DEPLOY_SA    = $SA"
+```
+
+Add the two printed values as repository variables (GitHub › Settings › Secrets and
+variables › Actions › Variables). They are not secret. Only pushes to `main` of this repo can
+use the identity. `npm ci` needs `app/package-lock.json` to match `app/package.json`, so
+commit the lock file after changing dependencies.
 
 On an iPhone, open the site in Safari and use Share › Add to Home Screen. Progress lives in
 that browser only; it does not sync with the native app. Only one tab can hold the database

@@ -1,0 +1,51 @@
+# Builds the web app and deploys it to Firebase Hosting on every push to main.
+# Signs in to Google Cloud with Workload Identity Federation (no service account key),
+# so it works under the org policy that blocks key creation. One-time setup: README, "Web".
+# Until the two repository variables exist, the deploy job is skipped.
+name: Deploy web
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: deploy-web
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm test
+      - run: npm run content:check
+
+  deploy:
+    needs: test
+    if: vars.GCP_WIF_PROVIDER != '' && vars.GCP_DEPLOY_SA != ''
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: app
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: app/package-lock.json
+      - run: npm ci
+      - run: npx expo export -p web
+      - uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER }}
+          service_account: ${{ vars.GCP_DEPLOY_SA }}
+      - run: npx --yes firebase-tools deploy --only hosting --non-interactive
