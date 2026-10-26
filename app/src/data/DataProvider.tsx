@@ -49,6 +49,10 @@ interface DataContextValue {
   statuses: Map<string, ContentStatus>;
   /** Re-read statuses after a write so maps and lists update. */
   refreshStatuses(): Promise<void>;
+  /** Bumped when data arrives from another device; screens that read notes depend on it. */
+  dataVersion: number;
+  /** Re-read everything after a sync brought changes. */
+  reloadAll(): Promise<void>;
   seen(contentId: string): Promise<void>;
 }
 
@@ -58,6 +62,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
   const [db, setDb] = useState<Db | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [statuses, setStatuses] = useState<Map<string, ContentStatus>>(new Map());
+  const [dataVersion, setDataVersion] = useState(0);
   const content = useMemo(() => indexContent(contentJson as unknown as Bundle), []);
   const deps = useMemo<Deps>(() => ({ clock: systemClock, newId: () => randomUUID() }), []);
 
@@ -77,6 +82,11 @@ export function DataProvider({ children }: { children: ReactNode }) {
   const refreshStatuses = useCallback(async () => {
     if (db) setStatuses(await getStatuses(db));
   }, [db]);
+
+  const reloadAll = useCallback(async () => {
+    await refreshStatuses();
+    setDataVersion((v) => v + 1);
+  }, [refreshStatuses]);
 
   const seen = useCallback(
     async (contentId: string) => {
@@ -102,7 +112,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
       </View>
     );
   }
-  return <DataContext.Provider value={{ db, deps, content, statuses, refreshStatuses, seen }}>{children}</DataContext.Provider>;
+  return <DataContext.Provider value={{ db, deps, content, statuses, refreshStatuses, dataVersion, reloadAll, seen }}>{children}</DataContext.Provider>;
 }
 
 export function useData(): DataContextValue {

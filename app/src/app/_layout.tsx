@@ -3,6 +3,7 @@ import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { DataProvider } from '../data/DataProvider';
+import { SyncProvider } from '../sync/SyncProvider';
 import { colors, fonts } from '../theme';
 
 export default function RootLayout() {
@@ -20,28 +21,31 @@ export default function RootLayout() {
   return (
     <SafeAreaProvider>
       <DataProvider>
-        <StatusBar style="dark" />
-        <Stack
-          screenOptions={{
-            headerTintColor: colors.wine,
-            headerStyle: { backgroundColor: colors.paper },
-            headerTitleStyle: { fontFamily: error ? undefined : fonts.semibold },
-            headerBackTitleStyle: { fontFamily: error ? undefined : fonts.medium },
-            headerShadowVisible: false,
-            // Chevron only: the tab group's route name, "(tabs)", is not a title to show.
-            headerBackButtonDisplayMode: 'minimal',
-            contentStyle: { backgroundColor: colors.paper },
-          }}
-        >
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="grape/[id]" options={{ title: '' }} />
-          <Stack.Screen name="region/[id]" options={{ title: '' }} />
-          <Stack.Screen name="compare" options={{ title: 'Compare' }} />
-          <Stack.Screen name="topic/[id]" options={{ title: '' }} />
-          <Stack.Screen name="note/new" options={{ headerShown: false, presentation: 'fullScreenModal', gestureEnabled: false }} />
-          <Stack.Screen name="note/[id]" options={{ title: 'Note' }} />
-          <Stack.Screen name="note/reveal/[id]" options={{ title: 'What was it?' }} />
-        </Stack>
+        <SyncProvider>
+          <StatusBar style="dark" />
+          <Stack
+            screenOptions={{
+              headerTintColor: colors.wine,
+              headerStyle: { backgroundColor: colors.paper },
+              headerTitleStyle: { fontFamily: error ? undefined : fonts.semibold },
+              headerBackTitleStyle: { fontFamily: error ? undefined : fonts.medium },
+              headerShadowVisible: false,
+              // Chevron only: the tab group's route name, "(tabs)", is not a title to show.
+              headerBackButtonDisplayMode: 'minimal',
+              contentStyle: { backgroundColor: colors.paper },
+            }}
+          >
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="grape/[id]" options={{ title: '' }} />
+            <Stack.Screen name="region/[id]" options={{ title: '' }} />
+            <Stack.Screen name="compare" options={{ title: 'Compare' }} />
+            <Stack.Screen name="account" options={{ title: '' }} />
+            <Stack.Screen name="topic/[id]" options={{ title: '' }} />
+            <Stack.Screen name="note/new" options={{ headerShown: false, presentation: 'fullScreenModal', gestureEnabled: false }} />
+            <Stack.Screen name="note/[id]" options={{ title: 'Note' }} />
+            <Stack.Screen name="note/reveal/[id]" options={{ title: 'What was it?' }} />
+          </Stack>
+        </SyncProvider>
       </DataProvider>
     </SafeAreaProvider>
   );

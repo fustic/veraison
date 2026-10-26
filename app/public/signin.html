@@ -1,0 +1,112 @@
+<!doctype html>
+<!--
+  Google sign-in for the web app. The app page is cross-origin isolated for SQLite, which
+  breaks Google's popup, so sign-in happens here: same site, but served without the
+  COOP/COEP headers (see firebase.json). Firebase stores the session in this site's
+  IndexedDB, where the app page finds it when we send the person back.
+  Keep the Firebase version in step with app/package.json.
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#7A1F3D" />
+    <title>Sign in · Veraison</title>
+    <link rel="icon" href="/favicon.ico" />
+    <style>
+      :root { --paper: #f4f5f2; --surface: #fff; --ink: #18161c; --muted: #5b5862; --line: #dad9d3; --wine: #7a1f3d; }
+      * { box-sizing: border-box; }
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: var(--paper); color: var(--ink);
+        font: 15px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; padding: 24px 16px; }
+      main { width: 100%; max-width: 380px; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 24px; }
+      .kicker { font: 600 11px/1 ui-monospace, Menlo, monospace; letter-spacing: .1em; color: var(--muted); margin: 0 0 8px; }
+      h1 { font-size: 28px; line-height: 1.1; margin: 0 0 12px; }
+      p { margin: 0 0 18px; color: var(--muted); }
+      button { width: 100%; font: inherit; font-weight: 600; border-radius: 14px; padding: 14px 16px; cursor: pointer; border: 1px solid var(--wine); }
+      #google { background: var(--wine); color: #fff; }
+      #google[disabled] { opacity: .6; cursor: default; }
+      #back { margin-top: 10px; background: transparent; color: var(--ink); border-color: var(--line); }
+      #error { color: var(--wine); margin: 14px 0 0; min-height: 1em; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <p class="kicker">VERAISON · SYNC</p>
+      <h1>Sign in</h1>
+      <p>Keep your tasting notes and study progress on all your devices.</p>
+      <button id="google" type="button" disabled>Continue with Google</button>
+      <button id="back" type="button">Back to the app</button>
+      <p id="error" role="alert"></p>
+    </main>
+    <script type="module">
+      import { initializeApp } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js';
+      import {
+        initializeAuth, indexedDBLocalPersistence, browserLocalPersistence, browserPopupRedirectResolver,
+        GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, onAuthStateChanged,
+      } from 'https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js';
+
+      // On the hosted site the auth handler lives on this same domain (Firebase Hosting serves
+      // /__/auth/ on every hosting domain), which keeps Safari's storage rules happy.
+      const hosted = /\.(web\.app|firebaseapp\.com)$/.test(location.hostname);
+      const app = initializeApp({
+        apiKey: 'AIzaSyABlzywb8zOu2rEib6GwBRZL7eumOZ48f8',
+        authDomain: hosted ? location.host : 'veraison-353ad.firebaseapp.com',
+        projectId: 'veraison-353ad',
+        appId: '1:463285819168:web:cf57233735e599e3dd2945',
+      });
+      // Same persistence order as the app (app/src/sync/auth.web.ts), so it reads this session.
+      const auth = initializeAuth(app, {
+        persistence: [indexedDBLocalPersistence, browserLocalPersistence],
+        popupRedirectResolver: browserPopupRedirectResolver,
+      });
+
+      const param = new URLSearchParams(location.search).get('return') || '/account';
+      const back = param.startsWith('/') && !param.startsWith('//') ? param : '/account';
+      const goBack = () => location.replace(back);
+      const button = document.getElementById('google');
+      const error = document.getElementById('error');
+      document.getElementById('back').addEventListener('click', goBack);
+
+      const explain = (e) => {
+        const code = e && e.code;
+        if (code === 'auth/popup-closed-by-user' || code === 'auth/cancelled-popup-request') return '';
+        if (code === 'auth/unauthorized-domain') return 'This address is not allowed to sign in yet (Firebase › Authentication › Settings › Authorized domains).';
+        return (e && e.message) || String(e);
+      };
+
+      try {
+        const result = await getRedirectResult(auth);
+        if (result && result.user) goBack();
+      } catch (e) {
+        error.textContent = explain(e);
+      }
+
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          button.textContent = `Continue as ${user.displayName || user.email}`;
+          button.onclick = goBack;
+        }
+        button.disabled = false;
+      });
+
+      button.addEventListener('click', async () => {
+        if (auth.currentUser) return;
+        error.textContent = '';
+        button.disabled = true;
+        const provider = new GoogleAuthProvider();
+        provider.setCustomParameters({ prompt: 'select_account' });
+        try {
+          await signInWithPopup(auth, provider);
+          goBack();
+        } catch (e) {
+          if (e && (e.code === 'auth/popup-blocked' || e.code === 'auth/operation-not-supported-in-this-environment')) {
+            await signInWithRedirect(auth, provider);
+            return;
+          }
+          error.textContent = explain(e);
+          button.disabled = false;
+        }
+      });
+    </script>
+  </body>
+</html>

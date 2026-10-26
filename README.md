@@ -127,6 +127,22 @@ On an iPhone, open the site in Safari and use Share › Add to Home Screen. Prog
 that browser only; it does not sync with the native app. Only one tab can hold the database
 at a time.
 
+### Accounts and sync
+
+Signing in is optional; without it everything stays on the device. Signed in, notes, study
+progress and review cards sync through Firestore (`users/{uid}/items`), newer copy wins.
+The engine is `core/src/userdb/sync.ts` (tested in `core/test/sync.test.ts`); the app side is
+`app/src/sync/` (Firebase config, sign-in per platform, the Firestore store, `SyncProvider`).
+The Account screen opens from the chip at the top of Today.
+
+- Web: the app page is cross-origin isolated, which breaks Google's popup, so sign-in runs on
+  `public/signin.html`, served without COOP/COEP (the `regex` header rule in `firebase.json`
+  skips `/signin` and `/__/`). It loads the Firebase SDK from gstatic; keep its version in
+  step with `package.json`. The session is shared with the app through IndexedDB.
+- iOS/Android: `@react-native-google-signin/google-signin` gets a Google ID token, which signs
+  in to Firebase. Needs `GOOGLE_WEB_CLIENT_ID` in `app/src/sync/config.ts` and a rebuild.
+- Security rules: `app/firestore.rules`. Deploy with `npx firebase-tools deploy --only firestore:rules`.
+
 ### First-run checklist (milestone 1: the map test)
 
 1. The app opens on **Today** without the "Could not open your notes database" screen.

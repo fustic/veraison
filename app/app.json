@@ -38,7 +38,13 @@
         }
       ],
       "@maplibre/maplibre-react-native",
-      "expo-status-bar"
+      "expo-status-bar",
+      [
+        "@react-native-google-signin/google-signin",
+        {
+          "iosUrlScheme": "com.googleusercontent.apps.463285819168-qsvsuaen7b2edacpemmn8p3vmf2s4v0i"
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true

@@ -10,6 +10,8 @@ import { coverage } from '../../../../core/src/userdb/progress.ts';
 import { CompareLine, GlassLine, H1, Kicker, NotesLine, PinLine, PrimaryButton } from '../../components';
 import { useData } from '../../data/DataProvider';
 import { useNotesAndPattern } from '../../data/usePattern';
+import { syncLine } from '../../names';
+import { useSync } from '../../sync/SyncProvider';
 import { Text } from '../../Text';
 import { colors, fonts } from '../../theme';
 
@@ -22,6 +24,7 @@ export default function Today() {
   const { content, statuses } = useData();
   const insets = useSafeAreaInsets();
   const { notes, pattern } = useNotesAndPattern();
+  const { account, status, lastSyncedAt } = useSync();
 
   // The chapter to continue: the top-level region of the most recently opened region.
   const topOf = (r: Region): Region => {
@@ -53,9 +56,20 @@ export default function Today() {
 
   return (
     <ScrollView style={styles.screen} contentContainerStyle={[styles.content, { paddingTop: insets.top + 20 }]}>
-      <View style={{ gap: 4, paddingHorizontal: 4, paddingBottom: 4 }}>
-        <H1 size={32}>{greeting()}</H1>
-        <Text style={styles.sub}>WSET Level 3 · study companion</Text>
+      <View style={styles.header}>
+        <View style={{ gap: 4, flex: 1 }}>
+          <H1 size={32}>{greeting()}</H1>
+          <Text style={styles.sub}>WSET Level 3 · study companion</Text>
+        </View>
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={account ? `Account, ${syncLine(status, lastSyncedAt)}` : 'Sign in to sync'}
+          onPress={() => router.push('/account')}
+          style={({ pressed }) => [styles.accountChip, pressed && { opacity: 0.8 }]}
+        >
+          {account ? <View style={[styles.syncDot, { backgroundColor: status === 'error' ? colors.wine : status === 'synced' ? colors.good : colors.line }]} /> : null}
+          <Text style={styles.accountText}>{account ? (account.name ?? account.email ?? 'ACCOUNT').split(' ')[0]!.toUpperCase() : 'SIGN IN'}</Text>
+        </Pressable>
       </View>
 
       <View style={styles.card}>
@@ -142,6 +156,10 @@ const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: colors.paper },
   content: { paddingHorizontal: 16, paddingBottom: 32, gap: 14 },
   sub: { fontSize: 15, color: colors.muted, lineHeight: 21 },
+  header: { flexDirection: 'row', alignItems: 'flex-start', gap: 12, paddingHorizontal: 4, paddingBottom: 4 },
+  accountChip: { flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 6, paddingHorizontal: 12, paddingVertical: 8, borderRadius: 12, borderWidth: 1, borderColor: colors.line, backgroundColor: colors.surface },
+  accountText: { fontFamily: fonts.mono, fontSize: 11, letterSpacing: 0.8, color: colors.wine },
+  syncDot: { width: 7, height: 7, borderRadius: 4 },
   small: { fontSize: 13, color: colors.muted },
   card: { backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.line, borderRadius: 18, padding: 18, gap: 10 },
   big: { fontFamily: fonts.display, fontSize: 40, lineHeight: 44, color: colors.ink },

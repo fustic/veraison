@@ -33,7 +33,7 @@ const ROW_LABEL: Record<StructureField, string> = {
 
 export default function NoteScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const { db, deps, content } = useData();
+  const { db, deps, content, dataVersion } = useData();
   const [note, setNote] = useState<TastingNote | null>(null);
   const [loaded, setLoaded] = useState(false);
   const [guesses, setGuesses] = useState<{ rank: number; profileId: string; score: number }[]>([]);
@@ -47,7 +47,7 @@ export default function NoteScreen() {
     } finally {
       setLoaded(true);
     }
-  }, [db, id]);
+  }, [db, id, dataVersion]);
   useFocusEffect(
     useCallback(() => {
       void load();

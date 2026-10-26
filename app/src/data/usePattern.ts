@@ -27,7 +27,7 @@ function capital(t: string) {
 
 /** Notes list plus the strongest pattern (needs at least 3 revealed notes and 2 misses). */
 export function useNotesAndPattern(): { notes: NoteSummary[]; pattern: Pattern | null; loaded: boolean } {
-  const { db, content } = useData();
+  const { db, content, dataVersion } = useData();
   const [state, setState] = useState<{ notes: NoteSummary[]; pattern: Pattern | null; loaded: boolean }>({ notes: [], pattern: null, loaded: false });
 
   useFocusEffect(
@@ -57,7 +57,7 @@ export function useNotesAndPattern(): { notes: NoteSummary[]; pattern: Pattern |
       return () => {
         live = false;
       };
-    }, [db, content]),
+    }, [db, content, dataVersion]),
   );
   return state;
 }

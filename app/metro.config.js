@@ -14,9 +14,12 @@ config.resolver.nodeModulesPaths = [path.resolve(projectRoot, 'node_modules')];
 // Web: expo-sqlite runs SQLite as WebAssembly, which needs .wasm assets and a cross-origin
 // isolated page (SharedArrayBuffer). Production hosts send the same headers (public/_headers).
 config.resolver.assetExts.push('wasm');
+// The sign-in page (public/signin.html) is left out: Google's popup does not work there otherwise.
 config.server.enhanceMiddleware = (middleware) => (req, res, next) => {
-  res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp');
-  res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
+  if (!(req.url || '').startsWith('/signin')) {
+    res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp');
+    res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
+  }
   return middleware(req, res, next);
 };
 

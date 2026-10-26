@@ -1,0 +1,28 @@
+rules_version = '2';
+
+// Sync store (app/src/sync/firestoreRemote.ts): users/{uid}/items/{kind}~{id}.
+// Each person reads and writes only their own items, every write is stamped with the
+// server time, and an older copy can never replace a newer one.
+// Deploy: npx firebase-tools deploy --only firestore:rules (from app/).
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{uid}/items/{itemId} {
+      function owner() {
+        return request.auth != null && request.auth.uid == uid;
+      }
+      function valid() {
+        let d = request.resource.data;
+        return d.keys().hasOnly(['kind', 'id', 'updatedAt', 'schemaVersion', 'data', 'syncedAt'])
+          && d.kind in ['note', 'progress', 'card']
+          && d.id is string && d.id.size() > 0 && d.id.size() <= 200
+          && d.updatedAt is string && d.updatedAt.size() <= 40
+          && d.schemaVersion is int
+          && d.data is map
+          && d.syncedAt == request.time;
+      }
+      allow read, delete: if owner();
+      allow create: if owner() && valid();
+      allow update: if owner() && valid() && request.resource.data.updatedAt >= resource.data.updatedAt;
+    }
+  }
+}
