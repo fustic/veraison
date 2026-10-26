@@ -56,7 +56,7 @@ export function SyncProvider({ children }: { children: ReactNode }) {
       setStatus('syncing');
       try {
         await bindAccount(db, u.uid);
-        const r = await syncOnce(db, firestoreRemote(cloud, u.uid));
+        const r = await syncOnce(db, firestoreRemote(cloud, u.uid), 50);
         if (r.applied > 0) await reloadAll();
         setLastSyncedAt(new Date().toISOString());
         setError(null);

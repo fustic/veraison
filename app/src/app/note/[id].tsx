@@ -11,7 +11,8 @@ import { describeReveal } from '../../../../core/src/reveal.ts';
 import { SCALES, structureOf, STRUCTURE_FIELDS, type StructureField, type TastingNote } from '../../../../core/src/sat.ts';
 import { scoreProfile } from '../../../../core/src/scorer.ts';
 import { deleteTastingNote, getGuesses, getTastingNote } from '../../../../core/src/userdb/notes.ts';
-import { AromaTiles, Box, Callout, H1, H2, Kicker, PrimaryButton } from '../../components';
+import { getNotePhoto, type NotePhoto } from '../../../../core/src/userdb/photos.ts';
+import { AromaTiles, Box, Callout, H1, H2, Kicker, LabelPhoto, PrimaryButton } from '../../components';
 import { useData } from '../../data/DataProvider';
 import { useNotesAndPattern } from '../../data/usePattern';
 import { stepWord } from '../../names';
@@ -37,6 +38,7 @@ export default function NoteScreen() {
   const [note, setNote] = useState<TastingNote | null>(null);
   const [loaded, setLoaded] = useState(false);
   const [guesses, setGuesses] = useState<{ rank: number; profileId: string; score: number }[]>([]);
+  const [photo, setPhoto] = useState<NotePhoto | null>(null);
   const { pattern } = useNotesAndPattern();
 
   const load = useCallback(async () => {
@@ -44,6 +46,7 @@ export default function NoteScreen() {
     try {
       setNote(await getTastingNote(db, id));
       setGuesses(await getGuesses(db, id));
+      setPhoto(await getNotePhoto(db, id));
     } finally {
       setLoaded(true);
     }
@@ -96,6 +99,8 @@ export default function NoteScreen() {
         <H1>{described?.title ?? note.labelText ?? 'Blind wine'}</H1>
         {described?.subtitle ? <Text style={styles.sub}>{described.subtitle}</Text> : null}
       </View>
+
+      {photo ? <LabelPhoto photo={photo} /> : null}
 
       {!note.reveal ? (
         <View style={{ flexDirection: 'row' }}>

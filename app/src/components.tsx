@@ -1,8 +1,9 @@
 // Pieces shared by the grape, compare, region and reveal screens, following the drafts.
 import type { ReactNode } from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Image, Pressable, StyleSheet, View } from 'react-native';
 import Svg, { Circle, Path, Rect } from 'react-native-svg';
 import type { Aroma } from '../../core/src/content.ts';
+import { photoUri, type NotePhoto } from '../../core/src/userdb/photos.ts';
 import { AromaIcon } from './AromaIcon';
 import { Text } from './Text';
 import { colors, fonts } from './theme';
@@ -184,7 +185,18 @@ export function LayersLine({ color = colors.ink, size = 22 }: IconProps) {
   );
 }
 
+/** A note's label photo, whole (letterboxed when taller than maxHeight). */
+export function LabelPhoto({ photo, maxHeight = 420 }: { photo: NotePhoto; maxHeight?: number }) {
+  const ratio = photo.width > 0 && photo.height > 0 ? photo.width / photo.height : 4 / 3;
+  return (
+    <View style={[s.photoFrame, { maxHeight }]}>
+      <Image source={{ uri: photoUri(photo) }} accessibilityLabel="Photo of the label" resizeMode="contain" style={{ width: '100%', aspectRatio: ratio, maxHeight }} />
+    </View>
+  );
+}
+
 const s = StyleSheet.create({
+  photoFrame: { borderRadius: 14, overflow: 'hidden', backgroundColor: colors.track, alignItems: 'center' },
   kicker: { fontFamily: fonts.mono, fontSize: 11, letterSpacing: 0.9 },
   h1: { fontFamily: fonts.display, color: colors.ink, letterSpacing: -0.2 },
   h2: { fontSize: 17, fontWeight: '600' },

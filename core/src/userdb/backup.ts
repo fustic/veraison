@@ -4,7 +4,7 @@
 import type { Db, SqlValue } from './db.ts';
 import { MIGRATIONS } from './migrations.ts';
 
-const TABLES = ['tasting_note', 'tasting_note_aroma', 'tasting_note_guess', 'content_status', 'review_card', 'setting'] as const;
+const TABLES = ['tasting_note', 'tasting_note_aroma', 'tasting_note_guess', 'tasting_note_photo', 'content_status', 'review_card', 'setting'] as const;
 type Table = (typeof TABLES)[number];
 
 export interface UserExport {
@@ -44,6 +44,13 @@ export async function importUserData(db: Db, data: UserExport): Promise<{ notes:
       }
       for (const child of (data.tables.tasting_note_guess ?? []).filter((g) => g.note_id === row.id)) {
         await insertRow(db, 'tasting_note_guess', child);
+      }
+      // Exports from before label photos (schema 5) say nothing about them: keep ours.
+      if (data.schemaVersion >= 5) {
+        await db.run('DELETE FROM tasting_note_photo WHERE note_id = ?', [row.id ?? null]);
+        for (const child of (data.tables.tasting_note_photo ?? []).filter((p) => p.note_id === row.id)) {
+          await insertRow(db, 'tasting_note_photo', child);
+        }
       }
       notes += 1;
     }

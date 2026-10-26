@@ -1,6 +1,7 @@
 // The reveal: what the wine actually was. Grapes (in blend order), producer, vintage,
-// country, region or appellation, and price. Grapes and regions from the study content
-// are suggested as you type; anything else is kept as free text.
+// country, region or appellation, price, and a photo of the label (compressed before it is
+// saved). Grapes and regions from the study content are suggested as you type; anything
+// else is kept as free text.
 import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useMemo, useState } from 'react';
 import { Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
@@ -9,6 +10,9 @@ import { COUNTRIES, matchRevealToProfile, regionCountry } from '../../../../../c
 import { checkAlcohol } from '../../../../../core/src/explain.ts';
 import { ALCOHOL_BANDS, emptyReveal, type TastingNote, type WineReveal } from '../../../../../core/src/sat.ts';
 import { getTastingNote, saveReveal } from '../../../../../core/src/userdb/notes.ts';
+import { getNotePhoto, setNotePhoto, type NotePhoto } from '../../../../../core/src/userdb/photos.ts';
+import { LabelPhoto } from '../../../components';
+import { pickLabelPhoto, type PhotoSource } from '../../../photo';
 import { getSetting, setSetting } from '../../../../../core/src/userdb/settings.ts';
 import { useData } from '../../../data/DataProvider';
 import { mono, Panel, Pill } from '../../../tasting/parts';
@@ -36,12 +40,17 @@ export default function RevealScreen() {
   const [abvText, setAbvText] = useState('');
   /** undefined = pick automatically from the reveal; null = compare with nothing. */
   const [profileChoice, setProfileChoice] = useState<string | null | undefined>(undefined);
+  const [photo, setPhoto] = useState<NotePhoto | null>(null);
+  const [photoChanged, setPhotoChanged] = useState(false);
+  const [photoBusy, setPhotoBusy] = useState(false);
+  const [photoError, setPhotoError] = useState<string | null>(null);
 
   useEffect(() => {
     void (async () => {
       if (!id) return;
       const n = await getTastingNote(db, id);
       setNote(n);
+      setPhoto(await getNotePhoto(db, id));
       const currency = (await getSetting(db, 'currency')) ?? 'CHF';
       const start = n?.reveal ?? { ...emptyReveal(), currency };
       setR({ ...start, currency: start.currency ?? currency });
@@ -58,6 +67,23 @@ export default function RevealScreen() {
   }, [db, id, content.regionById, content.profiles]);
 
   const update = (patch: Partial<WineReveal>) => setR((prev) => ({ ...prev, ...patch }));
+
+  // Opens the camera or library straight from the tap (browsers require that), then compresses.
+  const takePhoto = async (source: PhotoSource) => {
+    setPhotoError(null);
+    setPhotoBusy(true);
+    try {
+      const picked = await pickLabelPhoto(source);
+      if (picked) {
+        setPhoto(picked);
+        setPhotoChanged(true);
+      }
+    } catch (e) {
+      setPhotoError(e instanceof Error ? e.message : String(e));
+    } finally {
+      setPhotoBusy(false);
+    }
+  };
 
   // Grape suggestions: study grapes matching the query (name or synonym), colour first.
   const grapeSuggestions = useMemo(() => {
@@ -126,6 +152,7 @@ export default function RevealScreen() {
       profileId,
       deps,
     );
+    if (photoChanged) await setNotePhoto(db, note.id, photo, deps);
     if (r.currency) await setSetting(db, 'currency', r.currency);
     router.back();
   };
@@ -148,6 +175,39 @@ export default function RevealScreen() {
   return (
     <ScrollView style={styles.screen} contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
       <Text style={styles.kicker}>{note.labelText ? `${note.labelText.toUpperCase()} · ` : ''}REVEAL</Text>
+
+      {/* Label photo */}
+      <Panel gap={10}>
+        <Text style={styles.label}>Label photo</Text>
+        {photo ? (
+          <>
+            <LabelPhoto photo={photo} maxHeight={280} />
+            <Text style={styles.hint}>
+              {photo.width} × {photo.height} · {Math.max(1, Math.round((photo.data.length * 3) / 4 / 1024))} kB
+            </Text>
+          </>
+        ) : (
+          <Text style={styles.hint}>Snap the front label to remember the bottle. The photo is shrunk and compressed on this device before it is saved.</Text>
+        )}
+        <View style={styles.wrap}>
+          <Pill small label={photo ? 'Retake' : 'Take photo'} on={false} onPress={() => void takePhoto('camera')} />
+          <Pill small label={photo ? 'Choose another' : 'Choose from photos'} on={false} onPress={() => void takePhoto('library')} />
+          {photo ? (
+            <Pill
+              small
+              label="Remove photo"
+              on={false}
+              onPress={() => {
+                setPhoto(null);
+                setPhotoChanged(true);
+              }}
+            />
+          ) : null}
+        </View>
+        {photoBusy ? <Text style={styles.hint}>Compressing…</Text> : null}
+        {photoError ? <Text style={[styles.hint, { color: colors.wine }]}>{photoError}</Text> : null}
+        {photoChanged ? <Text style={styles.hint}>Saved with the reveal.</Text> : null}
+      </Panel>
 
       {/* Grapes */}
       <Panel gap={10}>

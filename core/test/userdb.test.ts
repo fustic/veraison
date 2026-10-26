@@ -114,6 +114,18 @@ test('export and import round-trip, newest row wins', async () => {
   assert.deepEqual(await importUserData(target, dump), { notes: 0, statuses: 0 });
 });
 
+test('backups carry label photos', async () => {
+  const { getNotePhoto, setNotePhoto } = await import('../src/userdb/photos.ts');
+  const source = await freshDb();
+  const deps = testDeps();
+  const id = await saveTastingNote(source, emptyNote('red'), deps);
+  deps.tick();
+  await setNotePhoto(source, id, { mime: 'image/jpeg', width: 800, height: 600, data: 'QkFTRTY0' }, deps);
+  const target = await freshDb();
+  await importUserData(target, await exportUserData(source, deps.clock.now()));
+  assert.equal((await getNotePhoto(target, id))?.data, 'QkFTRTY0');
+});
+
 test('settings round-trip and overwrite', async () => {
   const { getSetting, setSetting } = await import('../src/userdb/settings.ts');
   const db = await freshDb();
