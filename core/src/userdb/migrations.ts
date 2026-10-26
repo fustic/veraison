@@ -94,6 +94,50 @@ export const MIGRATIONS: readonly string[] = [
   /* 3: alcohol from the label */ `
   ALTER TABLE tasting_note ADD COLUMN reveal_abv REAL;
   `,
+  /* 4: sync outbox. Triggers list every changed note, status and review card so a
+     sync can upload just those; a change replaces its row with a higher seq, so a
+     change made while an upload is in flight is not lost when the upload clears its
+     entries. Settings stay on the device. Existing rows start out unsynced. */ `
+  CREATE TABLE sync_outbox (
+    seq INTEGER PRIMARY KEY AUTOINCREMENT,
+    kind TEXT NOT NULL CHECK (kind IN ('note', 'progress', 'card')),
+    id TEXT NOT NULL,
+    UNIQUE (kind, id)
+  );
+  CREATE TRIGGER sync_note_insert AFTER INSERT ON tasting_note BEGIN
+    DELETE FROM sync_outbox WHERE kind = 'note' AND id = NEW.id;
+    INSERT INTO sync_outbox (kind, id) VALUES ('note', NEW.id); END;
+  CREATE TRIGGER sync_note_update AFTER UPDATE ON tasting_note BEGIN
+    DELETE FROM sync_outbox WHERE kind = 'note' AND id = NEW.id;
+    INSERT INTO sync_outbox (kind, id) VALUES ('note', NEW.id); END;
+  CREATE TRIGGER sync_aroma_insert AFTER INSERT ON tasting_note_aroma BEGIN
+    DELETE FROM sync_outbox WHERE kind = 'note' AND id = NEW.note_id;
+    INSERT INTO sync_outbox (kind, id) VALUES ('note', NEW.note_id); END;
+  CREATE TRIGGER sync_aroma_delete AFTER DELETE ON tasting_note_aroma BEGIN
+    DELETE FROM sync_outbox WHERE kind = 'note' AND id = OLD.note_id;
+    INSERT INTO sync_outbox (kind, id) VALUES ('note', OLD.note_id); END;
+  CREATE TRIGGER sync_guess_insert AFTER INSERT ON tasting_note_guess BEGIN
+    DELETE FROM sync_outbox WHERE kind = 'note' AND id = NEW.note_id;
+    INSERT INTO sync_outbox (kind, id) VALUES ('note', NEW.note_id); END;
+  CREATE TRIGGER sync_guess_delete AFTER DELETE ON tasting_note_guess BEGIN
+    DELETE FROM sync_outbox WHERE kind = 'note' AND id = OLD.note_id;
+    INSERT INTO sync_outbox (kind, id) VALUES ('note', OLD.note_id); END;
+  CREATE TRIGGER sync_status_insert AFTER INSERT ON content_status BEGIN
+    DELETE FROM sync_outbox WHERE kind = 'progress' AND id = NEW.content_id;
+    INSERT INTO sync_outbox (kind, id) VALUES ('progress', NEW.content_id); END;
+  CREATE TRIGGER sync_status_update AFTER UPDATE ON content_status BEGIN
+    DELETE FROM sync_outbox WHERE kind = 'progress' AND id = NEW.content_id;
+    INSERT INTO sync_outbox (kind, id) VALUES ('progress', NEW.content_id); END;
+  CREATE TRIGGER sync_card_insert AFTER INSERT ON review_card BEGIN
+    DELETE FROM sync_outbox WHERE kind = 'card' AND id = NEW.card_id;
+    INSERT INTO sync_outbox (kind, id) VALUES ('card', NEW.card_id); END;
+  CREATE TRIGGER sync_card_update AFTER UPDATE ON review_card BEGIN
+    DELETE FROM sync_outbox WHERE kind = 'card' AND id = NEW.card_id;
+    INSERT INTO sync_outbox (kind, id) VALUES ('card', NEW.card_id); END;
+  INSERT OR IGNORE INTO sync_outbox (kind, id) SELECT 'note', id FROM tasting_note;
+  INSERT OR IGNORE INTO sync_outbox (kind, id) SELECT 'progress', content_id FROM content_status;
+  INSERT OR IGNORE INTO sync_outbox (kind, id) SELECT 'card', card_id FROM review_card;
+  `,
 ];
 
 export async function migrate(db: Db): Promise<{ from: number; to: number }> {

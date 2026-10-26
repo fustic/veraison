@@ -135,9 +135,13 @@ export async function saveTastingNote(db: Db, input: TastingNoteInput, deps: Dep
   return id;
 }
 
-/** Stores the "what is this?" suggestions shown when the note was finished. */
-export async function saveGuesses(db: Db, noteId: string, matches: readonly ProfileMatch[]): Promise<void> {
+/**
+ * Stores the "what is this?" suggestions shown when the note was finished. With `deps`,
+ * the note counts as changed, so sync carries the guesses to other devices.
+ */
+export async function saveGuesses(db: Db, noteId: string, matches: readonly ProfileMatch[], deps?: Deps): Promise<void> {
   await db.transaction(async () => {
+    if (deps) await db.run('UPDATE tasting_note SET updated_at = ? WHERE id = ?', [deps.clock.now(), noteId]);
     await db.run('DELETE FROM tasting_note_guess WHERE note_id = ?', [noteId]);
     let rank = 1;
     for (const m of matches) {

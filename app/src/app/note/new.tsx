@@ -91,7 +91,7 @@ export default function NewNote() {
 
   const save = async () => {
     const id = await saveTastingNote(db, note, deps);
-    await saveGuesses(db, id, rankProfiles(note, content.profiles));
+    await saveGuesses(db, id, rankProfiles(note, content.profiles), deps);
     router.replace({ pathname: '/note/[id]', params: { id } });
   };
 
