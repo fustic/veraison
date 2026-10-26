@@ -138,6 +138,26 @@ export const MIGRATIONS: readonly string[] = [
   INSERT OR IGNORE INTO sync_outbox (kind, id) SELECT 'progress', content_id FROM content_status;
   INSERT OR IGNORE INTO sync_outbox (kind, id) SELECT 'card', card_id FROM review_card;
   `,
+  /* 5: a photo of the label, compressed on the device (JPEG as base64). It syncs inside
+     its note's document, so a change queues the note. */ `
+  CREATE TABLE tasting_note_photo (
+    note_id TEXT PRIMARY KEY REFERENCES tasting_note (id) ON DELETE CASCADE,
+    mime TEXT NOT NULL,
+    width INTEGER NOT NULL,
+    height INTEGER NOT NULL,
+    data TEXT NOT NULL,
+    updated_at TEXT NOT NULL
+  );
+  CREATE TRIGGER sync_photo_insert AFTER INSERT ON tasting_note_photo BEGIN
+    DELETE FROM sync_outbox WHERE kind = 'note' AND id = NEW.note_id;
+    INSERT INTO sync_outbox (kind, id) VALUES ('note', NEW.note_id); END;
+  CREATE TRIGGER sync_photo_update AFTER UPDATE ON tasting_note_photo BEGIN
+    DELETE FROM sync_outbox WHERE kind = 'note' AND id = NEW.note_id;
+    INSERT INTO sync_outbox (kind, id) VALUES ('note', NEW.note_id); END;
+  CREATE TRIGGER sync_photo_delete AFTER DELETE ON tasting_note_photo BEGIN
+    DELETE FROM sync_outbox WHERE kind = 'note' AND id = OLD.note_id;
+    INSERT INTO sync_outbox (kind, id) VALUES ('note', OLD.note_id); END;
+  `,
 ];
 
 export async function migrate(db: Db): Promise<{ from: number; to: number }> {

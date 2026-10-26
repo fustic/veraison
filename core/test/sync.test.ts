@@ -165,3 +165,42 @@ test('syncing needs an account', async () => {
   await migrate(db);
   await assert.rejects(syncOnce(db, fakeServer().remote()), /Sign in/);
 });
+
+test('label photos travel with their note, and older app versions cannot erase them', async () => {
+  const { getNotePhoto, setNotePhoto } = await import('../src/userdb/photos.ts');
+  const server = fakeServer();
+  const deps = testDeps();
+  const a = await device();
+  const b = await device();
+  const id = await saveTastingNote(a, note('Barolo'), deps);
+  deps.tick();
+  await setNotePhoto(a, id, { mime: 'image/jpeg', width: 1280, height: 960, data: 'AAAA' }, deps);
+  await syncOnce(a, server.remote());
+  await syncOnce(b, server.remote());
+  assert.deepEqual(await getNotePhoto(b, id), { mime: 'image/jpeg', width: 1280, height: 960, data: 'AAAA' });
+
+  // An app from before photos edits the note: its document has no photo, and the photo stays.
+  deps.tick();
+  const old = structuredClone(server.get('note', id)!);
+  delete old.data.photo;
+  await server.remote().push([{ ...old, schemaVersion: 4, updatedAt: deps.clock.now(), data: { ...old.data, row: { ...old.data.row, label_text: 'Barolo 2016', updated_at: deps.clock.now() } } }]);
+  await syncOnce(b, server.remote());
+  assert.equal((await getTastingNote(b, id))?.labelText, 'Barolo 2016');
+  assert.ok(await getNotePhoto(b, id), 'photo kept');
+
+  // Removing it on one device removes it everywhere.
+  deps.tick();
+  await setNotePhoto(b, id, null, deps);
+  await syncOnce(b, server.remote());
+  await syncOnce(a, server.remote());
+  assert.equal(await getNotePhoto(a, id), null);
+});
+
+test('photos must be compressed before they are stored', async () => {
+  const { setNotePhoto, MAX_PHOTO_BASE64 } = await import('../src/userdb/photos.ts');
+  const deps = testDeps();
+  const a = await device();
+  const id = await saveTastingNote(a, note('Big'), deps);
+  await assert.rejects(setNotePhoto(a, id, { mime: 'image/jpeg', width: 4000, height: 3000, data: 'A'.repeat(MAX_PHOTO_BASE64 + 1) }, deps), /too large/);
+  await assert.rejects(setNotePhoto(a, id, { mime: 'image/heic', width: 1, height: 1, data: 'A' }, deps), /Unsupported/);
+});

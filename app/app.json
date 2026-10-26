@@ -44,6 +44,14 @@
         {
           "iosUrlScheme": "com.googleusercontent.apps.463285819168-qsvsuaen7b2edacpemmn8p3vmf2s4v0i"
         }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "cameraPermission": "Veraison uses the camera to photograph wine labels for your tasting notes.",
+          "photosPermission": "Veraison lets you pick a photo of a wine label for your tasting notes.",
+          "microphonePermission": false
+        }
       ]
     ],
     "experiments": {

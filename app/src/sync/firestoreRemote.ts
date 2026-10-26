@@ -20,7 +20,8 @@ import {
 } from 'firebase/firestore/lite';
 import type { Remote, SyncDoc } from '../../../core/src/userdb/sync.ts';
 
-const PAGE = 300;
+// Small pages: a note with its label photo can be a few hundred kB.
+const PAGE = 50;
 
 const keyOf = (d: Pick<SyncDoc, 'kind' | 'id'>) => `${d.kind}~${encodeURIComponent(d.id)}`;
 

@@ -14,6 +14,7 @@
 
 import type { Db, SqlValue } from './db.ts';
 import { MIGRATIONS } from './migrations.ts';
+import { MAX_PHOTO_BASE64 } from './photos.ts';
 import { getSetting, setSetting } from './settings.ts';
 
 export type SyncKind = 'note' | 'progress' | 'card';
@@ -26,8 +27,8 @@ export interface SyncDoc {
   updatedAt: string;
   /** MIGRATIONS.length of the app that wrote it. */
   schemaVersion: number;
-  /** The row itself; a note also carries its aromas and guesses (without note_id). */
-  data: { row: SyncRow; aromas?: SyncRow[]; guesses?: SyncRow[] };
+  /** The row itself; a note also carries its aromas, guesses and label photo (without note_id). */
+  data: { row: SyncRow; aromas?: SyncRow[]; guesses?: SyncRow[]; photo?: SyncRow | null };
 }
 
 export interface Remote {
@@ -53,6 +54,8 @@ const TABLES: Record<SyncKind, { table: string; key: string }> = {
 };
 
 const UID = 'sync.uid';
+/** The schema version that added label photos (migration 5). */
+const PHOTO_SCHEMA = 5;
 const CURSOR = 'sync.cursor';
 
 /**
@@ -130,6 +133,7 @@ async function buildDoc(db: Db, kind: SyncKind, id: string): Promise<SyncDoc | n
   if (kind === 'note') {
     data.aromas = await db.all<SyncRow>('SELECT aroma_id, stage FROM tasting_note_aroma WHERE note_id = ? ORDER BY stage, aroma_id', [id]);
     data.guesses = await db.all<SyncRow>('SELECT rank, profile_id, score FROM tasting_note_guess WHERE note_id = ? ORDER BY rank', [id]);
+    data.photo = await db.get<SyncRow>('SELECT mime, width, height, data, updated_at FROM tasting_note_photo WHERE note_id = ?', [id]);
   }
   return { kind, id, updatedAt: String(row.updated_at), schemaVersion: MIGRATIONS.length, data };
 }
@@ -189,6 +193,22 @@ async function applyDoc(db: Db, doc: SyncDoc): Promise<boolean> {
           g.profile_id ?? null,
           g.score ?? null,
         ]);
+      }
+      // Written by an app from before label photos (schema 5): it knows nothing about the
+      // photo, so keep ours rather than read its silence as a removal.
+      if (doc.schemaVersion >= PHOTO_SCHEMA) {
+        await db.run('DELETE FROM tasting_note_photo WHERE note_id = ?', [doc.id]);
+        const p = doc.data.photo;
+        if (p && typeof p.data === 'string' && p.data.length <= MAX_PHOTO_BASE64) {
+          await db.run('INSERT INTO tasting_note_photo (note_id, mime, width, height, data, updated_at) VALUES (?, ?, ?, ?, ?, ?)', [
+            doc.id,
+            p.mime ?? 'image/jpeg',
+            p.width ?? 0,
+            p.height ?? 0,
+            p.data,
+            p.updated_at ?? doc.updatedAt,
+          ]);
+        }
       }
     }
     // The writes above queued this row for upload; it came from the server, so drop it.
