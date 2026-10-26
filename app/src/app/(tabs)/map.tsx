@@ -4,10 +4,10 @@
 // basemap from OpenFreeMap can be switched on when online.
 import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
-import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import type { Region } from '../../../../core/src/content.ts';
-import { ancestry, grapesInRegion, mainlandBounds, regionBounds, type Bounds } from '../../../../core/src/mapnav.ts';
+import { ancestry, boundsOverlap, circleBounds, grapesInRegion, grapesInView, mainlandBounds, regionBounds, uncoveredBounds, type Bounds } from '../../../../core/src/mapnav.ts';
 import { COUNTRIES, countryName, regionCountry } from '../../../../core/src/reveal.ts';
 import { setStudyStatus } from '../../../../core/src/userdb/progress.ts';
 import { getSetting, setSetting } from '../../../../core/src/userdb/settings.ts';
@@ -96,8 +96,10 @@ export default function MapScreen() {
   };
   const [colouring, setColouring] = useState<Colouring>('status');
   const [grapeId, setGrapeId] = useState<string | null>(null);
-  // Grape chips list the focused region's grapes unless the user asks for all of them.
+  // Grape chips list the grapes of the regions in view unless the user asks for all of them.
   const [allGrapes, setAllGrapes] = useState(false);
+  const [view, setView] = useState<Bounds | null>(null);
+  const { height: screenH } = useWindowDimensions();
   // Sheet height lives in a ref: changing it must not re-render the map.
   const sheetH = useRef(320);
   const fitPending = useRef(false);
@@ -162,12 +164,22 @@ export default function MapScreen() {
   const iso = focus.kind === 'country' ? focus.iso : region ? regionCountry(region.id) : null;
   live.current = { openRegion, openCountry, focus, regionLevel: region?.level };
 
-  const localGrapes = useMemo(
-    () => (region ? grapesInRegion(region, content.childrenOf, content.grapes) : []),
-    [region, content],
-  );
+  // Each region's outline box (its circle's box when it has no outline), for the view test.
+  const regionBoxes = useMemo(() => {
+    const fc = regionsGeoJson as unknown as { features: { properties: { id: string; bbox: Bounds | null } }[] };
+    const box = new globalThis.Map(fc.features.map((f) => [f.properties.id, f.properties.bbox]));
+    return [...content.regionById.values()].filter((r) => r.level !== 'country').map((r) => ({ region: r, box: box.get(r.id) ?? circleBounds(r) }));
+  }, [content]);
+  // Grapes of what is on screen: regions overlapping the part of the map not hidden by the sheet.
+  // Before the map has reported its view, fall back to the focused region.
+  const localGrapes = useMemo(() => {
+    if (!view) return region ? grapesInRegion(region, content.childrenOf, content.grapes) : [];
+    const seen = uncoveredBounds(view, (collapsed ? 64 : sheetH.current) / screenH);
+    return grapesInView(regionBoxes.filter((x) => boundsOverlap(x.box, seen)).map((x) => x.region), content.grapes, region);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [view, region, regionBoxes, collapsed, screenH, content]);
   useEffect(() => setAllGrapes(false), [focus]);
-  const filtered = localGrapes.length > 0 && !allGrapes;
+  const filtered = localGrapes.length > 0 && localGrapes.length < content.grapes.length && !allGrapes;
   // The selected grape stays visible even when it does not grow in the focused region.
   const chipIds = filtered
     ? grapeId && !localGrapes.includes(grapeId) ? [grapeId, ...localGrapes] : localGrapes
@@ -300,6 +312,7 @@ export default function MapScreen() {
           lastMarkerTap.current = Date.now();
           openRegion(id);
         }}
+        onViewChange={(b) => setView(b)}
         onLoadError={() => {
           if (!online) return;
           setOnlineState(false);
@@ -335,8 +348,8 @@ export default function MapScreen() {
       {colouring === 'grape' ? (
         <View style={[styles.grapeBar, { top: insets.top + 68 }]}>
           <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 6, alignItems: 'center' }}>
-            {region && allGrapes && localGrapes.length > 0 ? (
-              <Pill small label={`Only ${region.name}`} on={false} onPress={() => setAllGrapes(false)} />
+            {allGrapes && localGrapes.length > 0 && localGrapes.length < content.grapes.length ? (
+              <Pill small label="Only in view" on={false} onPress={() => setAllGrapes(false)} />
             ) : null}
             {chipIds.map((id) => (
               <Pill key={id} small label={content.grapeById.get(id)?.name ?? prettyId(id)} on={grapeId === id} onPress={() => setGrapeId(grapeId === id ? null : id)} />
@@ -368,7 +381,7 @@ export default function MapScreen() {
           {colouring === 'climate' ? <ClimateLegend /> : null}
           {colouring === 'grape' && !grapeId ? (
             <Text style={styles.muted}>
-              {filtered && region ? `Grapes of ${region.name} above. Pick one to see where else it grows.` : 'Pick a grape above to see where it grows.'}
+              {filtered ? 'Grapes of the regions in view above; they follow the map as you move. Pick one to see where it grows.' : 'Pick a grape above to see where it grows.'}
             </Text>
           ) : null}
           {focus.kind === 'world' ? (

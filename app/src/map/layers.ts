@@ -64,4 +64,6 @@ export type WineMapProps = {
   onLabelPress: (id: string) => void;
   /** The style (street map) failed to load; the screen falls back to offline. */
   onLoadError: () => void;
+  /** After every pan or zoom settles: the map's visible bounds and zoom. */
+  onViewChange?: (bounds: Bounds, zoom: number) => void;
 };

@@ -89,6 +89,12 @@ export function WineMap(props: WineMapProps) {
       const countries = hits.filter((f) => f.layer.id === 'country-fill').map((f) => f.properties as CountryProps);
       if (countries.length) latest.current.onCountryPress(countries);
     });
+    const reportView = () => {
+      const b = m.getBounds();
+      latest.current.onViewChange?.([b.getWest(), b.getSouth(), b.getEast(), b.getNorth()], m.getZoom());
+    };
+    m.on('moveend', reportView);
+    m.once('load', reportView);
     m.on('mousemove', (e) => {
       const n = m.queryRenderedFeatures(e.point, { layers: LAYERS.filter((l) => m.getLayer(l)) }).length;
       m.getCanvas().style.cursor = n ? 'pointer' : '';

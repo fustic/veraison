@@ -3,6 +3,7 @@
 import { Camera, GeoJSONSource, Layer, Map, Marker, type CameraRef, type StyleSpecification } from '@maplibre/maplibre-react-native';
 import { useImperativeHandle, useMemo, useRef } from 'react';
 import { Pressable, StyleSheet } from 'react-native';
+import type { Bounds } from '../../../core/src/mapnav.ts';
 import { Text } from '../Text';
 import { colors } from '../theme';
 import {
@@ -80,6 +81,7 @@ export function WineMap(props: WineMapProps) {
       compass={false}
       onDidFailLoadingMap={() => latest.current.onLoadError()}
       onDidFinishLoadingMap={onReady}
+      onRegionDidChange={(e) => latest.current.onViewChange?.(e.nativeEvent.bounds as Bounds, e.nativeEvent.zoom)}
       onDidFinishLoadingStyle={onReady}
     >
       <Camera ref={camera} initialViewState={props.initialCamera} />

@@ -16,7 +16,8 @@ export function ancestry(regionId: string, regionById: ReadonlyMap<string, Regio
   return chain;
 }
 
-function circleBounds(r: Region): Bounds {
+/** Bounding box of a region's placeholder circle. */
+export function circleBounds(r: Region): Bounds {
   const [lon, lat] = r.centroid;
   const dLat = r.radiusKm / 110.574;
   const dLon = r.radiusKm / (111.32 * Math.cos((lat * Math.PI) / 180));
@@ -99,4 +100,54 @@ export function grapesInRegion(
     .filter(([id]) => known.has(id))
     .sort(([a, x], [b, y]) => y.weight - x.weight || y.places - x.places || known.get(a)!.localeCompare(known.get(b)!))
     .map(([id]) => id);
+}
+
+const mercY = (lat: number) => Math.log(Math.tan(Math.PI / 4 + (Math.max(-85, Math.min(85, lat)) * Math.PI) / 360));
+const latOf = (y: number) => (360 / Math.PI) * Math.atan(Math.exp(y)) - 90;
+
+/**
+ * The part of the map the user can actually see when the bottom `covered` fraction of the
+ * map view (0–1) is hidden behind a sheet. Works in Web Mercator, as the map is drawn.
+ */
+export function uncoveredBounds([w, s, e, n]: Bounds, covered: number): Bounds {
+  const f = Math.max(0, Math.min(0.95, covered));
+  const yn = mercY(n);
+  const ys = mercY(s);
+  return [w, latOf(yn - (yn - ys) * (1 - f)), e, n];
+}
+
+/** Whether two boxes overlap; the view may run past ±180° longitude. */
+export function boundsOverlap(box: Bounds, view: Bounds): boolean {
+  if (box[1] > view[3] || box[3] < view[1]) return false;
+  if (view[2] - view[0] >= 360) return true;
+  return [-360, 0, 360].some((d) => box[0] + d <= view[2] && box[2] + d >= view[0]);
+}
+
+/**
+ * Grapes of the regions inside the visible part of the map, most relevant first: the
+ * focused region's own principal grapes, then by how many visible regions grow them
+ * (principal counts double), then by name.
+ */
+export function grapesInView(
+  visible: readonly Region[],
+  grapes: readonly Grape[],
+  focus?: Region,
+): string[] {
+  const score = new globalThis.Map<string, number>();
+  const add = (id: string, w: number) => score.set(id, (score.get(id) ?? 0) + w);
+  const ids = new Set(visible.map((r) => r.id));
+  for (const r of visible) {
+    for (const g of r.principalGrapes) add(g, 2);
+    for (const g of r.otherGrapes) add(g, 1);
+  }
+  // Grape pages can name a region the region page does not list.
+  for (const g of grapes) for (const gr of g.regions) {
+    const r = ids.has(gr.regionId) ? visible.find((x) => x.id === gr.regionId) : undefined;
+    if (r && !r.principalGrapes.includes(g.id) && !r.otherGrapes.includes(g.id)) add(g.id, 1);
+  }
+  const first = new Set(focus?.principalGrapes ?? []);
+  const name = new globalThis.Map(grapes.map((g) => [g.id, g.name]));
+  return [...score.keys()]
+    .filter((id) => name.has(id))
+    .sort((a, b) => Number(first.has(b)) - Number(first.has(a)) || score.get(b)! - score.get(a)! || name.get(a)!.localeCompare(name.get(b)!));
 }
