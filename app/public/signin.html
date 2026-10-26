@@ -2,8 +2,9 @@
 <!--
   Google sign-in for the web app. The app page is cross-origin isolated for SQLite, which
   breaks Google's popup, so sign-in happens here: same site, but served without the
-  COOP/COEP headers (see firebase.json). Firebase stores the session in this site's
-  IndexedDB, where the app page finds it when we send the person back.
+  COOP/COEP headers (see firebase.json). The app opens it in its own tab (?tab=1) so the app
+  page keeps its database open; Firebase stores the session in this site's IndexedDB, where
+  the app tab notices it. Without ?tab=1 (popup blocked) we send the person back instead.
   Keep the Firebase version in step with app/package.json.
 -->
 <html lang="en">
@@ -60,12 +61,29 @@
         popupRedirectResolver: browserPopupRedirectResolver,
       });
 
-      const param = new URLSearchParams(location.search).get('return') || '/account';
-      const back = param.startsWith('/') && !param.startsWith('//') ? param : '/account';
-      const goBack = () => location.replace(back);
       const button = document.getElementById('google');
+      const search = new URLSearchParams(location.search);
+      const inTab = search.get('tab') === '1';
+      const param = search.get('return') || '/account';
+      const back = param.startsWith('/') && !param.startsWith('//') ? param : '/account';
+      const done = document.createElement('p');
+      // In its own tab: close it, the app tab is still open behind it. Browsers may refuse
+      // to close a tab, so say what to do as well.
+      const goBack = () => {
+        if (!inTab) return location.replace(back);
+        window.close();
+        done.textContent = 'You are signed in. Close this tab and go back to the Veraison tab.';
+        button.replaceWith(done);
+      };
       const error = document.getElementById('error');
-      document.getElementById('back').addEventListener('click', goBack);
+      // In a tab, never load the app here as well: two app pages cannot share the database.
+      const backButton = document.getElementById('back');
+      if (inTab) backButton.textContent = 'Close this tab';
+      backButton.addEventListener('click', () => {
+        if (!inTab) return location.replace(back);
+        window.close();
+        error.textContent = 'Close this tab to go back to Veraison.';
+      });
 
       const explain = (e) => {
         const code = e && e.code;
