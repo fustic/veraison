@@ -28,6 +28,8 @@ export default function RootLayout() {
             headerTitleStyle: { fontFamily: error ? undefined : fonts.semibold },
             headerBackTitleStyle: { fontFamily: error ? undefined : fonts.medium },
             headerShadowVisible: false,
+            // Chevron only: the tab group's route name, "(tabs)", is not a title to show.
+            headerBackButtonDisplayMode: 'minimal',
             contentStyle: { backgroundColor: colors.paper },
           }}
         >

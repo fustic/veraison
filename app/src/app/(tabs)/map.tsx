@@ -7,7 +7,7 @@ import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { Pressable, ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import type { Region } from '../../../../core/src/content.ts';
-import { ancestry, boundsOverlap, circleBounds, grapesInRegion, grapesInView, mainlandBounds, regionBounds, uncoveredBounds, type Bounds } from '../../../../core/src/mapnav.ts';
+import { ancestry, boundsOverlap, COUNTRY_VIEW, circleBounds, grapesInRegion, grapesInView, mainlandBounds, regionBounds, uncoveredBounds, type Bounds } from '../../../../core/src/mapnav.ts';
 import { COUNTRIES, countryName, regionCountry } from '../../../../core/src/reveal.ts';
 import { setStudyStatus } from '../../../../core/src/userdb/progress.ts';
 import { getSetting, setSetting } from '../../../../core/src/userdb/settings.ts';
@@ -59,14 +59,6 @@ const COUNTRY_AREAS: Record<string, string> = {
   za: 'Stellenbosch, Swartland, Walker Bay…',
   au: 'Barossa, Hunter, Yarra, Coonawarra, Margaret River…',
   nz: 'Marlborough, Central Otago, Hawke’s Bay…',
-};
-
-/** Frames for countries whose wine regions are not all on the largest landmass. */
-const COUNTRY_BOUNDS: Record<string, Bounds> = {
-  nz: [166, -47.5, 179, -34],
-  it: [6.5, 36.5, 18.6, 47.1],
-  gr: [19.5, 34.8, 28.3, 41.8],
-  au: [112, -44, 154, -10],
 };
 
 /** Regions whose outline only approximates the official boundary (see tools/boundaries/world-regions.ts). */
@@ -193,7 +185,7 @@ export default function MapScreen() {
     let bounds: Bounds | null = null;
     if (focus.kind === 'zone') bounds = ZONES.find((z) => z.id === focus.id)!.bounds;
     const country = iso ? countryByIso.get(iso) : undefined;
-    const countryBounds = iso ? (COUNTRY_BOUNDS[iso] ?? (country ? mainlandBounds(country.geometry) : null)) : null;
+    const countryBounds = iso ? (COUNTRY_VIEW[iso] ?? (country ? mainlandBounds(country.geometry) : null)) : null;
     if (focus.kind === 'country') bounds = countryBounds;
     if (focus.kind === 'region' && region) {
       const outline = outlineBounds.get(region.id);

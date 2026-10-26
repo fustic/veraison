@@ -6,6 +6,7 @@ import { ancestry } from '../../../../core/src/mapnav.ts';
 import { countryName, regionCountry } from '../../../../core/src/reveal.ts';
 import { setBeenThere, setCheckedAgainstBook, setStudyStatus, type StudyStatus } from '../../../../core/src/userdb/progress.ts';
 import { AromaIcon } from '../../AromaIcon';
+import { RegionMap } from '../../map/RegionMap';
 import { Box, CauseCard, H1, H2, Kicker, PrimaryButton, Tag } from '../../components';
 import { useData, useMarkSeen } from '../../data/DataProvider';
 import { prettyId } from '../../names';
@@ -35,6 +36,8 @@ export default function RegionScreen() {
   const status = statuses.get(region.id);
   // Grapes that list this region among their main regions, with that grape's style note.
   const grapeNotes = content.grapes.flatMap((g) => g.regions.filter((r) => r.regionId === region.id).map((r) => ({ grape: g, note: r })));
+
+  const showOnMap = () => router.navigate({ pathname: '/map', params: { focus: region.id } });
 
   const update = async (fn: () => Promise<void>) => {
     await fn();
@@ -69,6 +72,7 @@ export default function RegionScreen() {
   return (
     <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
       <Stack.Screen options={{ title: '' }} />
+      <RegionMap region={region} onPress={showOnMap} />
       <View style={{ gap: 6, paddingHorizontal: 4 }}>
         {where ? <Kicker>{where.toUpperCase()}</Kicker> : null}
         <H1 size={34}>{region.name}</H1>
@@ -156,7 +160,7 @@ export default function RegionScreen() {
       ) : null}
 
       <View style={{ flexDirection: 'row' }}>
-        <PrimaryButton secondary title="Show on map" onPress={() => router.navigate({ pathname: '/map', params: { focus: region.id } })} />
+        <PrimaryButton secondary title="Show on map" onPress={showOnMap} />
       </View>
 
       <View style={styles.progress}>

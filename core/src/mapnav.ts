@@ -16,6 +16,14 @@ export function ancestry(regionId: string, regionById: ReadonlyMap<string, Regio
   return chain;
 }
 
+/** Hand-set frames for countries whose outline spans far-off islands or would frame badly. */
+export const COUNTRY_VIEW: Readonly<Record<string, Bounds>> = {
+  nz: [166, -47.5, 179, -34],
+  it: [6.5, 36.5, 18.6, 47.1],
+  gr: [19.5, 34.8, 28.3, 41.8],
+  au: [112, -44, 154, -10],
+};
+
 /** Bounding box of a region's placeholder circle. */
 export function circleBounds(r: Region): Bounds {
   const [lon, lat] = r.centroid;
