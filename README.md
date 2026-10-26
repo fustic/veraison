@@ -140,7 +140,7 @@ The Account screen opens from the chip at the top of Today.
   skips `/signin` and `/__/`). It loads the Firebase SDK from gstatic; keep its version in
   step with `package.json`. The session is shared with the app through IndexedDB.
 - iOS/Android: `@react-native-google-signin/google-signin` gets a Google ID token, which signs
-  in to Firebase. Needs `GOOGLE_WEB_CLIENT_ID` in `app/src/sync/config.ts` and a rebuild.
+  in to Firebase. Client IDs are in `app/src/sync/config.ts`; adding native modules needs a rebuild.
 - Security rules: `app/firestore.rules`. Deploy with `npx firebase-tools deploy --only firestore:rules`.
 
 ### First-run checklist (milestone 1: the map test)

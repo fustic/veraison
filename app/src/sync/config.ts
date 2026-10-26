@@ -13,8 +13,7 @@ export const firebaseConfig = {
 export const GOOGLE_IOS_CLIENT_ID = '463285819168-qsvsuaen7b2edacpemmn8p3vmf2s4v0i.apps.googleusercontent.com';
 
 /**
- * The project's web OAuth client (Firebase console › Authentication › Sign-in method ›
- * Google › Web SDK configuration). Native Google sign-in needs it to get a token Firebase
- * accepts. Empty until filled in.
+ * The project's web OAuth client ("Web client (auto created by Google Service)" in Google
+ * Cloud › Credentials). Native Google sign-in needs it to get a token Firebase accepts.
  */
-export const GOOGLE_WEB_CLIENT_ID = '';
+export const GOOGLE_WEB_CLIENT_ID = '463285819168-cuqpr42pesiqlk3v5bhigfiipnks7phi.apps.googleusercontent.com';
