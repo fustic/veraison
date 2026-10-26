@@ -80,6 +80,9 @@ The dev server does this (`metro.config.js`), `public/_headers` does it on Netli
 Cloudflare Pages, and the `expo-router` plugin in `app.json` does it on EAS Hosting.
 GitHub Pages cannot set headers, so it will not work there. Deploy `app/dist` with one of:
 
+- Firebase Hosting: `app/firebase.json` sets the headers, SPA rewrite and caching. Once:
+  `npx firebase-tools login`, then `npx firebase-tools use --add` (pick your project; writes
+  `.firebaserc`). Each deploy: `npm run deploy:web`.
 - EAS Hosting: `npx eas-cli deploy --prod`
 - Netlify: drag `app/dist` onto app.netlify.com/drop, or `npx netlify-cli deploy --dir dist --prod`
 - Cloudflare Pages: `npx wrangler pages deploy dist`

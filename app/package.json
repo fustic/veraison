@@ -11,7 +11,8 @@
     "typecheck": "tsc --noEmit",
     "upgrade": "sh ./scripts/upgrade.sh",
     "web": "expo start --web",
-    "build:web": "expo export -p web"
+    "build:web": "expo export -p web",
+    "deploy:web": "expo export -p web && npx firebase-tools deploy --only hosting"
   },
   "dependencies": {
     "@maplibre/maplibre-react-native": "^11.5.0",

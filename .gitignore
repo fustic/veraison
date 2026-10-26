@@ -14,3 +14,6 @@ build/
 
 # large map source data (download it, then npm run map:boundaries)
 tools/boundaries/source/
+
+# Firebase deploy cache
+.firebase/
