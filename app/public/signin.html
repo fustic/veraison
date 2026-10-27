@@ -48,7 +48,9 @@
 
       // On the hosted site the auth handler lives on this same domain (Firebase Hosting serves
       // /__/auth/ on every hosting domain), which keeps Safari's storage rules happy.
-      const hosted = /\.(web\.app|firebaseapp\.com)$/.test(location.hostname);
+      // Custom domains connected in Firebase Hosting › Domains serve /__/auth/ too; each needs its
+      // https://<domain>/__/auth/handler among the OAuth client's redirect URIs.
+      const hosted = /\.(web\.app|firebaseapp\.com)$/.test(location.hostname) || location.hostname === 'veraison.ivanovs.de';
       const app = initializeApp({
         apiKey: 'AIzaSyABlzywb8zOu2rEib6GwBRZL7eumOZ48f8',
         authDomain: hosted ? location.host : 'veraison-353ad.firebaseapp.com',
