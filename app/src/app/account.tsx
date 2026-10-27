@@ -70,7 +70,7 @@ export default function AccountScreen() {
         <>
           <Box gap={10} pad={18}>
             <Text style={styles.body}>
-              Sign in to keep your tasting notes and study progress on all your devices: this one, the web app at veraison-353ad.web.app, and any other phone you sign in on.
+              Sign in to keep your tasting notes and study progress on all your devices: this one, the web app at veraison.ivanovs.de, and any other phone you sign in on.
             </Text>
             <Text style={styles.muted}>Without an account everything stays on this device, as now. What is already here is uploaded when you first sign in.</Text>
           </Box>
