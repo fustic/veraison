@@ -174,10 +174,10 @@ test('label photos travel with their note, and older app versions cannot erase t
   const b = await device();
   const id = await saveTastingNote(a, note('Barolo'), deps);
   deps.tick();
-  await setNotePhoto(a, id, { mime: 'image/jpeg', width: 1280, height: 960, data: 'AAAA' }, deps);
+  await setNotePhoto(a, id, { mime: 'image/jpeg', width: 1280, height: 960, data: 'AAAA', thumb: 'BBBB' }, deps);
   await syncOnce(a, server.remote());
   await syncOnce(b, server.remote());
-  assert.deepEqual(await getNotePhoto(b, id), { mime: 'image/jpeg', width: 1280, height: 960, data: 'AAAA' });
+  assert.deepEqual(await getNotePhoto(b, id), { mime: 'image/jpeg', width: 1280, height: 960, data: 'AAAA', thumb: 'BBBB' });
 
   // An app from before photos edits the note: its document has no photo, and the photo stays.
   deps.tick();

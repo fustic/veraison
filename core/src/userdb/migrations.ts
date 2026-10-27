@@ -158,6 +158,9 @@ export const MIGRATIONS: readonly string[] = [
     DELETE FROM sync_outbox WHERE kind = 'note' AND id = OLD.note_id;
     INSERT INTO sync_outbox (kind, id) VALUES ('note', OLD.note_id); END;
   `,
+  /* 6: a small thumbnail of the label photo (about 10 kB) for the notes list */ `
+  ALTER TABLE tasting_note_photo ADD COLUMN thumb TEXT;
+  `,
 ];
 
 export async function migrate(db: Db): Promise<{ from: number; to: number }> {

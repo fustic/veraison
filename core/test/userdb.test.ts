@@ -126,6 +126,21 @@ test('backups carry label photos', async () => {
   assert.equal((await getNotePhoto(target, id))?.data, 'QkFTRTY0');
 });
 
+test('the notes list uses thumbnails, or the photo when there is none', async () => {
+  const { noteThumbs, setNotePhoto } = await import('../src/userdb/photos.ts');
+  const db = await freshDb();
+  const deps = testDeps();
+  const a = await saveTastingNote(db, emptyNote('red'), deps);
+  const b = await saveTastingNote(db, emptyNote('white'), deps);
+  await saveTastingNote(db, emptyNote('rose'), deps);
+  await setNotePhoto(db, a, { mime: 'image/jpeg', width: 1280, height: 960, data: 'RlVMTA', thumb: 'U01BTEw' }, deps);
+  await setNotePhoto(db, b, { mime: 'image/png', width: 800, height: 600, data: 'T0xE' }, deps);
+  const thumbs = await noteThumbs(db);
+  assert.equal(thumbs.size, 2);
+  assert.equal(thumbs.get(a), 'data:image/jpeg;base64,U01BTEw');
+  assert.equal(thumbs.get(b), 'data:image/png;base64,T0xE');
+});
+
 test('settings round-trip and overwrite', async () => {
   const { getSetting, setSetting } = await import('../src/userdb/settings.ts');
   const db = await freshDb();

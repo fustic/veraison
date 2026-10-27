@@ -14,7 +14,7 @@
 
 import type { Db, SqlValue } from './db.ts';
 import { MIGRATIONS } from './migrations.ts';
-import { MAX_PHOTO_BASE64 } from './photos.ts';
+import { MAX_PHOTO_BASE64, MAX_THUMB_BASE64 } from './photos.ts';
 import { getSetting, setSetting } from './settings.ts';
 
 export type SyncKind = 'note' | 'progress' | 'card';
@@ -133,7 +133,7 @@ async function buildDoc(db: Db, kind: SyncKind, id: string): Promise<SyncDoc | n
   if (kind === 'note') {
     data.aromas = await db.all<SyncRow>('SELECT aroma_id, stage FROM tasting_note_aroma WHERE note_id = ? ORDER BY stage, aroma_id', [id]);
     data.guesses = await db.all<SyncRow>('SELECT rank, profile_id, score FROM tasting_note_guess WHERE note_id = ? ORDER BY rank', [id]);
-    data.photo = await db.get<SyncRow>('SELECT mime, width, height, data, updated_at FROM tasting_note_photo WHERE note_id = ?', [id]);
+    data.photo = await db.get<SyncRow>('SELECT mime, width, height, data, thumb, updated_at FROM tasting_note_photo WHERE note_id = ?', [id]);
   }
   return { kind, id, updatedAt: String(row.updated_at), schemaVersion: MIGRATIONS.length, data };
 }
@@ -200,12 +200,14 @@ async function applyDoc(db: Db, doc: SyncDoc): Promise<boolean> {
         await db.run('DELETE FROM tasting_note_photo WHERE note_id = ?', [doc.id]);
         const p = doc.data.photo;
         if (p && typeof p.data === 'string' && p.data.length <= MAX_PHOTO_BASE64) {
-          await db.run('INSERT INTO tasting_note_photo (note_id, mime, width, height, data, updated_at) VALUES (?, ?, ?, ?, ?, ?)', [
+          const thumb = typeof p.thumb === 'string' && p.thumb.length <= MAX_THUMB_BASE64 ? p.thumb : null;
+          await db.run('INSERT INTO tasting_note_photo (note_id, mime, width, height, data, thumb, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)', [
             doc.id,
             p.mime ?? 'image/jpeg',
             p.width ?? 0,
             p.height ?? 0,
             p.data,
+            thumb,
             p.updated_at ?? doc.updatedAt,
           ]);
         }
